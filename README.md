@@ -1,4 +1,6 @@
-# Warsow Objective gametype script
+# Warsow Objective
+
+Gametype script framework.
 
 ## Design
 
@@ -11,7 +13,8 @@ Includes all files listed below.
 No class, creates a global Map object and connects the callbacks to it.
 
 `objective/Core.as`:
-Implements no objective, but converts events and has a bunch of objects that are ready to be used by the Map.
+Implements no objective, but converts events and has a bunch of objects that
+are ready to be used by the Map.
 
 `objective/core/Destroyable.as`:
 Just an example for a class that implements a type of objective.
@@ -20,4 +23,5 @@ Just an example for a class that implements a type of objective.
 Default map script core, implementing the default objective. Inherits Core.
 
 `objective/Map.as`:
-Map script. Inherits either DefaultCore or Core if supplied by the map, DefaultCore otherwise.
+Map script. Inherits either DefaultCore or Core if supplied by the map,
+DefaultCore otherwise.
