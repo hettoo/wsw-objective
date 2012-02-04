@@ -43,12 +43,12 @@ cString @GT_ScoreboardMessage(int maxlen) {
     return objective.scoreboardMessage(maxlen);
 }
 
-void GT_scoreEvent(cClient @client, cString &score_event, cString &args) {
-    objective.scoreEvent(client, score_event, args);
+void GT_scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
+    objective.scoreEvent(client, scoreEvent, args);
 }
 
-void GT_playerRespawn(cEntity @ent, int old_team, int new_team) {
-    objective.playerRespawn(ent, old_team, new_team);
+void GT_playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
+    objective.playerRespawn(ent, oldTeam, newTeam);
 }
 
 void GT_ThinkRules() {
@@ -59,8 +59,8 @@ void GT_MatchStateStarted() {
     objective.matchStateStarted();
 }
 
-bool GT_MatchStateFinished(int new_match_state) {
-    return objective.matchStateFinished(new_match_state);
+bool GT_MatchStateFinished(int newMatchState) {
+    return objective.matchStateFinished(newMatchState);
 }
 
 void GT_Shutdown() {

@@ -28,7 +28,7 @@ class Core {
         return true;
     }
 
-    void playerRespawn(cEntity @ent, int old_team, int new_team) {
+    void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
     }
 
     bool updateBotStatus(cEntity @self) {
@@ -39,14 +39,14 @@ class Core {
         return null;
     }
 
-    cString @scoreboardMessage(int maxlen) {
+    cString @scoreboardMessage(int maxLen) {
         return "";
     }
 
-    void scoreEvent(cClient @client, cString &score_event, cString &args) {
+    void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
     }
 
-    void playerRespawn(cEntity @ent, int old_team, int new_team) {
+    void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
     }
 
     void thinkRules() {
@@ -55,13 +55,13 @@ class Core {
     void matchStateStarted() {
     }
 
-    bool matchStateFinished(int new_match_state) {
+    bool matchStateFinished(int newMatchState) {
         return true;
     }
 
     void shutdown() {
     }
 
-    void iDontKnowWhyButIfYouRemoveThisTheGameCrashesOnShutdown() {
+    void theLastMethodHereWillCrashWhenCalledSoDoNotCallOrRemoveThis() {
     }
 }
