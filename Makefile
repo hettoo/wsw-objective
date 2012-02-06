@@ -18,7 +18,7 @@ TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
 EVERY_PK3 = objective-*.pk3
-EVERY_CFG = objective_*.cfg
+CFG = objective.cfg
 
 GT_PK3 = objective-dev.pk3
 
@@ -46,8 +46,8 @@ clean:
 
 destroy:
 	rm -f $(WSW_DIR)/$(BASE_MOD)/$(EVERY_PK3)
-	rm -f $(WSW_DIR)/$(BASE_MOD)/$(CONFIG_DIR)/$(EVERY_CFG)
-	rm -f $(WSW_DIR)/$(MOD)/$(CONFIG_DIR)/$(EVERY_CFG)
+	rm -f $(WSW_DIR)/$(BASE_MOD)/$(CONFIG_DIR)/$(CFG)
+	rm -f $(WSW_DIR)/$(MOD)/$(CONFIG_DIR)/$(CFG)
 
 restart: destroy local
 
