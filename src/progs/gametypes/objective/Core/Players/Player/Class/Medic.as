@@ -26,6 +26,10 @@ class Medic : Class {
         maxArmor = 100;
     }
 
+    cString @getName() {
+        return "Medic";
+    }
+
     void spawn(Player @player) {
         Class::spawn(player);
 

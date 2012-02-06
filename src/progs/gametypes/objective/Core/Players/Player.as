@@ -43,8 +43,33 @@ class Player {
         return client.isBot();
     }
 
+    void showGameMenu() {
+        cString menu = "mecu \"Select Class\"";
+        cString name;
+        name = soldier.getName();
+        menu += name + " \"class " + name + "\"";
+        name = medic.getName();
+        menu += name + " \"class " + name + "\"";
+        name = engineer.getName();
+        menu += name + " \"class " + name + "\"";
+        name = sniper.getName();
+        menu += name + " \"class " + name + "\"";
+        client.execGameCommand(menu);
+    }
+
     void setClass(int newClass) {
         nextClass = newClass;
+    }
+
+    void setClass(cString &newClass) {
+        if (newClass == soldier.getName())
+            nextClass = CLASS_SOLDIER;
+        else if (newClass == medic.getName())
+            nextClass = CLASS_MEDIC;
+        else if (newClass == engineer.getName())
+            nextClass = CLASS_ENGINEER;
+        else if (newClass == sniper.getName())
+            nextClass = CLASS_SNIPER;
     }
 
     void giveWeapon(int weapon, int strongAmmo, int weakAmmo) {

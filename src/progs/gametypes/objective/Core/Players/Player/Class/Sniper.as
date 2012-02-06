@@ -26,6 +26,10 @@ class Sniper : Class {
         maxArmor = 100;
     }
 
+    cString @getName() {
+        return "Sniper";
+    }
+
     void spawn(Player @player) {
         Class::spawn(player);
 

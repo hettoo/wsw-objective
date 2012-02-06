@@ -26,6 +26,10 @@ class Soldier : Class {
         maxArmor = spawnArmor;
     }
 
+    cString @getName() {
+        return "Soldier";
+    }
+
     void spawn(Player @player) {
         Class::spawn(player);
 

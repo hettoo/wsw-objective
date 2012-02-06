@@ -125,6 +125,8 @@ class Core {
 
     void registerCommands() {
         G_RegisterCommand("drop");
+        G_RegisterCommand("class");
+        G_RegisterCommand("gamemenu");
         G_RegisterCommand("gametype");
     }
 
@@ -146,6 +148,12 @@ class Core {
     bool command(cClient @client, cString &cmd, cString &args, int argc) {
         if (cmd == "cvarinfo") {
             GENERIC_CheatVarResponse(client, "cvarinfo", args, argc);
+            return true;
+        } else if (cmd == "class") {
+            players.get(client).setClass(args);
+            return true;
+        } else if (cmd == "gamemenu") {
+            players.get(client).showGameMenu();
         }
         return false;
     }
