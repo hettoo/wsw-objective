@@ -16,3 +16,10 @@ legacy_items.as;
 
 objective.as;
 objective/Core.as;
+objective/Core/Players.as;
+objective/Core/Players/Player.as;
+objective/Core/Players/Player/Class.as;
+objective/Core/Players/Player/Class/Soldier.as;
+objective/Core/Players/Player/Class/Engineer.as;
+objective/Core/Players/Player/Class/Medic.as;
+objective/Core/Players/Player/Class/Sniper.as;

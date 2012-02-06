@@ -22,6 +22,8 @@ const cString VERSION = "0.1-dev";
 const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
 class Core {
+    Players players;
+
     cString configFile;
 
     Core() {
@@ -69,8 +71,7 @@ class Core {
     }
 
     void setGametypeSettings() {
-        gametype.spawnableItemsMask = (IT_WEAPON | IT_AMMO | IT_ARMOR
-                | IT_POWERUP | IT_HEALTH);
+        gametype.spawnableItemsMask = (IT_ARMOR | IT_POWERUP | IT_HEALTH);
 
         if (gametype.isInstagib())
             gametype.spawnableItemsMask &= ~uint(G_INSTAGIB_NEGATE_ITEMMASK);
@@ -104,7 +105,7 @@ class Core {
 
         gametype.spawnpointRadius = 256;
 
-        if ( gametype.isInstagib() )
+        if (gametype.isInstagib())
             gametype.spawnpointRadius *= 2;
     }
 
@@ -143,30 +144,86 @@ class Core {
     }
 
     bool command(cClient @client, cString &cmd, cString &args, int argc) {
-        return true;
+        if (cmd == "cvarinfo") {
+            GENERIC_CheatVarResponse(client, "cvarinfo", args, argc);
+        }
+        return false;
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        return null;
+        return GENERIC_SelectBestRandomSpawnPoint(null, "info_player_deathmatch");
     }
 
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
+        if (oldTeam == TEAM_SPECTATOR && newTeam != TEAM_SPECTATOR)
+            players.newPlayer(ent.client);
+        else if (oldTeam != TEAM_SPECTATOR && newTeam == TEAM_SPECTATOR)
+            players.newSpectator(ent.client);
+
+        if (newTeam != TEAM_SPECTATOR)
+            players.respawnPlayer(ent.client);
     }
 
     bool updateBotStatus(cEntity @self) {
-        return true;
+        return GENERIC_UpdateBotStatus(self);
     }
 
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
+        if (scoreEvent == "userinfochanged") {
+            players.initClient(client);
+        }
+    }
+
+    void checkMatchState() {
+        if (match.scoreLimitHit() || match.timeLimitHit() || match.suddenDeathFinished())
+            match.launchState(match.getState() + 1);
+
+        if (match.getState() >= MATCH_STATE_POSTMATCH)
+            return;
     }
 
     void thinkRules() {
+        checkMatchState();
+
+        GENERIC_Think();
     }
 
     void matchStateStarted() {
+        switch (match.getState()) {
+            case MATCH_STATE_WARMUP:
+                gametype.pickableItemsMask = gametype.spawnableItemsMask;
+                gametype.dropableItemsMask = gametype.spawnableItemsMask;
+                GENERIC_SetUpWarmup();
+                CreateSpawnIndicators("info_player_deathmatch", TEAM_BETA);
+                break;
+            case MATCH_STATE_COUNTDOWN:
+                gametype.pickableItemsMask = 0;
+                gametype.dropableItemsMask = 0;
+                GENERIC_SetUpCountdown();
+                DeleteSpawnIndicators();
+                break;
+            case MATCH_STATE_PLAYTIME:
+                gametype.pickableItemsMask = gametype.spawnableItemsMask;
+                gametype.dropableItemsMask = gametype.spawnableItemsMask;
+                GENERIC_SetUpMatch();
+                break;
+            case MATCH_STATE_POSTMATCH:
+                gametype.pickableItemsMask = 0;
+                gametype.dropableItemsMask = 0;
+                GENERIC_SetUpEndMatch();
+                break;
+        }
     }
 
     bool matchStateFinished(int newMatchState) {
+        if (match.getState() <= MATCH_STATE_WARMUP
+                && newMatchState > MATCH_STATE_WARMUP
+                && newMatchState < MATCH_STATE_POSTMATCH)
+            match.startAutorecord();
+
+        if (match.getState() == MATCH_STATE_POSTMATCH)
+            match.stopAutorecord();
+
         return true;
     }
 

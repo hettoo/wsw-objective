@@ -3,14 +3,8 @@
 WSW_DIR = ~/.warsow-0.6
 EXECUTABLE = wsw-server
 MOD = promod
-NAME = Warsow Objective Server
-PORT = 44400
-INSTAGIB = 0
 
-NORMAL_INPUT = { echo set sv_hostname '"$(NAME)"' && cat; }
-LOOP_INPUT = { echo set sv_hostname '"$(NAME)"'; }
-SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set sv_port $(PORT) \
-			 +set g_gametype objective +set g_instagib $(INSTAGIB)
+SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype objective \
 
 THIS = Makefile
 GT_DIR = src
@@ -36,10 +30,10 @@ local: $(GT_PK3)
 	cp $(GT_PK3) $(WSW_DIR)/$(BASE_MOD)/
 
 production: local
-	$(NORMAL_INPUT) | $(SERVER_CMD)
+	$(SERVER_CMD)
 
 productionloop: local
-	while true; do $(LOOP_INPUT) | $(SERVER_CMD); done
+	while true; do $(SERVER_CMD); done
 
 clean:
 	rm -f *.pk3
@@ -52,6 +46,6 @@ destroy:
 restart: destroy local
 
 dev: restart
-	$(NORMAL_INPUT) | $(SERVER_CMD)
+	$(SERVER_CMD)
 
 .PHONY: all local production clean destroy restart dev
