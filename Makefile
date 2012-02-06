@@ -17,10 +17,10 @@ GT_DIR = src
 TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
-EVERY_PK3 = 0-objective-*.pk3
+EVERY_PK3 = objective-*.pk3
 EVERY_CFG = objective_*.cfg
 
-GT_PK3 = 0-objective-dev.pk3
+GT_PK3 = objective-dev.pk3
 
 all: $(GT_PK3)
 

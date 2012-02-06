@@ -28,6 +28,10 @@ class Core {
         return true;
     }
 
+    cEntity @selectSpawnPoint(cEntity @self) {
+        return null;
+    }
+
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
     }
 
@@ -35,18 +39,7 @@ class Core {
         return true;
     }
 
-    cEntity @selectSpawnPoint(cEntity @self) {
-        return null;
-    }
-
-    cString @scoreboardMessage(int maxLen) {
-        return "";
-    }
-
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
-    }
-
-    void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
     }
 
     void thinkRules() {
@@ -59,9 +52,10 @@ class Core {
         return true;
     }
 
-    void shutdown() {
+    cString @scoreboardMessage(int maxLen) {
+        return "";
     }
 
-    void theLastMethodHereWillCrashWhenCalledSoDoNotCallOrRemoveThis() {
+    void shutdown() {
     }
 }

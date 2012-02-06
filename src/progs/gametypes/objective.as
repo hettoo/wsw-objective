@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-Map objective;
+Core objective;
 
 void GT_SpawnGametype() {
     objective.spawnGametype();
@@ -31,24 +31,20 @@ bool GT_Command(cClient @client, cString &cmd, cString &args, int argc) {
     return objective.command(client, cmd, args, argc);
 }
 
-bool GT_UpdateBotStatus(cEntity @self) {
-    return objective.updateBotStatus(self);
-}
-
 cEntity @GT_SelectSpawnPoint(cEntity @self) {
     return objective.selectSpawnPoint(self);
 }
 
-cString @GT_ScoreboardMessage(int maxlen) {
-    return objective.scoreboardMessage(maxlen);
+void GT_playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
+    objective.playerRespawn(ent, oldTeam, newTeam);
+}
+
+bool GT_UpdateBotStatus(cEntity @self) {
+    return objective.updateBotStatus(self);
 }
 
 void GT_scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
     objective.scoreEvent(client, scoreEvent, args);
-}
-
-void GT_playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
-    objective.playerRespawn(ent, oldTeam, newTeam);
 }
 
 void GT_ThinkRules() {
@@ -61,6 +57,10 @@ void GT_MatchStateStarted() {
 
 bool GT_MatchStateFinished(int newMatchState) {
     return objective.matchStateFinished(newMatchState);
+}
+
+cString @GT_ScoreboardMessage(int maxlen) {
+    return objective.scoreboardMessage(maxlen);
 }
 
 void GT_Shutdown() {
