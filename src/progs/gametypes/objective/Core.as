@@ -23,6 +23,7 @@ const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
 class Core {
     Players players;
+    Objectives objectives;
 
     cString configFile;
 

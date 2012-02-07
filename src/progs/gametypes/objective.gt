@@ -23,3 +23,4 @@ objective/Core/Players/Player/Class/Soldier.as;
 objective/Core/Players/Player/Class/Engineer.as;
 objective/Core/Players/Player/Class/Medic.as;
 objective/Core/Players/Player/Class/Sniper.as;
+objective/Core/Objectives.as;
