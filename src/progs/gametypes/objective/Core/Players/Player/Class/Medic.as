@@ -33,7 +33,7 @@ class Medic : Class {
     void spawn(Player @player) {
         Class::spawn(player);
 
-        player.giveWeapon(WEAP_PLASMAGUN, 80, 100);
-        player.giveWeapon(WEAP_LASERGUN, 80, 50);
+        player.giveWeapon(WEAP_PLASMAGUN, 40, 60);
+        player.giveWeapon(WEAP_LASERGUN, 65, 35);
     }
 }

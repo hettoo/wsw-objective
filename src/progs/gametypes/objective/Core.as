@@ -109,11 +109,10 @@ class Core {
             gametype.spawnpointRadius *= 2;
     }
 
-    void setSpawnSystem() {
+    void setSpawnSystem(int spawnSystem) {
         for (int team = 0; team < GS_MAX_TEAMS; team++) {
             if (team != TEAM_SPECTATOR)
-                gametype.setTeamSpawnsystem(team, SPAWNSYSTEM_INSTANT, 0, 0,
-                        false);
+                gametype.setTeamSpawnsystem(team, spawnSystem, 0, 0, false);
         }
     }
 
@@ -124,7 +123,6 @@ class Core {
     }
 
     void registerCommands() {
-        G_RegisterCommand("drop");
         G_RegisterCommand("class");
         G_RegisterCommand("gamemenu");
         G_RegisterCommand("gametype");
@@ -137,7 +135,7 @@ class Core {
             createDefaultConfig();
 
         setGametypeSettings();
-        setSpawnSystem();
+        setSpawnSystem(SPAWNSYSTEM_INSTANT);
         setScoreboardLayout();
 
         registerCommands();
@@ -177,9 +175,8 @@ class Core {
     }
 
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
-        if (scoreEvent == "userinfochanged") {
+        if (scoreEvent == "userinfochanged")
             players.initClient(client);
-        }
     }
 
     void checkMatchState() {

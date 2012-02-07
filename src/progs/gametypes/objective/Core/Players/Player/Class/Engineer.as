@@ -34,6 +34,6 @@ class Engineer : Class {
         Class::spawn(player);
 
         player.giveWeapon(WEAP_RIOTGUN, 10, 5);
-        player.giveWeapon(WEAP_LASERGUN, 0, 80);
+        player.giveWeapon(WEAP_LASERGUN, 10, 60);
     }
 }

@@ -33,7 +33,7 @@ class Soldier : Class {
     void spawn(Player @player) {
         Class::spawn(player);
 
-        player.giveWeapon(WEAP_ROCKETLAUNCHER, 10, 20);
-        player.giveWeapon(WEAP_RIOTGUN, 15, 5);
+        player.giveWeapon(WEAP_ROCKETLAUNCHER, 10, 15);
+        player.giveWeapon(WEAP_RIOTGUN, 8, 10);
     }
 }
