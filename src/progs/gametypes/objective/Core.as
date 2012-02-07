@@ -36,6 +36,9 @@ class Core {
     }
 
     void spawnGametype() {
+        objectives.analyze();
+        objectives.parse("mapscripts/" + cVar("mapname", "", 0).getString()
+                + ".obj");
     }
 
     void setGametypeInfo() {

@@ -18,7 +18,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Objective {
-    Objective() {
+    cEntity @ent;
+    cString id;
+
+    Objective(cEntity @ent) {
+        @this.ent = ent;
+        id = ent.getTargetnameString();
+        id = id.substr(1, id.len());
+    }
+
+    cString @getId() {
+        return id;
+    }
+
+    void setAttribute(cString &name, cString &value) {
     }
 
     void think() {
