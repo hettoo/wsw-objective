@@ -23,6 +23,9 @@ const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
 const int DEFAULT_RESPAWN_TIME = 12;
 
+const int TEAM_ASSAULT = TEAM_ALPHA;
+const int TEAM_DEFENSE = TEAM_BETA;
+
 const cString WTF = "???";
 
 class Core {
