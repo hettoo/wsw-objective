@@ -57,19 +57,45 @@ class Player {
         client.execGameCommand(menu);
     }
 
+    /*
+     * Note: doesn't belong here...
+     */
+    cString @getClassName(int classId) {
+        switch (classId) {
+            case CLASS_SOLDIER:
+                return soldier.getName();
+            case CLASS_MEDIC:
+                return medic.getName();
+            case CLASS_ENGINEER:
+                return engineer.getName();
+            case CLASS_SNIPER:
+                return sniper.getName();
+        }
+        return WTF + "";
+    }
+
+    cString @getClassName() {
+        return getClassName(currentClass);
+    }
+
+    void centerPrint(cString &msg) {
+        G_CenterPrintMsg(ent, msg);
+    }
+
     void setClass(int newClass) {
         nextClass = newClass;
+        centerPrint("You will respawn as a " + getClassName(nextClass));
     }
 
     void setClass(cString &newClass) {
         if (newClass == soldier.getName())
-            nextClass = CLASS_SOLDIER;
+            setClass(CLASS_SOLDIER);
         else if (newClass == medic.getName())
-            nextClass = CLASS_MEDIC;
+            setClass(CLASS_MEDIC);
         else if (newClass == engineer.getName())
-            nextClass = CLASS_ENGINEER;
+            setClass(CLASS_ENGINEER);
         else if (newClass == sniper.getName())
-            nextClass = CLASS_SNIPER;
+            setClass(CLASS_SNIPER);
     }
 
     void giveWeapon(int weapon, int strongAmmo, int weakAmmo) {
@@ -104,5 +130,6 @@ class Player {
                 break;
         }
         client.selectWeapon(-1);
+        ent.respawnEffect();
     }
 }

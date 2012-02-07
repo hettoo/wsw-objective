@@ -21,6 +21,10 @@ const cString TITLE = "Objective";
 const cString VERSION = "0.1-dev";
 const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
+const int DEFAULT_RESPAWN_TIME = 12;
+
+const cString WTF = "???";
+
 class Core {
     Players players;
     Objectives objectives;
@@ -110,11 +114,16 @@ class Core {
             gametype.spawnpointRadius *= 2;
     }
 
-    void setSpawnSystem(int spawnSystem) {
+    void setSpawnSystem(int spawnSystem, int waveTime, int maxPlayers) {
         for (int team = 0; team < GS_MAX_TEAMS; team++) {
             if (team != TEAM_SPECTATOR)
-                gametype.setTeamSpawnsystem(team, spawnSystem, 0, 0, false);
+                gametype.setTeamSpawnsystem(team, spawnSystem, waveTime,
+                        maxPlayers, false);
         }
+    }
+
+    void setSpawnSystem(int spawnSystem) {
+        setSpawnSystem(spawnSystem, 0, 0);
     }
 
     void setScoreboardLayout() {
@@ -194,6 +203,10 @@ class Core {
         GENERIC_Think();
     }
 
+    void setWaveSpawn(int respawnTime) {
+        setSpawnSystem(SPAWNSYSTEM_WAVES, respawnTime, 0);
+    }
+
     void matchStateStarted() {
         switch (match.getState()) {
             case MATCH_STATE_WARMUP:
@@ -211,6 +224,7 @@ class Core {
             case MATCH_STATE_PLAYTIME:
                 gametype.pickableItemsMask = gametype.spawnableItemsMask;
                 gametype.dropableItemsMask = gametype.spawnableItemsMask;
+                setWaveSpawn(DEFAULT_RESPAWN_TIME);
                 GENERIC_SetUpMatch();
                 break;
             case MATCH_STATE_POSTMATCH:
@@ -234,7 +248,38 @@ class Core {
     }
 
     cString @scoreboardMessage(int maxLen) {
-        return "";
+        cString msg = "";
+
+        for (int i = TEAM_ALPHA; i < GS_MAX_TEAMS; i++) {
+            cTeam @team = @G_GetTeam(i);
+
+            cString entry = "&t " + i + " " + team.stats.score + " " + team.ping
+                + " ";
+            if (msg.len() + entry.len() < maxLen)
+                msg += entry;
+
+            for (int j = 0; @team.ent(j) != null; j++) {
+                cEntity @ent = team.ent(j);
+                int classIcon = 0;
+                int readyIcon = 0;
+
+                //if (ent.client.isReady())
+                //    readyIcon = prcYesIcon;
+
+                int playerID = (ent.isGhosting()
+                        && (match.getState() == MATCH_STATE_PLAYTIME))
+                    ? -(ent.playerNum() + 1) : ent.playerNum();
+
+                entry = "&p " + playerID + " " + ent.client.getClanName() + " "
+                    + ent.client.stats.score + " " + ent.client.ping + " "
+                    + classIcon + " " + readyIcon + " ";
+
+                if (msg.len() + entry.len() < maxLen)
+                    msg += entry;
+            }
+        }
+
+        return msg;
     }
 
     void shutdown() {
