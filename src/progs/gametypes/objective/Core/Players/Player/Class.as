@@ -34,7 +34,20 @@ class Class {
     int maxHealth;
     int maxArmor;
 
+    int spawnAmmoPacks;
+
     Class() {
+        spawnAmmoPacks = 2;
+    }
+
+    void giveAmmoPack(Player @player) {
+        player.giveWeapon(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
+        player.giveWeapon(WEAP_MACHINEGUN, 0, 0, 40, 120);
+    }
+
+    void giveSpawnAmmoPacks(Player @player) {
+        for (int i = 0; i < spawnAmmoPacks; i++)
+            giveAmmoPack(player);
     }
 
     void spawn(Player @player) {
@@ -45,8 +58,7 @@ class Class {
                 player.setClass(brandom(0, CLASSES - 1));
 
             player.giveWeapon(WEAP_GUNBLADE, 0, 0);
-            player.giveWeapon(WEAP_GRENADELAUNCHER, 0, 10);
-            player.giveWeapon(WEAP_MACHINEGUN, 0, 60);
+            giveSpawnAmmoPacks();
         }
     }
 }

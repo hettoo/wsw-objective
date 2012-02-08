@@ -30,10 +30,10 @@ class Medic : Class {
         return "Medic";
     }
 
-    void spawn(Player @player) {
-        Class::spawn(player);
+    void giveAmmoPack(Player @player) {
+        Class::giveAmmoPack(player);
 
-        player.giveWeapon(WEAP_PLASMAGUN, 40, 60);
-        player.giveWeapon(WEAP_LASERGUN, 65, 35);
+        player.giveWeapon(WEAP_PLASMAGUN, 30, 80, 40, 120);
+        player.giveWeapon(WEAP_LASERGUN, 30, 80, 20, 60);
     }
 }

@@ -106,6 +106,12 @@ class Player {
         client.inventorySetCount(item.weakAmmoTag, weakAmmo);
     }
 
+    void giveWeapon(int weapon, int strongAmmo, int maxStrongAmmo, int weakAmmo,
+            int maxWeakAmmo) {
+        // checks to be done
+        giveWeapon(weapon, strongAmmo, weakAmmo);
+    }
+
     void applyNextClass() {
         if (nextClass < CLASSES) {
             currentClass = nextClass;
