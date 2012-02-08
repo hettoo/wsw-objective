@@ -18,8 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Objective {
-    cEntity @ent;
+    cVec3 origin;
     cString id;
+    bool spawned;
+    cEntity @ent;
 
     cString model;
     bool linked;
@@ -35,9 +37,10 @@ class Objective {
     cString message;
 
     Objective(cEntity @ent) {
-        @this.ent = ent;
+        origin = ent.getOrigin();
         id = ent.getTargetnameString();
         id = id.substr(1, id.len());
+        spawned = false;
 
         model = "";
         linked = true;
@@ -73,6 +76,28 @@ class Objective {
             destroyed = value;
         } else if (name == "message") {
             message = value;
+        }
+    }
+
+    void spawn(int id) {
+        @ent = G_SpawnEntity("objective");
+        ent.type = ET_GENERIC;
+        ent.modelindex = G_ModelIndex("models/" + model);
+        ent.modelindex2 = ent.modelindex;
+        ent.team = team;
+        ent.setOrigin(origin);
+        ent.solid = SOLID_YES;
+        ent.clipMask = MASK_PLAYERSOLID;
+        ent.moveType = MOVETYPE_TOSS;
+        ent.svflags &= ~SVF_NOCLIENT;
+        ent.nextThink = levelTime + 1;
+        ent.count = id;
+        ent.linkEntity();
+    }
+
+    void initialSpawn(int i) {
+        if (linked) {
+            spawn(i);
         }
     }
 

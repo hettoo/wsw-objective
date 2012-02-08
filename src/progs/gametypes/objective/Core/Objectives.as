@@ -81,6 +81,11 @@ class Objectives {
         } while (!stop);
     }
 
+    void initialSpawn() {
+        for (int i = 0; i < size; i++)
+            objectives[i].initialSpawn(i);
+    }
+
     void think() {
     }
 }
