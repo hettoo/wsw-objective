@@ -207,6 +207,8 @@ class Core {
         checkMatchState();
 
         GENERIC_Think();
+
+        objectives.think();
     }
 
     void setWaveSpawn(int respawnTime) {

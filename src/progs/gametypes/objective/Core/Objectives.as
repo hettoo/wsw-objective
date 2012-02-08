@@ -82,5 +82,7 @@ class Objectives {
     }
 
     void think() {
+        for (int i = 0; i < size; i++)
+            objectives[i].think();
     }
 }
