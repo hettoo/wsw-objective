@@ -77,7 +77,8 @@ class Core {
             + "set g_challengers_queue \"0\"\n"
             + "\necho \"" + gametype.getName() + ".cfg executed\"\n";
         G_WriteFile(configFile, config);
-        G_Print("Created default config file for '" + gametype.getName() + "'\n");
+        G_Print("Created default config file for '" + gametype.getName()
+                + "'\n");
         G_CmdExecute("exec " + configFile + " silent");
     }
 
@@ -173,7 +174,8 @@ class Core {
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        return GENERIC_SelectBestRandomSpawnPoint(null, "info_player_deathmatch");
+        return GENERIC_SelectBestRandomSpawnPoint(null,
+                "info_player_deathmatch");
     }
 
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
@@ -196,7 +198,8 @@ class Core {
     }
 
     void checkMatchState() {
-        if (match.scoreLimitHit() || match.timeLimitHit() || match.suddenDeathFinished())
+        if (match.scoreLimitHit() || match.timeLimitHit()
+                || match.suddenDeathFinished())
             match.launchState(match.getState() + 1);
 
         if (match.getState() >= MATCH_STATE_POSTMATCH)
