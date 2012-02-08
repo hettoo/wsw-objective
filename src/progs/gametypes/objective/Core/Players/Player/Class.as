@@ -34,7 +34,10 @@ class Class {
     int maxHealth;
     int maxArmor;
 
+    int spawnAmmoPacks;
+
     Class() {
+        spawnAmmoPacks = 2;
     }
 
     void giveAmmoPack(Player @player) {
@@ -43,8 +46,8 @@ class Class {
     }
 
     void giveSpawnAmmoPacks(Player @player) {
-        giveAmmoPack(player);
-        giveAmmoPack(player);
+        for (int i = 0; i < spawnAmmoPacks; i++)
+            giveAmmoPack(player);
     }
 
     void spawn(Player @player) {
