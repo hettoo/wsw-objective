@@ -58,7 +58,7 @@ class Class {
                 player.setClass(brandom(0, CLASSES - 1));
 
             player.giveWeapon(WEAP_GUNBLADE, 0, 0);
-            giveSpawnAmmoPacks();
+            giveSpawnAmmoPacks(player);
         }
     }
 }
