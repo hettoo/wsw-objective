@@ -30,8 +30,8 @@ class Soldier : Class {
         return "Soldier";
     }
 
-    void spawn(Player @player) {
-        Class::spawn(player);
+    void giveAmmoPack(Player @player) {
+        Class::giveAmmoPack(player);
 
         player.giveWeapon(WEAP_ROCKETLAUNCHER, 10, 15);
         player.giveWeapon(WEAP_RIOTGUN, 8, 10);

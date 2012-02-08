@@ -30,8 +30,8 @@ class Sniper : Class {
         return "Sniper";
     }
 
-    void spawn(Player @player) {
-        Class::spawn(player);
+    void giveAmmoPack(Player @player) {
+        Class::giveAmmoPack(player);
 
         player.giveWeapon(WEAP_ELECTROBOLT, 10, 5);
         player.giveWeapon(WEAP_RIOTGUN, 0, 20);
