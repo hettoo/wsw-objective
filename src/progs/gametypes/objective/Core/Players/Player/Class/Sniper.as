@@ -33,7 +33,7 @@ class Sniper : Class {
     void giveAmmoPack(Player @player) {
         Class::giveAmmoPack(player);
 
-        player.giveWeapon(WEAP_ELECTROBOLT, 10, 5);
-        player.giveWeapon(WEAP_RIOTGUN, 0, 20);
+        player.giveWeapon(WEAP_ELECTROBOLT, 6, 18, 5, 20);
+        player.giveWeapon(WEAP_RIOTGUN, 0, 0, 10, 30);
     }
 }

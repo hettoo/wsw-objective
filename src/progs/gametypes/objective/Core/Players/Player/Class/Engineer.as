@@ -33,7 +33,7 @@ class Engineer : Class {
     void giveAmmoPack(Player @player) {
         Class::giveAmmoPack(player);
 
-        player.giveWeapon(WEAP_RIOTGUN, 10, 5);
-        player.giveWeapon(WEAP_LASERGUN, 10, 60);
+        player.giveWeapon(WEAP_RIOTGUN, 5, 20, 5, 5);
+        player.giveWeapon(WEAP_LASERGUN, 10, 40, 60, 80);
     }
 }

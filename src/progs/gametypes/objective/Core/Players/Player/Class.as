@@ -38,11 +38,12 @@ class Class {
     }
 
     void giveAmmoPack(Player @player) {
-        player.giveWeapon(WEAP_GRENADELAUNCHER, 0, 10);
-        player.giveWeapon(WEAP_MACHINEGUN, 0, 60);
+        player.giveWeapon(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
+        player.giveWeapon(WEAP_MACHINEGUN, 0, 0, 40, 120);
     }
 
     void giveSpawnAmmoPacks(Player @player) {
+        giveAmmoPack(player);
         giveAmmoPack(player);
     }
 
