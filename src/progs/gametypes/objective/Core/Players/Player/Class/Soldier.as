@@ -33,7 +33,7 @@ class Soldier : Class {
     void giveAmmoPack(Player @player) {
         Class::giveAmmoPack(player);
 
-        player.giveWeapon(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
-        player.giveWeapon(WEAP_RIOTGUN, 5, 20, 10, 30);
+        player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
+        player.giveAmmo(WEAP_RIOTGUN, 5, 20, 10, 30);
     }
 }

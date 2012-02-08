@@ -98,18 +98,35 @@ class Player {
             setClass(CLASS_SNIPER);
     }
 
-    void giveWeapon(int weapon, int strongAmmo, int weakAmmo) {
+    void giveAmmo(int weapon, int strongAmmo, int weakAmmo) {
         cItem @item = G_GetItem(weapon);
 
-        client.inventoryGiveItem(weapon);
+        if (client.canSelectWeapon(weapon)) {
+            strongAmmo += client.inventoryCount(item.ammoTag);
+            weakAmmo += client.inventoryCount(item.weakAmmoTag);
+        } else {
+            client.inventoryGiveItem(weapon);
+        }
+
         client.inventorySetCount(item.ammoTag, strongAmmo);
         client.inventorySetCount(item.weakAmmoTag, weakAmmo);
     }
 
-    void giveWeapon(int weapon, int strongAmmo, int maxStrongAmmo, int weakAmmo,
+    void giveAmmo(int weapon, int strongAmmo, int maxStrongAmmo, int weakAmmo,
             int maxWeakAmmo) {
-        // checks to be done
-        giveWeapon(weapon, strongAmmo, weakAmmo);
+        if (client.canSelectWeapon(weapon)) {
+            cItem @item = G_GetItem(weapon);
+            if (client.inventoryCount(item.ammoTag) + strongAmmo
+                    > maxStrongAmmo)
+                strongAmmo = maxStrongAmmo
+                    - client.inventoryCount(item.ammoTag);
+            if (client.inventoryCount(item.weakAmmoTag) + weakAmmo
+                    > maxWeakAmmo)
+                weakAmmo = maxWeakAmmo
+                    - client.inventoryCount(item.weakAmmoTag);
+        }
+
+        giveAmmo(weapon, strongAmmo, weakAmmo);
     }
 
     void applyNextClass() {

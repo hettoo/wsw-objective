@@ -41,8 +41,8 @@ class Class {
     }
 
     void giveAmmoPack(Player @player) {
-        player.giveWeapon(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
-        player.giveWeapon(WEAP_MACHINEGUN, 0, 0, 40, 120);
+        player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
+        player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
     }
 
     void giveSpawnAmmoPacks(Player @player) {
@@ -52,12 +52,12 @@ class Class {
 
     void spawn(Player @player) {
         if (gametype.isInstagib()) {
-            player.giveWeapon(WEAP_INSTAGUN, 1, 1);
+            player.giveAmmo(WEAP_INSTAGUN, 1, 1);
         } else {
             if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
                 player.setClass(brandom(0, CLASSES - 1));
 
-            player.giveWeapon(WEAP_GUNBLADE, 0, 0);
+            player.giveAmmo(WEAP_GUNBLADE, 0, 0);
             giveSpawnAmmoPacks(player);
         }
     }
