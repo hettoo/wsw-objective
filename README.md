@@ -1,3 +1,3 @@
 # Warsow Objective
 
-Gametype script framework.
+Gametype script allowing mapscripts to specify objectives.
