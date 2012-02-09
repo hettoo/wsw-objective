@@ -33,6 +33,10 @@ class Players {
         return get(client.playerNum());
     }
 
+    int getSize() {
+        return size;
+    }
+
     void initClient(cClient @client) {
         int id = client.playerNum();
         Player @player = get(id);
@@ -53,5 +57,10 @@ class Players {
 
     void respawnPlayer(cClient @client) {
         get(client).spawn();
+    }
+
+    void think() {
+        for (int i = 0; i < size; i++)
+            players[i].think();
     }
 }

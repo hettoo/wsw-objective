@@ -24,9 +24,15 @@ class Objectives {
     int size;
     int capacity;
 
+    Players @players;
+
     Objectives() {
         capacity = 0;
         size = 0;
+    }
+
+    void register(Players @players) {
+        @this.players = players;
     }
 
     void makeRoom() {
@@ -39,7 +45,7 @@ class Objectives {
 
     void add(cEntity @ent) {
         makeRoom();
-        @objectives[size++] = Objective(ent);
+        @objectives[size++] = Objective(ent, this, players);
     }
 
     void analyze() {

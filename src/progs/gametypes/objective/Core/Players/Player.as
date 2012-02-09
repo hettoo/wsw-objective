@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const float ARMOR_FRAME_BONUS = 0.004f;
+
 class Player {
     int currentClass;
     int nextClass;
@@ -43,6 +45,14 @@ class Player {
         return client.isBot();
     }
 
+    cClient @getClient() {
+        return client;
+    }
+
+    cEntity @getEnt() {
+        return ent;
+    }
+
     void showGameMenu() {
         cString menu = "mecu \"Select Class\"";
         cString name;
@@ -55,6 +65,14 @@ class Player {
         name = sniper.getName();
         menu += name + " \"class " + name + "\"";
         client.execGameCommand(menu);
+    }
+
+    void setHealth(int health) {
+        ent.health = health;
+    }
+
+    void setArmor(int armor) {
+        client.armor = armor;
     }
 
     /*
@@ -87,6 +105,10 @@ class Player {
         centerPrint("You will respawn as a " + getClassName(nextClass));
     }
 
+    int getClass() {
+        return currentClass;
+    }
+
     void setClass(cString &newClass) {
         if (newClass == soldier.getName())
             setClass(CLASS_SOLDIER);
@@ -96,6 +118,15 @@ class Player {
             setClass(CLASS_ENGINEER);
         else if (newClass == sniper.getName())
             setClass(CLASS_SNIPER);
+    }
+
+    bool takeArmor(float armor) {
+        client.armor -= armor;
+        if (client.armor < 0) {
+            client.armor += armor;
+            return false;
+        }
+        return true;
     }
 
     void giveAmmo(int weapon, int strongAmmo, int weakAmmo) {
@@ -154,5 +185,28 @@ class Player {
         }
         client.selectWeapon(-1);
         ent.respawnEffect();
+    }
+
+    void think() {
+        if (client.team == TEAM_SPECTATOR)
+            return;
+
+        float armor = frameTime * ARMOR_FRAME_BONUS;
+        switch (currentClass) {
+            case CLASS_SOLDIER:
+                soldier.addArmor(this, armor);
+                break;
+            case CLASS_MEDIC:
+                medic.addArmor(this, armor);
+                break;
+            case CLASS_ENGINEER:
+                engineer.addArmor(this, armor);
+                break;
+            case CLASS_SNIPER:
+                sniper.addArmor(this, armor);
+                break;
+        }
+
+        client.setHUDStat(STAT_PROGRESS_SELF, 0);
     }
 }

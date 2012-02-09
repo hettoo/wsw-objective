@@ -26,6 +26,8 @@ const int DEFAULT_RESPAWN_TIME = 12;
 const int TEAM_ASSAULT = TEAM_ALPHA;
 const int TEAM_DEFENSE = TEAM_BETA;
 
+const int PROGRESS_FINISHED = 100;
+
 const cString WTF = "???";
 
 class Core {
@@ -39,6 +41,7 @@ class Core {
     }
 
     void spawnGametype() {
+        objectives.register(players);
         objectives.analyze();
         objectives.parse("mapscripts/" + cVar("mapname", "", 0).getString()
                 + ".obj");
@@ -212,6 +215,7 @@ class Core {
 
         GENERIC_Think();
 
+        players.think();
         objectives.think();
     }
 

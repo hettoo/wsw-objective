@@ -17,6 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const float CONSTRUCT_SPEED = 0.02f;
+const float CONSTRUCT_WAIT_LIMIT = 15.0f;
+
 class Objective {
     cString id;
     bool spawned;
@@ -31,15 +34,25 @@ class Objective {
     int team;
 
     bool constructable;
+    float constructArmor;
     cString constructing;
     cString constructed;
 
     bool destroyable;
     cString destroyed;
 
+    float radius;
+
     cString message;
 
-    Objective(cEntity @ent) {
+    float constructProgress;
+    float notConstructed;
+    bool spawnedGhost;
+
+    Objectives @objectives;
+    Players @players;
+
+    Objective(cEntity @ent, Objectives @objectives, Players @players) {
         id = ent.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
@@ -51,10 +64,21 @@ class Objective {
         team = GS_MAX_TEAMS;
 
         constructable = false;
+        constructArmor = 70;
+
         destroyable = false;
+
+        radius = 150;
 
         ent.unlinkEntity();
         ent.freeEntity();
+
+        constructProgress = 0;
+        notConstructed = 0;
+        spawnedGhost = false;
+
+        @this.objectives = objectives;
+        @this.players = players;
     }
 
     cString @getId() {
@@ -81,6 +105,8 @@ class Objective {
                 team = TEAM_DEFENSE;
         } else if (name == "constructable") {
             constructable = value.toInt() == 1;
+        } else if (name == "constructArmor") {
+            constructArmor = value.toInt();
         } else if (name == "constructing") {
             constructing = value;
         } else if (name == "constructed") {
@@ -89,6 +115,8 @@ class Objective {
             destroyable = value.toInt() == 1;
         } else if (name == "destroyed") {
             destroyed = value;
+        } else if (name == "radius") {
+            radius = value.toInt();
         } else if (name == "message") {
             message = value;
         }
@@ -110,17 +138,104 @@ class Objective {
         ent.moveType = moveType;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
+
+        spawned = true;
     }
 
     void initialSpawn() {
-        if (start) {
+        if (start)
             spawn();
-            spawned = true;
+    }
+
+    void destroy() {
+        if (!spawned)
+            return;
+
+        ent.unlinkEntity();
+        ent.freeEntity();
+        @ent = null;
+        spawned = false;
+    }
+
+    void spawnGhost() {
+        if (spawnedGhost || constructing == "")
+            return;
+
+        objectives.find(constructing).spawn();
+        spawnedGhost = true;
+    }
+
+    void destroyGhost() {
+        if (!spawnedGhost)
+            return;
+
+        objectives.find(constructing).destroy();
+        spawnedGhost = false;
+    }
+
+    void spawnConstructed() {
+        if (constructed == "")
+            return;
+
+        objectives.find(constructed).spawn();
+    }
+
+    bool canInteractWith(Player @player) {
+        return player.getClient().team == team
+            && player.getClass() == CLASS_ENGINEER
+            && ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
+    }
+
+    void constructed() {
+        destroy();
+        destroyGhost();
+        spawnConstructed();
+        constructProgress = 0;
+        G_PrintMsg(null, message + "\n");
+    }
+
+    void constructProgress() {
+        constructProgress += CONSTRUCT_SPEED * frameTime;
+        spawnGhost();
+    }
+
+    bool construct() {
+        bool madeConstructProgress = false;
+        for (int i = 0; i < players.getSize(); i++) {
+            Player @player = players.get(i);
+            if (constructable && canInteractWith(player)) {
+                if (constructProgress >= PROGRESS_FINISHED)
+                    constructed();
+                else if (player.takeArmor(CONSTRUCT_SPEED
+                            / PROGRESS_FINISHED * constructArmor))
+                    constructProgress();
+
+                player.getClient().setHUDStat(STAT_PROGRESS_SELF,
+                        constructProgress);
+                madeConstructProgress = true;
+                notConstructed = 0;
+            }
+        }
+
+        return madeConstructProgress;
+    }
+
+    void notConstructed() {
+        notConstructed += 0.001f * frameTime;
+        if (notConstructed > CONSTRUCT_WAIT_LIMIT) {
+            destroyGhost();
+            constructProgress = 0;
+            notConstructed = 0;
         }
     }
 
     void think() {
-        if (!spawned)
+        if (!spawned || (!constructable && !destroyable))
             return;
+
+        bool madeConstructProgress = construct();
+
+        if (constructable && constructProgress > 0 && !madeConstructProgress)
+            notConstructed();
     }
 }

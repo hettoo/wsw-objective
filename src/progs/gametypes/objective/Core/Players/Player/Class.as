@@ -60,5 +60,15 @@ class Class {
             player.giveAmmo(WEAP_GUNBLADE, 0, 0);
             giveSpawnAmmoPacks(player);
         }
+
+        player.setHealth(spawnHealth);
+        player.setArmor(spawnArmor);
+    }
+
+    void addArmor(Player @player, float armor) {
+        cClient @client = player.getClient();
+        client.armor += armor;
+        if (client.armor > maxArmor)
+            client.armor = maxArmor;
     }
 }
