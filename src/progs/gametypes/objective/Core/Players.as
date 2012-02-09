@@ -49,6 +49,14 @@ class Players {
         player.init(client);
     }
 
+    void remove(int id) {
+        @players[id] = null;
+    }
+
+    void remove(cClient @client) {
+        remove(client.playerNum());
+    }
+
     void newPlayer(cClient @client) {
     }
 
@@ -60,7 +68,9 @@ class Players {
     }
 
     void think() {
-        for (int i = 0; i < size; i++)
-            players[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@players[i] != null)
+                players[i].think();
+        }
     }
 }

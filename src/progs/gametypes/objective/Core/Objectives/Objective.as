@@ -203,7 +203,7 @@ class Objective {
         bool madeConstructProgress = false;
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
-            if (constructable && canInteractWith(player)) {
+            if (@player != null && constructable && canInteractWith(player)) {
                 if (constructProgress >= PROGRESS_FINISHED)
                     constructed();
                 else if (player.takeArmor(CONSTRUCT_SPEED

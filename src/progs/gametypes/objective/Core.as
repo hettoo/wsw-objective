@@ -199,6 +199,8 @@ class Core {
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
         if (scoreEvent == "userinfochanged")
             players.initClient(client);
+        else if (scoreEvent == "disconnect")
+            players.remove(client);
     }
 
     void checkMatchState() {
