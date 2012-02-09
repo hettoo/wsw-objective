@@ -18,15 +18,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Objective {
-    cVec3 origin;
-    cVec3 mins;
-    cVec3 maxs;
     cString id;
     bool spawned;
     cEntity @ent;
 
-    cString model;
     bool start;
+    cString model;
+    cVec3 origin;
+    cVec3 mins;
+    cVec3 maxs;
+    int moveType;
     int team;
 
     bool constructable;
@@ -39,12 +40,13 @@ class Objective {
     cString message;
 
     Objective(cEntity @ent) {
-        origin = ent.getOrigin();
         id = ent.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
 
         model = "";
+        origin = ent.getOrigin();
+        moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
 
@@ -64,6 +66,8 @@ class Objective {
             start = value.toInt() == 1;
         } else if (name == "model") {
             model = value;
+        } else if (name == "moveType") {
+            moveType = value.toInt();
         } else if (name == "mins") {
             mins = cVec3(value.getToken(0).toFloat(),
                     value.getToken(1).toFloat(), value.getToken(2).toFloat());
@@ -100,7 +104,7 @@ class Objective {
         ent.setSize(mins, maxs);
         ent.solid = SOLID_YES;
         ent.clipMask = MASK_PLAYERSOLID;
-        ent.moveType = MOVETYPE_TOSS;
+        ent.moveType = moveType;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
     }
