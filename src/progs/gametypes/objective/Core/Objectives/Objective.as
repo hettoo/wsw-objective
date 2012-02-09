@@ -95,6 +95,9 @@ class Objective {
     }
 
     void spawn() {
+        if (spawned)
+            return;
+
         @ent = G_SpawnEntity("objective");
         ent.type = ET_GENERIC;
         ent.modelindex = G_ModelIndex("models/" + model + ".md3");
@@ -112,9 +115,12 @@ class Objective {
     void initialSpawn() {
         if (start) {
             spawn();
+            spawned = true;
         }
     }
 
     void think() {
+        if (!spawned)
+            return;
     }
 }
