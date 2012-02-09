@@ -19,12 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class Objective {
     cVec3 origin;
+    cVec3 mins;
+    cVec3 maxs;
     cString id;
     bool spawned;
     cEntity @ent;
 
     cString model;
-    bool linked;
+    bool start;
     int team;
 
     bool constructable;
@@ -43,11 +45,14 @@ class Objective {
         spawned = false;
 
         model = "";
-        linked = true;
+        start = true;
         team = GS_MAX_TEAMS;
 
         constructable = false;
         destroyable = false;
+
+        ent.unlinkEntity();
+        ent.freeEntity();
     }
 
     cString @getId() {
@@ -55,10 +60,16 @@ class Objective {
     }
 
     void setAttribute(cString &name, cString &value) {
-        if (name == "linked") {
-            linked = value.toInt() == 1;
+        if (name == "start") {
+            start = value.toInt() == 1;
         } else if (name == "model") {
             model = value;
+        } else if (name == "mins") {
+            mins = cVec3(value.getToken(0).toFloat(),
+                    value.getToken(1).toFloat(), value.getToken(2).toFloat());
+        } else if (name == "maxs") {
+            maxs = cVec3(value.getToken(0).toFloat(),
+                    value.getToken(1).toFloat(), value.getToken(2).toFloat());
         } else if (name == "team") {
             if (value == "ASSAULT")
                 team = TEAM_ASSAULT;
@@ -79,25 +90,24 @@ class Objective {
         }
     }
 
-    void spawn(int id) {
+    void spawn() {
         @ent = G_SpawnEntity("objective");
         ent.type = ET_GENERIC;
-        ent.modelindex = G_ModelIndex("models/" + model);
+        ent.modelindex = G_ModelIndex("models/" + model + ".md3");
         ent.modelindex2 = ent.modelindex;
         ent.team = team;
         ent.setOrigin(origin);
+        ent.setSize(mins, maxs);
         ent.solid = SOLID_YES;
         ent.clipMask = MASK_PLAYERSOLID;
         ent.moveType = MOVETYPE_TOSS;
         ent.svflags &= ~SVF_NOCLIENT;
-        ent.nextThink = levelTime + 1;
-        ent.count = id;
         ent.linkEntity();
     }
 
-    void initialSpawn(int i) {
-        if (linked) {
-            spawn(i);
+    void initialSpawn() {
+        if (start) {
+            spawn();
         }
     }
 
