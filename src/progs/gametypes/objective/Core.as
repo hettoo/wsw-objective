@@ -28,6 +28,8 @@ const int TEAM_DEFENSE = TEAM_BETA;
 
 const int PROGRESS_FINISHED = 100;
 
+const float SMALL = 0.01f;
+
 cString WTF = "???";
 const int UNKNOWN = -1;
 

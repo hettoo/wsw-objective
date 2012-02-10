@@ -27,5 +27,7 @@ objective/Medic.as;
 objective/Sniper.as;
 objective/Bombs.as;
 objective/Bomb.as;
+objective/Artilleries.as;
+objective/Artillery.as;
 objective/Objectives.as;
 objective/Objective.as;

@@ -17,33 +17,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int HEALTH_ARMOR = 15;
+class Artilleries {
+    Artillery@[] artilleries;
+    int size;
+    int capacity;
 
-class Medic : Class {
-    Medic() {
-        spawnHealth = 80;
-        spawnArmor = 50;
-
-        maxHealth = 120;
-        maxArmor = 90;
+    Artilleries() {
+        capacity = 0;
+        size = 0;
     }
 
-    cString @getName() {
-        return "Medic";
+    void makeRoom() {
+        if (capacity == size) {
+            capacity *= 2;
+            capacity += 1;
+            artilleries.resize(capacity);
+        }
     }
 
-    void giveAmmoPack() {
-        Class::giveAmmoPack();
-
-        player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
-        player.giveAmmo(WEAP_LASERGUN, 30, 80, 20, 60);
+    void add(cVec3 @origin, cEntity @owner) {
+        makeRoom();
+        @artilleries[size++] = Artillery(origin, owner);
     }
 
-    void classAction1() {
-        if (player.takeArmor(HEALTH_ARMOR))
-            player.getEnt().dropItem(G_GetItemByName("25 Health").tag);
-        else
-            player.centerPrint("Not enough armor, " + HEALTH_ARMOR
-                    + " required");
+    void think() {
+        for (int i = 0; i < size; i++)
+            artilleries[i].think();
     }
 }

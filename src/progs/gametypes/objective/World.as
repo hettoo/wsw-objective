@@ -21,6 +21,7 @@ class World {
     Players players;
     Objectives objectives;
     Bombs bombs;
+    Artilleries artilleries;
 
     World() {
         players.register(this);
@@ -43,6 +44,7 @@ class World {
         players.think();
         objectives.think();
         bombs.think();
+        artilleries.think();
     }
 
     void initClient(cClient @client) {
@@ -68,5 +70,9 @@ class World {
     void addBomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
             cEntity @owner) {
         bombs.add(origin, angles, velocity, owner);
+    }
+
+    void addArtillery(cVec3 @origin, cEntity @owner) {
+        artilleries.add(origin, owner);
     }
 }
