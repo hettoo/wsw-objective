@@ -146,6 +146,7 @@ class Core {
 
     void registerCommands() {
         G_RegisterCommand("class");
+        G_RegisterCommand("classaction1");
         G_RegisterCommand("gamemenu");
         G_RegisterCommand("gametype");
     }
@@ -167,13 +168,17 @@ class Core {
 
     bool command(cClient @client, cString &cmd, cString &args, int argc) {
         if (cmd == "cvarinfo") {
-            GENERIC_CheatVarResponse(client, "cvarinfo", args, argc);
+            GENERIC_CheatVarResponse(client, cmd, args, argc);
             return true;
         } else if (cmd == "class") {
             players.get(client).setClass(args);
             return true;
         } else if (cmd == "gamemenu") {
             players.get(client).showGameMenu();
+            return true;
+        } else if (cmd == "classaction1") {
+            players.get(client).classAction1();
+            return true;
         }
         return false;
     }

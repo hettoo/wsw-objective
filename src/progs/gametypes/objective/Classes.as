@@ -41,12 +41,21 @@ class Classes {
         nextClass = CLASSES;
     }
 
+    void register(Player @player) {
+        for (int i = 0; i < CLASSES; i++)
+            classes[i].register(player);
+    }
+
     int getId() {
         return currentClass;
     }
 
-    void setNext(int newClass) {
-        nextClass = newClass;
+    bool setNext(int newClass) {
+        if (newClass >= 0 && newClass < CLASSES) {
+            nextClass = newClass;
+            return true;
+        }
+        return false;
     }
 
     int find(cString &newClass) {
@@ -79,11 +88,15 @@ class Classes {
         }
     }
 
-    void spawn(Player @player) {
-        classes[currentClass].spawn(player);
+    void spawn() {
+        classes[currentClass].spawn();
     }
 
-    void addArmor(Player @player, float armor) {
-        classes[currentClass].addArmor(player, armor);
+    void addArmor(float armor) {
+        classes[currentClass].addArmor(armor);
+    }
+
+    void classAction1() {
+        classes[currentClass].classAction1();
     }
 }

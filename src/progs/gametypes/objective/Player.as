@@ -26,6 +26,7 @@ class Player {
     cEntity @ent;
 
     Player() {
+        classes.register(this);
     }
 
     void init(cClient @newClient) {
@@ -66,8 +67,8 @@ class Player {
     }
 
     void setClass(int newClass) {
-        classes.setNext(newClass);
-        centerPrint("You will respawn as a " + classes.getNextName());
+        if (classes.setNext(newClass))
+            centerPrint("You will respawn as a " + classes.getNextName());
     }
 
     int getClassId() {
@@ -124,7 +125,7 @@ class Player {
 
     void spawn() {
         classes.applyNext();
-        classes.spawn(this);
+        classes.spawn();
         client.selectWeapon(-1);
         ent.respawnEffect();
     }
@@ -133,9 +134,13 @@ class Player {
         if (client.team == TEAM_SPECTATOR)
             return;
 
-        classes.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
+        classes.addArmor(ARMOR_FRAME_BONUS * frameTime);
         setHUDStat(STAT_PROGRESS_SELF, 0);
         setHUDStat(STAT_IMAGE_OTHER, 0);
         GENERIC_ChargeGunblade(client);
+    }
+
+    void classAction1() {
+        classes.classAction1();
     }
 }

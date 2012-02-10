@@ -30,10 +30,13 @@ class Engineer : Class {
         return "Engineer";
     }
 
-    void giveAmmoPack(Player @player) {
-        Class::giveAmmoPack(player);
+    void giveAmmoPack() {
+        Class::giveAmmoPack();
 
         player.giveAmmo(WEAP_RIOTGUN, 5, 20, 5, 5);
         player.giveAmmo(WEAP_LASERGUN, 10, 40, 60, 80);
+    }
+
+    void classAction1() {
     }
 }

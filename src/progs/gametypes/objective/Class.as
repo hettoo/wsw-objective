@@ -28,25 +28,31 @@ class Class {
 
     int spawnAmmoPacks;
 
+    Player @player;
+
     Class() {
         spawnAmmoPacks = 2;
+    }
+
+    void register(Player @player) {
+        @this.player = player;
     }
 
     cString @getName() {
         return WTF + "";
     }
 
-    void giveAmmoPack(Player @player) {
+    void giveAmmoPack() {
         player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
         player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
     }
 
-    void giveSpawnAmmoPacks(Player @player) {
+    void giveSpawnAmmoPacks() {
         for (int i = 0; i < spawnAmmoPacks; i++)
-            giveAmmoPack(player);
+            giveAmmoPack();
     }
 
-    void spawn(Player @player) {
+    void spawn() {
         if (gametype.isInstagib()) {
             player.giveAmmo(WEAP_INSTAGUN, 1, 1);
         } else {
@@ -54,17 +60,21 @@ class Class {
                 player.setClass(brandom(0, CLASSES - 1));
 
             player.giveAmmo(WEAP_GUNBLADE, 4, 0);
-            giveSpawnAmmoPacks(player);
+            giveSpawnAmmoPacks();
         }
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
     }
 
-    void addArmor(Player @player, float armor) {
+    void addArmor(float armor) {
         cClient @client = player.getClient();
         client.armor += armor;
         if (client.armor > maxArmor)
             client.armor = maxArmor;
+    }
+
+    void classAction1() {
+        player.centerPrint("This class has no classaction1");
     }
 }
