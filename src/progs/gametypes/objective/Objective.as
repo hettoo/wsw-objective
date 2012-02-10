@@ -216,6 +216,9 @@ class Objective {
     }
 
     void constructed() {
+        players.sound(ent.team, "announcer/bomb/defense/start");
+        players.sound(players.otherTeam(ent.team),
+                "announcer/bomb/offense/start");
         destroy();
         destroyGhost();
         spawnConstructed();
@@ -280,7 +283,17 @@ class Objective {
     }
 
     void exploded(cEntity @bomb) {
-        if (destroyable && nearOtherTeam(bomb))
+        if (spawned && destroyable && nearOtherTeam(bomb))
             destruct();
+    }
+
+    void planted(cEntity @bomb) {
+        if (spawned && destroyable && nearOtherTeam(bomb))
+            players.sound("announcer/bomb/offense/planted");
+    }
+
+    void defused(cEntity @bomb) {
+        if (spawned && destroyable && nearOtherTeam(bomb))
+            players.sound("announcer/bomb/offense/defused");
     }
 }

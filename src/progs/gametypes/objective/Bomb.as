@@ -111,6 +111,7 @@ class Bomb {
         progress = PROGRESS_FINISHED;
         state = BS_PLANTED;
         timer = BOMB_TIME;
+        objectives.planted(ent);
     }
 
     void defuseProgress() {
@@ -118,6 +119,7 @@ class Bomb {
     }
 
     void defused() {
+        objectives.defused(ent);
         remove();
     }
 

@@ -84,7 +84,22 @@ class Players {
         }
     }
 
+    int otherTeam(int team) {
+        if (team == TEAM_ASSAULT)
+            return TEAM_DEFENSE;
+        return TEAM_ASSAULT;
+    }
+
     void say(cString &message) {
         G_PrintMsg(null, message + "\n");
+    }
+
+    void sound(cString &sound) {
+        G_GlobalSound(CHAN_VOICE, G_SoundIndex("sounds/" + sound));
+    }
+
+    void sound(int team, cString &sound) {
+        G_AnnouncerSound(null, G_SoundIndex("sounds/" + sound), team, true,
+                null);
     }
 }

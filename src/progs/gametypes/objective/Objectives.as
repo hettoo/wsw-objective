@@ -101,4 +101,14 @@ class Objectives {
         for (int i = 0; i < size; i++)
             objectives[i].exploded(ent);
     }
+
+    void planted(cEntity @ent) {
+        for (int i = 0; i < size; i++)
+            objectives[i].planted(ent);
+    }
+
+    void defused(cEntity @ent) {
+        for (int i = 0; i < size; i++)
+            objectives[i].defused(ent);
+    }
 }
