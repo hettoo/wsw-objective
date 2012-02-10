@@ -70,7 +70,7 @@ class Objective {
         team = GS_MAX_TEAMS;
 
         constructable = false;
-        constructArmor = 80;
+        constructArmor = 70;
 
         destroyable = false;
 
@@ -135,7 +135,6 @@ class Objective {
         @ent = G_SpawnEntity("objective");
         ent.type = ET_GENERIC;
         ent.modelindex = G_ModelIndex("models/" + model + ".md3");
-        ent.modelindex2 = ent.modelindex;
         ent.team = team;
         ent.setOrigin(origin);
         ent.setSize(mins, maxs);
@@ -163,6 +162,15 @@ class Objective {
         spawned = false;
     }
 
+    void destruct() {
+        destroy();
+
+        players.say(message);
+
+        if (destroyed != "")
+            objectives.find(destroyed).spawn();
+    }
+
     void spawnGhost() {
         if (spawnedGhost || constructing == "")
             return;
@@ -186,16 +194,25 @@ class Objective {
         objectives.find(constructed).spawn();
     }
 
+    bool near(cEntity @other) {
+        return !other.isGhosting()
+            && ent.getOrigin().distance(other.getOrigin()) <= radius;
+    }
+
     bool near(Player @player) {
-        return ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
+        return near(player.getEnt());
     }
 
     bool nearSelfTeam(Player @player) {
         return player.getClient().team == team && near(player);
     }
 
+    bool nearOtherTeam(cEntity @other) {
+        return other.team != team && near(other);
+    }
+
     bool nearOtherTeam(Player @player) {
-        return player.getClient().team != team && near(player);
+        return nearOtherTeam(player.getEnt());
     }
 
     void constructed() {
@@ -216,7 +233,6 @@ class Objective {
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
             if (@player != null && constructable && nearSelfTeam(player)) {
-                player.setHUDStat(STAT_IMAGE_OTHER, constructIcon);
                 if (player.getClassId() == CLASS_ENGINEER) {
                     if (constructProgress >= PROGRESS_FINISHED)
                         constructed();
@@ -228,6 +244,7 @@ class Objective {
                     madeConstructProgress = true;
                     notConstructed = 0;
                 }
+                player.setHUDStat(STAT_IMAGE_OTHER, constructIcon);
             }
         }
 
@@ -260,5 +277,10 @@ class Objective {
             notConstructed();
 
         checkDestroyPlayers();
+    }
+
+    void exploded(cEntity @bomb) {
+        if (destroyable && nearOtherTeam(bomb))
+            destruct();
     }
 }

@@ -21,8 +21,14 @@ class Players {
     Player@[] players;
     int size;
 
+    World @world;
+
     Players() {
         players.resize(maxClients);
+    }
+
+    void register(World @world) {
+        @this.world = world;
     }
 
     Player @get(int id) {
@@ -33,6 +39,10 @@ class Players {
         return get(client.playerNum());
     }
 
+    World @getWorld() {
+        return world;
+    }
+
     int getSize() {
         return size;
     }
@@ -41,7 +51,7 @@ class Players {
         int id = client.playerNum();
         Player @player = get(id);
         if (@player == null) {
-            @players[id] = Player();
+            @players[id] = Player(this);
             if (id >= size)
                 size = id + 1;
             @player = players[id];
@@ -53,7 +63,7 @@ class Players {
         @players[id] = null;
     }
 
-    void remove(cClient @client) {
+    void removeClient(cClient @client) {
         remove(client.playerNum());
     }
 

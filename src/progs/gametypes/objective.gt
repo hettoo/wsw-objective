@@ -16,6 +16,7 @@ legacy_items.as;
 
 objective.as;
 objective/Core.as;
+objective/World.as;
 objective/Players.as;
 objective/Player.as;
 objective/Classes.as;
@@ -24,5 +25,7 @@ objective/Soldier.as;
 objective/Engineer.as;
 objective/Medic.as;
 objective/Sniper.as;
+objective/Bombs.as;
+objective/Bomb.as;
 objective/Objectives.as;
 objective/Objective.as;

@@ -25,7 +25,10 @@ class Player {
     cClient @client;
     cEntity @ent;
 
-    Player() {
+    Players @players;
+
+    Player(Players @players) {
+        @this.players = players;
         classes.register(this);
     }
 
@@ -44,6 +47,10 @@ class Player {
 
     cEntity @getEnt() {
         return ent;
+    }
+
+    Players @getPlayers() {
+        return players;
     }
 
     void showGameMenu() {
@@ -136,6 +143,7 @@ class Player {
 
         classes.addArmor(ARMOR_FRAME_BONUS * frameTime);
         setHUDStat(STAT_PROGRESS_SELF, 0);
+        setHUDStat(STAT_PROGRESS_OTHER, 0);
         setHUDStat(STAT_IMAGE_OTHER, 0);
         GENERIC_ChargeGunblade(client);
     }

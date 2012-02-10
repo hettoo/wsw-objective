@@ -28,12 +28,11 @@ const int TEAM_DEFENSE = TEAM_BETA;
 
 const int PROGRESS_FINISHED = 100;
 
-const cString WTF = "???";
+cString WTF = "???";
 const int UNKNOWN = -1;
 
 class Core {
-    Players players;
-    Objectives objectives;
+    World world;
 
     cString configFile;
 
@@ -42,11 +41,7 @@ class Core {
     }
 
     void spawnGametype() {
-        objectives.register(players);
-        objectives.analyze();
-        objectives.parse("mapscripts/" + cVar("mapname", "", 0).getString()
-                + ".obj");
-        objectives.initialSpawn();
+        world.spawn();
     }
 
     void setGametypeInfo() {
@@ -171,13 +166,13 @@ class Core {
             GENERIC_CheatVarResponse(client, cmd, args, argc);
             return true;
         } else if (cmd == "class") {
-            players.get(client).setClass(args);
+            world.getPlayers().get(client).setClass(args);
             return true;
         } else if (cmd == "gamemenu") {
-            players.get(client).showGameMenu();
+            world.getPlayers().get(client).showGameMenu();
             return true;
         } else if (cmd == "classaction1") {
-            players.get(client).classAction1();
+            world.getPlayers().get(client).classAction1();
             return true;
         }
         return false;
@@ -190,12 +185,12 @@ class Core {
 
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
         if (oldTeam == TEAM_SPECTATOR && newTeam != TEAM_SPECTATOR)
-            players.newPlayer(ent.client);
+            world.newPlayer(ent.client);
         else if (oldTeam != TEAM_SPECTATOR && newTeam == TEAM_SPECTATOR)
-            players.newSpectator(ent.client);
+            world.newSpectator(ent.client);
 
         if (newTeam != TEAM_SPECTATOR)
-            players.respawnPlayer(ent.client);
+            world.respawnPlayer(ent.client);
     }
 
     bool updateBotStatus(cEntity @self) {
@@ -204,9 +199,9 @@ class Core {
 
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
         if (scoreEvent == "userinfochanged")
-            players.initClient(client);
+            world.initClient(client);
         else if (scoreEvent == "disconnect")
-            players.remove(client);
+            world.removeClient(client);
     }
 
     void checkMatchState() {
@@ -223,8 +218,7 @@ class Core {
 
         GENERIC_Think();
 
-        players.think();
-        objectives.think();
+        world.think();
     }
 
     void setWaveSpawn(int respawnTime) {

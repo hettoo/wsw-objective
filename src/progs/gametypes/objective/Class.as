@@ -39,7 +39,7 @@ class Class {
     }
 
     cString @getName() {
-        return WTF + "";
+        return WTF;
     }
 
     void giveAmmoPack() {

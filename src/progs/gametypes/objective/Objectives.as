@@ -96,4 +96,9 @@ class Objectives {
         for (int i = 0; i < size; i++)
             objectives[i].think();
     }
+
+    void exploded(cEntity @ent) {
+        for (int i = 0; i < size; i++)
+            objectives[i].exploded(ent);
+    }
 }
