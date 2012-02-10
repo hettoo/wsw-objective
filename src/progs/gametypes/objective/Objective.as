@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const float CONSTRUCT_SPEED = 0.02f;
+const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 
 class Objective {
@@ -64,7 +64,7 @@ class Objective {
         team = GS_MAX_TEAMS;
 
         constructable = false;
-        constructArmor = 70;
+        constructArmor = 80;
 
         destroyable = false;
 
@@ -206,7 +206,7 @@ class Objective {
             if (@player != null && constructable && canInteractWith(player)) {
                 if (constructProgress >= PROGRESS_FINISHED)
                     constructed();
-                else if (player.takeArmor(CONSTRUCT_SPEED
+                else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
                             / PROGRESS_FINISHED * constructArmor))
                     constructProgress();
 

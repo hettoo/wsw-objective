@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const float ARMOR_FRAME_BONUS = 0.004f;
+const float ARMOR_FRAME_BONUS = 0.0015f;
 
 class Player {
     int currentClass;
