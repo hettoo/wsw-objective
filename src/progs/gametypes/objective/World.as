@@ -36,7 +36,7 @@ class World {
         objectives.register(players);
         objectives.analyze();
         objectives.parse("mapscripts/" + cVar("mapname", "", 0).getString()
-                + ".obj");
+                + ".cfg");
         objectives.initialSpawn();
     }
 

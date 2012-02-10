@@ -29,8 +29,10 @@ class Objective {
     int destroyIcon;
 
     bool start;
+    bool solid;
     cString model;
     cVec3 origin;
+    cVec3 angles;
     cVec3 mins;
     cVec3 maxs;
     int moveType;
@@ -63,8 +65,10 @@ class Objective {
         constructIcon = G_ImageIndex("gfx/hud/gr8/crystal_wsw");
         destroyIcon = G_ImageIndex("gfx/bomb/carriericon");
 
+        solid = true;
         model = "";
         origin = ent.getOrigin();
+        angles = ent.getAngles();
         moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
@@ -94,6 +98,8 @@ class Objective {
     void setAttribute(cString &name, cString &value) {
         if (name == "start") {
             start = value.toInt() == 1;
+        } else if (name == "solid") {
+            solid = value.toInt() == 1;
         } else if (name == "model") {
             model = value;
         } else if (name == "moveType") {
@@ -137,14 +143,19 @@ class Objective {
         ent.modelindex = G_ModelIndex("models/" + model + ".md3");
         ent.team = team;
         ent.setOrigin(origin);
+        ent.setAngles(angles);
         ent.setSize(mins, maxs);
-        ent.solid = SOLID_YES;
+        ent.solid = solid ? SOLID_YES : SOLID_NOT;
         ent.clipMask = MASK_PLAYERSOLID;
         ent.moveType = moveType;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
 
         spawned = true;
+    }
+
+    bool isDestroyable() {
+        return destroyable;
     }
 
     void initialSpawn() {
@@ -216,9 +227,11 @@ class Objective {
     }
 
     void constructed() {
-        players.sound(ent.team, "announcer/bomb/defense/start");
-        players.sound(players.otherTeam(ent.team),
-                "announcer/bomb/offense/start");
+        if (constructed != "" && objectives.find(constructed).isDestroyable()) {
+            players.sound(ent.team, "announcer/bomb/defense/start");
+            players.sound(players.otherTeam(ent.team),
+                    "announcer/bomb/offense/start");
+        }
         destroy();
         destroyGhost();
         spawnConstructed();
