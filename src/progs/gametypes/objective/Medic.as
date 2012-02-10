@@ -17,13 +17,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const int HEALTH_ARMOR = 15;
+
 class Medic : Class {
     Medic() {
         spawnHealth = 80;
-        spawnArmor = 0;
+        spawnArmor = 50;
 
         maxHealth = 120;
-        maxArmor = 100;
+        maxArmor = 90;
     }
 
     cString @getName() {
@@ -35,5 +37,10 @@ class Medic : Class {
 
         player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
         player.giveAmmo(WEAP_LASERGUN, 30, 80, 20, 60);
+    }
+
+    void classAction1() {
+        if (player.takeArmor(HEALTH_ARMOR))
+            player.getEnt().dropItem(G_GetItemByName("25 Health").tag);
     }
 }
