@@ -26,6 +26,7 @@ class Objective {
     cEntity @ent;
 
     int constructIcon;
+    int destroyIcon;
 
     bool start;
     cString model;
@@ -60,6 +61,7 @@ class Objective {
         spawned = false;
 
         constructIcon = G_ImageIndex("gfx/hud/gr8/crystal_wsw");
+        destroyIcon = G_ImageIndex("gfx/bomb/carriericon");
 
         model = "";
         origin = ent.getOrigin();
@@ -184,9 +186,16 @@ class Objective {
         objectives.find(constructed).spawn();
     }
 
-    bool canInteractWith(Player @player) {
-        return player.getClient().team == team
-            && ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
+    bool near(Player @player) {
+        return ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
+    }
+
+    bool nearSelfTeam(Player @player) {
+        return player.getClient().team == team && near(player);
+    }
+
+    bool nearOtherTeam(Player @player) {
+        return player.getClient().team != team && near(player);
     }
 
     void constructed() {
@@ -202,11 +211,11 @@ class Objective {
         spawnGhost();
     }
 
-    bool construct() {
+    bool checkConstructPlayers() {
         bool madeConstructProgress = false;
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
-            if (@player != null && constructable && canInteractWith(player)) {
+            if (@player != null && constructable && nearSelfTeam(player)) {
                 player.setHUDStat(STAT_IMAGE_OTHER, constructIcon);
                 if (player.getClassId() == CLASS_ENGINEER) {
                     if (constructProgress >= PROGRESS_FINISHED)
@@ -225,6 +234,14 @@ class Objective {
         return madeConstructProgress;
     }
 
+    void checkDestroyPlayers() {
+        for (int i = 0; i < players.getSize(); i++) {
+            Player @player = players.get(i);
+            if (@player != null && destroyable && nearOtherTeam(player))
+                player.setHUDStat(STAT_IMAGE_OTHER, destroyIcon);
+        }
+    }
+
     void notConstructed() {
         notConstructed += 0.001f * frameTime;
         if (notConstructed > CONSTRUCT_WAIT_LIMIT) {
@@ -238,9 +255,10 @@ class Objective {
         if (!spawned || (!constructable && !destroyable))
             return;
 
-        bool madeConstructProgress = construct();
-
+        bool madeConstructProgress = checkConstructPlayers();
         if (constructable && constructProgress > 0 && !madeConstructProgress)
             notConstructed();
+
+        checkDestroyPlayers();
     }
 }
