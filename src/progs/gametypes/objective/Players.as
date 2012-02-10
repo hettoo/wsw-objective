@@ -73,4 +73,8 @@ class Players {
                 players[i].think();
         }
     }
+
+    void say(cString &message) {
+        G_PrintMsg(null, message + "\n");
+    }
 }

@@ -78,6 +78,10 @@ class Player {
         setClass(classes.find(newClass));
     }
 
+    void setHUDStat(int stat, int value) {
+        client.setHUDStat(stat, value);
+    }
+
     bool takeArmor(float armor) {
         client.armor -= armor;
         if (client.armor < 0) {
@@ -130,9 +134,8 @@ class Player {
             return;
 
         classes.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
-
-        client.setHUDStat(STAT_PROGRESS_SELF, 0);
-
+        setHUDStat(STAT_PROGRESS_SELF, 0);
+        setHUDStat(STAT_IMAGE_OTHER, 0);
         GENERIC_ChargeGunblade(client);
     }
 }

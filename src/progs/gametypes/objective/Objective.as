@@ -25,6 +25,8 @@ class Objective {
     bool spawned;
     cEntity @ent;
 
+    int constructIcon;
+
     bool start;
     cString model;
     cVec3 origin;
@@ -56,6 +58,8 @@ class Objective {
         id = ent.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
+
+        constructIcon = G_ImageIndex("gfx/hud/gr8/crystal_wsw");
 
         model = "";
         origin = ent.getOrigin();
@@ -182,7 +186,6 @@ class Objective {
 
     bool canInteractWith(Player @player) {
         return player.getClient().team == team
-            && player.getClassId() == CLASS_ENGINEER
             && ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
     }
 
@@ -191,7 +194,7 @@ class Objective {
         destroyGhost();
         spawnConstructed();
         constructProgress = 0;
-        G_PrintMsg(null, message + "\n");
+        players.say(message);
     }
 
     void constructProgress() {
@@ -204,16 +207,18 @@ class Objective {
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
             if (@player != null && constructable && canInteractWith(player)) {
-                if (constructProgress >= PROGRESS_FINISHED)
-                    constructed();
-                else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
-                            / PROGRESS_FINISHED * constructArmor))
-                    constructProgress();
+                player.setHUDStat(STAT_IMAGE_OTHER, constructIcon);
+                if (player.getClassId() == CLASS_ENGINEER) {
+                    if (constructProgress >= PROGRESS_FINISHED)
+                        constructed();
+                    else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
+                                / PROGRESS_FINISHED * constructArmor))
+                        constructProgress();
 
-                player.getClient().setHUDStat(STAT_PROGRESS_SELF,
-                        constructProgress);
-                madeConstructProgress = true;
-                notConstructed = 0;
+                    player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
+                    madeConstructProgress = true;
+                    notConstructed = 0;
+                }
             }
         }
 

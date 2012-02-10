@@ -53,7 +53,7 @@ class Class {
             if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
                 player.setClass(brandom(0, CLASSES - 1));
 
-            player.giveAmmo(WEAP_GUNBLADE, 0, 0);
+            player.giveAmmo(WEAP_GUNBLADE, 4, 0);
             giveSpawnAmmoPacks(player);
         }
 
