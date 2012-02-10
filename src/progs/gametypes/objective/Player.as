@@ -132,5 +132,7 @@ class Player {
         classes.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
 
         client.setHUDStat(STAT_PROGRESS_SELF, 0);
+
+        GENERIC_ChargeGunblade(client);
     }
 }
