@@ -39,6 +39,7 @@ class Bomb {
     int state;
     float progress;
     float timer;
+    float notArmed;
 
     Players @players;
     Objectives @objectives;
@@ -50,6 +51,7 @@ class Bomb {
         team = owner.team;
         state = BS_PLACED;
         progress = 0;
+        notArmed = 0;
 
         @this.players = players;
         @this.objectives = objectives;
@@ -120,6 +122,7 @@ class Bomb {
     }
 
     void thinkPlaced() {
+        bool madeProgress = false;
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
             if (@player != null && nearSelfTeam(player)) {
@@ -128,9 +131,16 @@ class Bomb {
                         planted();
                     else 
                         plantProgress();
+                    notArmed = 0;
+                    madeProgress = true;
                 }
                 player.setHUDStat(STAT_PROGRESS_SELF, progress);
             }
+        }
+        if (!madeProgress) {
+            notArmed += 0.001 * frameTime;
+            if (notArmed > BOMB_WAIT_LIMIT)
+                remove();
         }
     }
 
