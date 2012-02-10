@@ -19,14 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const float BOT_CLASS_CHANGE_CHANCE = 0.2f;
 
-enum Classes {
-    CLASS_SOLDIER,
-    CLASS_ENGINEER,
-    CLASS_MEDIC,
-    CLASS_SNIPER,
-    CLASSES
-}
-
 class Class {
     int spawnHealth;
     int spawnArmor;
@@ -38,6 +30,10 @@ class Class {
 
     Class() {
         spawnAmmoPacks = 2;
+    }
+
+    cString @getName() {
+        return WTF + "";
     }
 
     void giveAmmoPack(Player @player) {

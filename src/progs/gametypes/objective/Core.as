@@ -29,6 +29,7 @@ const int TEAM_DEFENSE = TEAM_BETA;
 const int PROGRESS_FINISHED = 100;
 
 const cString WTF = "???";
+const int UNKNOWN = -1;
 
 class Core {
     Players players;

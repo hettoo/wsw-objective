@@ -182,7 +182,7 @@ class Objective {
 
     bool canInteractWith(Player @player) {
         return player.getClient().team == team
-            && player.getClass() == CLASS_ENGINEER
+            && player.getClassId() == CLASS_ENGINEER
             && ent.getOrigin().distance(player.getEnt().getOrigin()) <= radius;
     }
 

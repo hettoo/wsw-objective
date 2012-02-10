@@ -20,20 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const float ARMOR_FRAME_BONUS = 0.0015f;
 
 class Player {
-    int currentClass;
-    int nextClass;
+    Classes classes;
 
     cClient @client;
     cEntity @ent;
 
-    Soldier soldier;
-    Medic medic;
-    Engineer engineer;
-    Sniper sniper;
-
     Player() {
-        currentClass = CLASS_SOLDIER;
-        nextClass = CLASSES;
     }
 
     void init(cClient @newClient) {
@@ -54,17 +46,7 @@ class Player {
     }
 
     void showGameMenu() {
-        cString menu = "mecu \"Select Class\"";
-        cString name;
-        name = soldier.getName();
-        menu += name + " \"class " + name + "\"";
-        name = medic.getName();
-        menu += name + " \"class " + name + "\"";
-        name = engineer.getName();
-        menu += name + " \"class " + name + "\"";
-        name = sniper.getName();
-        menu += name + " \"class " + name + "\"";
-        client.execGameCommand(menu);
+        client.execGameCommand(classes.createMenu());
     }
 
     void setHealth(int health) {
@@ -75,25 +57,8 @@ class Player {
         client.armor = armor;
     }
 
-    /*
-     * Note: doesn't belong here...
-     */
-    cString @getClassName(int classId) {
-        switch (classId) {
-            case CLASS_SOLDIER:
-                return soldier.getName();
-            case CLASS_MEDIC:
-                return medic.getName();
-            case CLASS_ENGINEER:
-                return engineer.getName();
-            case CLASS_SNIPER:
-                return sniper.getName();
-        }
-        return WTF + "";
-    }
-
     cString @getClassName() {
-        return getClassName(currentClass);
+        return classes.getName();
     }
 
     void centerPrint(cString &msg) {
@@ -101,23 +66,16 @@ class Player {
     }
 
     void setClass(int newClass) {
-        nextClass = newClass;
-        centerPrint("You will respawn as a " + getClassName(nextClass));
+        classes.setNext(newClass);
+        centerPrint("You will respawn as a " + classes.getNextName());
     }
 
-    int getClass() {
-        return currentClass;
+    int getClassId() {
+        return classes.getId();
     }
 
     void setClass(cString &newClass) {
-        if (newClass == soldier.getName())
-            setClass(CLASS_SOLDIER);
-        else if (newClass == medic.getName())
-            setClass(CLASS_MEDIC);
-        else if (newClass == engineer.getName())
-            setClass(CLASS_ENGINEER);
-        else if (newClass == sniper.getName())
-            setClass(CLASS_SNIPER);
+        setClass(classes.find(newClass));
     }
 
     bool takeArmor(float armor) {
@@ -160,29 +118,9 @@ class Player {
         giveAmmo(weapon, strongAmmo, weakAmmo);
     }
 
-    void applyNextClass() {
-        if (nextClass < CLASSES) {
-            currentClass = nextClass;
-            nextClass = CLASSES;
-        }
-    }
-
     void spawn() {
-        applyNextClass();
-        switch (currentClass) {
-            case CLASS_SOLDIER:
-                soldier.spawn(this);
-                break;
-            case CLASS_MEDIC:
-                medic.spawn(this);
-                break;
-            case CLASS_ENGINEER:
-                engineer.spawn(this);
-                break;
-            case CLASS_SNIPER:
-                sniper.spawn(this);
-                break;
-        }
+        classes.applyNext();
+        classes.spawn(this);
         client.selectWeapon(-1);
         ent.respawnEffect();
     }
@@ -191,21 +129,7 @@ class Player {
         if (client.team == TEAM_SPECTATOR)
             return;
 
-        float armor = frameTime * ARMOR_FRAME_BONUS;
-        switch (currentClass) {
-            case CLASS_SOLDIER:
-                soldier.addArmor(this, armor);
-                break;
-            case CLASS_MEDIC:
-                medic.addArmor(this, armor);
-                break;
-            case CLASS_ENGINEER:
-                engineer.addArmor(this, armor);
-                break;
-            case CLASS_SNIPER:
-                sniper.addArmor(this, armor);
-                break;
-        }
+        classes.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
 
         client.setHUDStat(STAT_PROGRESS_SELF, 0);
     }

@@ -18,6 +18,7 @@ objective.as;
 objective/Core.as;
 objective/Players.as;
 objective/Player.as;
+objective/Classes.as;
 objective/Class.as;
 objective/Soldier.as;
 objective/Engineer.as;
