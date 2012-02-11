@@ -24,6 +24,8 @@ class Objectives {
     int size;
     int capacity;
 
+    cString goal;
+
     Players @players;
 
     Objectives() {
@@ -65,6 +67,30 @@ class Objectives {
         return null;
     }
 
+    void goalTest() {
+        if (goal == "")
+            return;
+
+        Objective @objective;
+        bool inverse = false;
+        if (goal.substr(0, 1) == "~") {
+            @objective = find(goal.substr(1, goal.len()));
+            inverse = true;
+        } else {
+            @objective = find(goal);
+        }
+        if (objective.isSpawned() ^^ inverse
+                && match.getState() == MATCH_STATE_PLAYTIME) {
+            G_GetTeam(TEAM_ASSAULT).stats.addScore(1);
+            match.launchState(match.getState() + 1);
+        }
+    }
+
+    void setAttribute(cString &fieldname, cString &value) {
+        if (fieldname == "goal")
+            goal = value;
+    }
+
     void parse(cString &filename) {
         cString file = G_LoadFile(filename);
         Objective @objective;
@@ -80,7 +106,10 @@ class Objectives {
                 if (fieldname == "")
                     stop = true;
             } else {
-                objective.setAttribute(fieldname, token);
+                if (@objective == null)
+                    setAttribute(fieldname, token);
+                else
+                    objective.setAttribute(fieldname, token);
                 fieldname = "";
             }
             i++;
@@ -100,6 +129,7 @@ class Objectives {
     void exploded(cEntity @ent) {
         for (int i = 0; i < size; i++)
             objectives[i].exploded(ent);
+        goalTest();
     }
 
     void planted(cEntity @ent) {

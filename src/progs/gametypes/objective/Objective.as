@@ -203,6 +203,11 @@ class Objective {
             return;
 
         objectives.find(constructed).spawn();
+        objectives.goalTest();
+    }
+
+    bool isSpawned() {
+        return spawned;
     }
 
     bool near(cEntity @other) {
