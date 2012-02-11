@@ -19,11 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class Soldier : Class {
     Soldier() {
-        spawnHealth = 80;
-        spawnArmor = 80;
+        spawnHealth = 100;
+        spawnArmor = 30;
 
         maxHealth = 100;
-        maxArmor = spawnArmor;
+        maxArmor = 80;
     }
 
     cString @getName() {

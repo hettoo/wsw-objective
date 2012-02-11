@@ -54,7 +54,7 @@ class Objective {
         moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
-        radius = 150;
+        radius = 125;
 
         target.unlinkEntity();
         target.freeEntity();

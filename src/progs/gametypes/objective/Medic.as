@@ -21,7 +21,7 @@ const int HEALTH_ARMOR = 15;
 
 class Medic : Class {
     Medic() {
-        spawnHealth = 80;
+        spawnHealth = 100;
         spawnArmor = 50;
 
         maxHealth = 120;

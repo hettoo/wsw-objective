@@ -22,7 +22,7 @@ const int BOMB_ARMOR = 70;
 
 class Engineer : Class {
     Engineer() {
-        spawnHealth = 80;
+        spawnHealth = 100;
         spawnArmor = 40;
 
         maxHealth = 100;

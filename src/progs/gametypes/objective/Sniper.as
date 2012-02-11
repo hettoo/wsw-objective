@@ -22,7 +22,7 @@ const int MAX_ARTILLERY_DISTANCE = 3000;
 
 class Sniper : Class {
     Sniper() {
-        spawnHealth = 80;
+        spawnHealth = 100;
         spawnArmor = 20;
 
         maxHealth = 100;
