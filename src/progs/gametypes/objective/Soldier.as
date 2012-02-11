@@ -30,6 +30,10 @@ class Soldier : Class {
         return "Soldier";
     }
 
+    cString @getSimpleName() {
+        return "soldier";
+    }
+
     void giveAmmoPack() {
         Class::giveAmmoPack();
 

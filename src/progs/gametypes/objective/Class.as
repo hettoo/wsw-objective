@@ -28,14 +28,23 @@ class Class {
 
     int spawnAmmoPacks;
 
+    int classIcon;
+
     Player @player;
 
     Class() {
         spawnAmmoPacks = 2;
+
+        classIcon = G_ImageIndex("gfx/hud/icons/objective/classes/"
+                + getSimpleName());
     }
 
     void register(Player @player) {
         @this.player = player;
+    }
+
+    cString @getSimpleName() {
+        return "";
     }
 
     cString @getName() {
@@ -65,6 +74,8 @@ class Class {
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
+        player.setHUDStat(player.getTeam() == TEAM_ALPHA
+                ? STAT_IMAGE_ALPHA : STAT_IMAGE_BETA, classIcon);
     }
 
     void addArmor(float armor) {
@@ -76,5 +87,8 @@ class Class {
 
     void classAction1() {
         player.centerPrint("This class has no classaction1");
+    }
+
+    void think() {
     }
 }

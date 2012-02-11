@@ -33,6 +33,10 @@ class Engineer : Class {
         return "Engineer";
     }
 
+    cString @getSimpleName() {
+        return "engineer";
+    }
+
     void giveAmmoPack() {
         Class::giveAmmoPack();
 

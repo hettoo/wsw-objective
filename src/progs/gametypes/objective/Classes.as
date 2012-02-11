@@ -50,6 +50,10 @@ class Classes {
         return currentClass;
     }
 
+    Class @getClass() {
+        return classes[currentClass];
+    }
+
     bool setNext(int newClass) {
         if (newClass >= 0 && newClass < CLASSES) {
             nextClass = newClass;
@@ -98,5 +102,10 @@ class Classes {
 
     void classAction1() {
         classes[currentClass].classAction1();
+    }
+
+    void think() {
+        addArmor(ARMOR_FRAME_BONUS * frameTime);
+        getClass().think();
     }
 }

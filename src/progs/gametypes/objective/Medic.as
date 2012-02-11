@@ -32,6 +32,10 @@ class Medic : Class {
         return "Medic";
     }
 
+    cString @getSimpleName() {
+        return "medic";
+    }
+
     void giveAmmoPack() {
         Class::giveAmmoPack();
 

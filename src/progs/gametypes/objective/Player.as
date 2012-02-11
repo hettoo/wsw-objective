@@ -69,6 +69,10 @@ class Player {
         return classes.getName();
     }
 
+    int getTeam() {
+        return client.team;
+    }
+
     void centerPrint(cString &msg) {
         G_CenterPrintMsg(ent, msg);
     }
@@ -141,10 +145,10 @@ class Player {
         if (client.team == TEAM_SPECTATOR)
             return;
 
-        classes.addArmor(ARMOR_FRAME_BONUS * frameTime);
         setHUDStat(STAT_PROGRESS_SELF, 0);
         setHUDStat(STAT_PROGRESS_OTHER, 0);
         setHUDStat(STAT_IMAGE_OTHER, 0);
+        classes.think();
         GENERIC_ChargeGunblade(client);
     }
 
