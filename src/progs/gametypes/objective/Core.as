@@ -38,8 +38,14 @@ class Core {
 
     cString configFile;
 
+    int noIcon;
+    int yesIcon;
+
     Core() {
         configFile = "configs/server/gametypes/" + gametype.getName() + ".cfg";
+
+        noIcon = G_ImageIndex("gfx/hud/icons/vsay/no");
+        yesIcon = G_ImageIndex("gfx/hud/icons/vsay/yes");
     }
 
     void spawnGametype() {
@@ -271,39 +277,49 @@ class Core {
         return true;
     }
 
-    cString @scoreboardMessage(int maxLen) {
-        cString msg = "";
+    cString @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
+        cEntity @ent = team.ent(entId);
+        cClient @client = ent.client;
+        Player @player = world.getPlayers().get(client.playerNum());
+        int readyIcon = noIcon;
 
-        for (int i = TEAM_ALPHA; i < GS_MAX_TEAMS; i++) {
-            cTeam @team = @G_GetTeam(i);
+        if (client.isReady())
+            readyIcon = yesIcon;
 
-            cString entry = "&t " + i + " " + team.stats.score + " " + team.ping
-                + " ";
-            if (msg.len() + entry.len() < maxLen)
-                msg += entry;
+        int playerId = (ent.isGhosting()
+                && (match.getState() == MATCH_STATE_PLAYTIME))
+            ? -(ent.playerNum() + 1) : ent.playerNum();
 
-            for (int j = 0; @team.ent(j) != null; j++) {
-                cEntity @ent = team.ent(j);
-                int classIcon = 0;
-                int readyIcon = 0;
+        cString entry = "&p " + playerId + " " + client.getClanName() + " "
+            + client.stats.score + " " + client.ping + " "
+            + player.getClassIcon() + " " + readyIcon + " ";
 
-                //if (ent.client.isReady())
-                //    readyIcon = prcYesIcon;
+        if (entry.len() <= maxLen)
+            return entry;
+        return "";
+    }
 
-                int playerID = (ent.isGhosting()
-                        && (match.getState() == MATCH_STATE_PLAYTIME))
-                    ? -(ent.playerNum() + 1) : ent.playerNum();
+    cString @scoreboardTeam(int teamId, int maxLen) {
+            cTeam @team = @G_GetTeam(teamId);
 
-                entry = "&p " + playerID + " " + ent.client.getClanName() + " "
-                    + ent.client.stats.score + " " + ent.client.ping + " "
-                    + classIcon + " " + readyIcon + " ";
+            cString message = "";
+            cString entry = "&t " + teamId + " " + team.stats.score + " "
+                + team.ping + " ";
 
-                if (msg.len() + entry.len() < maxLen)
-                    msg += entry;
+            if (entry.len() <= maxLen) {
+                message += entry;
+                for (int j = 0; @team.ent(j) != null; j++)
+                    message +=scoreboardPlayer(team, j, maxLen - message.len());
             }
-        }
 
-        return msg;
+            return message;
+    }
+
+    cString @scoreboardMessage(int maxLen) {
+        cString message = "";
+        message += scoreboardTeam(TEAM_ASSAULT, maxLen - message.len());
+        message += scoreboardTeam(TEAM_DEFENSE, maxLen - message.len());
+        return message;
     }
 
     void shutdown() {

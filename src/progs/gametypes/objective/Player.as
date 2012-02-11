@@ -53,6 +53,10 @@ class Player {
         return players;
     }
 
+    int getClassIcon() {
+        return classes.getIcon();
+    }
+
     void showGameMenu() {
         client.execGameCommand(classes.createMenu());
     }

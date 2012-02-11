@@ -51,6 +51,10 @@ class Class {
         return WTF;
     }
 
+    int getIcon() {
+        return classIcon;
+    }
+
     void giveAmmoPack() {
         player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
         player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
