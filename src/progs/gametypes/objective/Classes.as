@@ -58,6 +58,10 @@ class Classes {
         return classes[currentClass].getIcon();
     }
 
+    int getIcon(int classId) {
+        return classes[classId].getIcon();
+    }
+
     bool setNext(int newClass) {
         if (newClass >= 0 && newClass < CLASSES) {
             nextClass = newClass;

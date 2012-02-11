@@ -288,7 +288,8 @@ class Objective {
                     madeConstructProgress = true;
                     notConstructed = 0;
                 }
-                player.setHUDStat(STAT_IMAGE_OTHER, constructIcon);
+                player.setHUDStat(STAT_IMAGE_OTHER,
+                        player.getClassIcon(CLASS_ENGINEER));
             }
         }
 

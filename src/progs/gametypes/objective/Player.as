@@ -53,6 +53,10 @@ class Player {
         return players;
     }
 
+    int getClassIcon(int classId) {
+        return classes.getIcon(classId);
+    }
+
     int getClassIcon() {
         return classes.getIcon();
     }
