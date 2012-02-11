@@ -239,13 +239,11 @@ class Core {
                 gametype.pickableItemsMask = gametype.spawnableItemsMask;
                 gametype.dropableItemsMask = gametype.spawnableItemsMask;
                 GENERIC_SetUpWarmup();
-                CreateSpawnIndicators("info_player_deathmatch", TEAM_BETA);
                 break;
             case MATCH_STATE_COUNTDOWN:
                 gametype.pickableItemsMask = 0;
                 gametype.dropableItemsMask = 0;
                 GENERIC_SetUpCountdown();
-                DeleteSpawnIndicators();
                 break;
             case MATCH_STATE_PLAYTIME:
                 gametype.pickableItemsMask = gametype.spawnableItemsMask;

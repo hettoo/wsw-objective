@@ -145,18 +145,20 @@ class Objective {
         if (spawned)
             return;
 
-        @ent = G_SpawnEntity("objective");
-        ent.type = ET_GENERIC;
-        ent.modelindex = G_ModelIndex("models/" + model + ".md3");
-        ent.team = team;
-        ent.setOrigin(origin);
-        ent.setAngles(angles);
-        ent.setSize(mins, maxs);
-        ent.solid = solid ? SOLID_YES : SOLID_NOT;
-        ent.clipMask = MASK_PLAYERSOLID;
-        ent.moveType = moveType;
-        ent.svflags &= ~SVF_NOCLIENT;
-        ent.linkEntity();
+        if (model != "") {
+            @ent = G_SpawnEntity("objective");
+            ent.type = ET_GENERIC;
+            ent.modelindex = G_ModelIndex("models/" + model + ".md3");
+            ent.team = team;
+            ent.setOrigin(origin);
+            ent.setAngles(angles);
+            ent.setSize(mins, maxs);
+            ent.solid = solid ? SOLID_YES : SOLID_NOT;
+            ent.clipMask = MASK_PLAYERSOLID;
+            ent.moveType = moveType;
+            ent.svflags &= ~SVF_NOCLIENT;
+            ent.linkEntity();
+        }
 
         spawned = true;
     }
@@ -174,9 +176,11 @@ class Objective {
         if (!spawned)
             return;
 
-        ent.unlinkEntity();
-        ent.freeEntity();
-        @ent = null;
+        if (@ent != null) {
+            ent.unlinkEntity();
+            ent.freeEntity();
+            @ent = null;
+        }
         spawned = false;
     }
 
@@ -231,7 +235,7 @@ class Objective {
 
     bool near(cEntity @other) {
         return !other.isGhosting()
-            && ent.getOrigin().distance(other.getOrigin()) <= radius;
+            && origin.distance(other.getOrigin()) <= radius;
     }
 
     bool near(Player @player) {
