@@ -31,4 +31,7 @@ objective/Artilleries.as;
 objective/Artillery.as;
 objective/Objectives.as;
 objective/Objective.as;
+objective/Constructable.as;
+objective/Destroyable.as;
+objective/Spawnable.as;
 objective/SpawnPoints.as;

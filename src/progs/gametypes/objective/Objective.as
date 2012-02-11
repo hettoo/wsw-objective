@@ -17,17 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
-const float CONSTRUCT_SPEED = 0.012f;
-const float CONSTRUCT_WAIT_LIMIT = 15.0f;
-
 class Objective {
     cString id;
-    bool spawned;
-    cEntity @ent;
 
-    int constructIcon;
-    int destroyIcon;
+    cEntity @ent;
+    bool spawned;
 
     bool start;
     bool solid;
@@ -38,25 +32,12 @@ class Objective {
     cVec3 maxs;
     int moveType;
     int team;
-
-    bool constructable;
-    float constructArmor;
-    cString constructing;
-    cString constructed;
-
-    bool destroyable;
-    cString destroyed;
-
-    bool spawnLocation;
-    SpawnPoints @spawnPoints;
-
     float radius;
-
     cString message;
 
-    float constructProgress;
-    float notConstructed;
-    bool spawnedGhost;
+    Constructable constructable;
+    Destroyable destroyable;
+    Spawnable spawnable;
 
     Objectives @objectives;
     Players @players;
@@ -66,9 +47,6 @@ class Objective {
         id = id.substr(1, id.len());
         spawned = false;
 
-        constructIcon = G_ImageIndex("gfx/hud/gr8/crystal_wsw");
-        destroyIcon = G_ImageIndex("gfx/bomb/carriericon");
-
         solid = true;
         model = "";
         origin = target.getOrigin();
@@ -76,27 +54,29 @@ class Objective {
         moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
-
-        constructable = false;
-        constructArmor = DEFAULT_CONSTRUCT_ARMOR;
-
-        destroyable = false;
-
         radius = 150;
 
         target.unlinkEntity();
         target.freeEntity();
 
-        constructProgress = 0;
-        notConstructed = 0;
-        spawnedGhost = false;
-
         @this.objectives = objectives;
         @this.players = players;
+
+        constructable.register(this);
+        destroyable.register(this);
+        spawnable.register(this);
     }
 
     cString @getId() {
         return id;
+    }
+
+    Objectives @getObjectives() {
+        return objectives;
+    }
+
+    Players @getPlayers() {
+        return players;
     }
 
     void setAttribute(cString &name, cString &value) {
@@ -119,26 +99,13 @@ class Objective {
                 team = TEAM_ASSAULT;
             else if (value == "DEFENSE")
                 team = TEAM_DEFENSE;
-        } else if (name == "constructable") {
-            constructable = value.toInt() == 1;
-        } else if (name == "constructArmor") {
-            constructArmor = value.toInt();
-        } else if (name == "constructing") {
-            constructing = value;
-        } else if (name == "constructed") {
-            constructed = value;
-        } else if (name == "destroyable") {
-            destroyable = value.toInt() == 1;
-        } else if (name == "destroyed") {
-            destroyed = value;
-        } else if (name == "spawnLocation") {
-            spawnLocation = value.toInt() == 1;
-            @spawnPoints = SpawnPoints();
-            spawnPoints.analyze(id);
         } else if (name == "radius") {
             radius = value.toInt();
         } else if (name == "message") {
             message = value;
+        } else if (constructable.setAttribute(name, value)) {
+        } else if (destroyable.setAttribute(name, value)) {
+        } else if (spawnable.setAttribute(name, value)) {
         }
     }
 
@@ -165,7 +132,7 @@ class Objective {
     }
 
     bool isDestroyable() {
-        return destroyable;
+        return destroyable.isActive();
     }
 
     void initialSpawn() {
@@ -185,47 +152,8 @@ class Objective {
         spawned = false;
     }
 
-    void destruct() {
-        destroy();
-
-        players.say(message);
-
-        if (destroyed != "")
-            objectives.find(destroyed).spawn();
-    }
-
-    void spawnGhost() {
-        if (spawnedGhost || constructing == "")
-            return;
-
-        objectives.find(constructing).spawn();
-        spawnedGhost = true;
-    }
-
-    void destroyGhost() {
-        if (!spawnedGhost)
-            return;
-
-        objectives.find(constructing).destroy();
-        spawnedGhost = false;
-    }
-
-    void spawnConstructed() {
-        if (constructed == "")
-            return;
-
-        Objective @new = objectives.find(constructed);
-        new.spawn();
-        if (new.isDestroyable()) {
-            players.sound(ent.team, "announcer/bomb/defense/start");
-            players.sound(players.otherTeam(ent.team),
-                    "announcer/bomb/offense/start");
-        }
-        objectives.goalTest();
-    }
-
     bool isSpawn() {
-        return spawnLocation && spawnPoints.getSize() > 0;
+        return spawnable.isActive();
     }
 
     int getTeam() {
@@ -233,7 +161,7 @@ class Objective {
     }
 
     cEntity @getRandomSpawnPoint() {
-        return spawnPoints.getRandom();
+        return spawnable.getRandomSpawnPoint();
     }
 
     bool isSpawned() {
@@ -249,7 +177,7 @@ class Objective {
         return near(player.getEnt());
     }
 
-    bool nearSelfTeam(Player @player) {
+    bool nearOwnTeam(Player @player) {
         return player.getClient().team == team && near(player);
     }
 
@@ -261,83 +189,27 @@ class Objective {
         return nearOtherTeam(player.getEnt());
     }
 
-    void constructed() {
-        spawnConstructed();
-        destroy();
-        destroyGhost();
-        constructProgress = 0;
-        players.say(message);
-    }
-
-    void constructProgress() {
-        constructProgress += CONSTRUCT_SPEED * frameTime;
-        spawnGhost();
-    }
-
-    bool checkConstructPlayers() {
-        bool madeConstructProgress = false;
-        for (int i = 0; i < players.getSize(); i++) {
-            Player @player = players.get(i);
-            if (@player != null && constructable && nearSelfTeam(player)) {
-                if (player.getClassId() == CLASS_ENGINEER) {
-                    if (constructProgress >= PROGRESS_FINISHED)
-                        constructed();
-                    else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
-                                / PROGRESS_FINISHED * constructArmor))
-                        constructProgress();
-
-                    player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
-                    madeConstructProgress = true;
-                    notConstructed = 0;
-                }
-                player.setHUDStat(STAT_IMAGE_OTHER,
-                        player.getClassIcon(CLASS_ENGINEER));
-            }
-        }
-
-        return madeConstructProgress;
-    }
-
-    void checkDestroyPlayers() {
-        for (int i = 0; i < players.getSize(); i++) {
-            Player @player = players.get(i);
-            if (@player != null && destroyable && nearOtherTeam(player))
-                player.setHUDStat(STAT_IMAGE_OTHER, destroyIcon);
-        }
-    }
-
-    void notConstructed() {
-        notConstructed += 0.001f * frameTime;
-        if (notConstructed > CONSTRUCT_WAIT_LIMIT) {
-            destroyGhost();
-            constructProgress = 0;
-            notConstructed = 0;
-        }
-    }
-
     void think() {
-        if (!spawned || (!constructable && !destroyable))
+        if (!spawned)
             return;
 
-        bool madeConstructProgress = checkConstructPlayers();
-        if (constructable && constructProgress > 0 && !madeConstructProgress)
-            notConstructed();
-
-        checkDestroyPlayers();
+        constructable.think();
+        destroyable.think();
+        spawnable.think();
     }
 
     void exploded(cEntity @bomb) {
-        if (spawned && destroyable && nearOtherTeam(bomb))
-            destruct();
+        if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
+            destroyable.destruct();
     }
 
     void planted(cEntity @bomb) {
-        if (spawned && destroyable && nearOtherTeam(bomb))
+        if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
             players.sound("announcer/bomb/offense/planted");
     }
 
     void defused(cEntity @bomb) {
-        if (spawned && destroyable && nearOtherTeam(bomb))
+        if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
             players.sound("announcer/bomb/offense/defused");
     }
 }
