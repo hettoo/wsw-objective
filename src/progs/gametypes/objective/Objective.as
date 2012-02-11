@@ -46,6 +46,9 @@ class Objective {
     bool destroyable;
     cString destroyed;
 
+    bool spawnLocation;
+    SpawnPoints @spawnPoints;
+
     float radius;
 
     cString message;
@@ -127,6 +130,10 @@ class Objective {
             destroyable = value.toInt() == 1;
         } else if (name == "destroyed") {
             destroyed = value;
+        } else if (name == "spawnLocation") {
+            spawnLocation = value.toInt() == 1;
+            @spawnPoints = SpawnPoints();
+            spawnPoints.analyze(id);
         } else if (name == "radius") {
             radius = value.toInt();
         } else if (name == "message") {
@@ -204,6 +211,18 @@ class Objective {
 
         objectives.find(constructed).spawn();
         objectives.goalTest();
+    }
+
+    bool isSpawn() {
+        return spawnLocation && spawnPoints.getSize() > 0;
+    }
+
+    int getTeam() {
+        return team;
+    }
+
+    cEntity @getRandomSpawnPoint() {
+        return spawnPoints.getRandom();
     }
 
     bool isSpawned() {

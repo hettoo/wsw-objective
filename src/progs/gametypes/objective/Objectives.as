@@ -86,6 +86,22 @@ class Objectives {
         }
     }
 
+    cEntity @randomSpawnPoint(cEntity @self) {
+        int[] suitableSpawns;
+        int suitableSpawnCount = 0;
+        suitableSpawns.resize(size);
+        for (int i = 0; i < size; i++) {
+            if (objectives[i].isSpawn() && objectives[i].getTeam() == self.team)
+                suitableSpawns[suitableSpawnCount++] = i;
+        }
+
+        if (suitableSpawnCount == 0)
+            return null;
+
+        int spawnLocation = suitableSpawns[brandom(0, suitableSpawnCount)];
+        return objectives[spawnLocation].getRandomSpawnPoint();
+    }
+
     void setAttribute(cString &fieldname, cString &value) {
         if (fieldname == "goal")
             goal = value;

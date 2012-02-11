@@ -181,8 +181,11 @@ class Core {
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        return GENERIC_SelectBestRandomSpawnPoint(null,
-                "info_player_deathmatch");
+        cEntity @spawn = world.selectSpawnPoint(self);
+        if (@spawn == null)
+            @spawn = GENERIC_SelectBestRandomSpawnPoint(null,
+                    "info_player_deathmatch");
+        return spawn;
     }
 
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {

@@ -40,6 +40,10 @@ class World {
         objectives.initialSpawn();
     }
 
+    cEntity @selectSpawnPoint(cEntity @self) {
+        return objectives.randomSpawnPoint(self);
+    }
+
     void think() {
         players.think();
         objectives.think();
