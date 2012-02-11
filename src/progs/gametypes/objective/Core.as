@@ -21,10 +21,11 @@ const cString TITLE = "Objective";
 const cString VERSION = "0.1-dev";
 const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
-const int DEFAULT_RESPAWN_TIME = 12;
-
 const int TEAM_ASSAULT = TEAM_ALPHA;
 const int TEAM_DEFENSE = TEAM_BETA;
+
+const int DEFAULT_ASSAULT_RESPAWN_TIME = 12;
+const int DEFAULT_DEFENSE_RESPAWN_TIME = 18;
 
 const int PROGRESS_FINISHED = 100;
 
@@ -129,11 +130,16 @@ class Core {
             gametype.spawnpointRadius *= 2;
     }
 
+    void setSpawnSystem(int team, int spawnSystem, int waveTime,
+            int maxPlayers) {
+        gametype.setTeamSpawnsystem(team, spawnSystem, waveTime,
+                maxPlayers, false);
+    }
+
     void setSpawnSystem(int spawnSystem, int waveTime, int maxPlayers) {
         for (int team = 0; team < GS_MAX_TEAMS; team++) {
             if (team != TEAM_SPECTATOR)
-                gametype.setTeamSpawnsystem(team, spawnSystem, waveTime,
-                        maxPlayers, false);
+                setSpawnSystem(team, spawnSystem, waveTime, maxPlayers);
         }
     }
 
@@ -235,8 +241,8 @@ class Core {
         world.think();
     }
 
-    void setWaveSpawn(int respawnTime) {
-        setSpawnSystem(SPAWNSYSTEM_WAVES, respawnTime, 0);
+    void setWaveSpawn(int team, int respawnTime) {
+        setSpawnSystem(team, SPAWNSYSTEM_WAVES, respawnTime, 0);
     }
 
     void matchStateStarted() {
@@ -254,7 +260,8 @@ class Core {
             case MATCH_STATE_PLAYTIME:
                 gametype.pickableItemsMask = gametype.spawnableItemsMask;
                 gametype.dropableItemsMask = gametype.spawnableItemsMask;
-                setWaveSpawn(DEFAULT_RESPAWN_TIME);
+                setWaveSpawn(TEAM_ASSAULT, DEFAULT_ASSAULT_RESPAWN_TIME);
+                setWaveSpawn(TEAM_DEFENSE, DEFAULT_DEFENSE_RESPAWN_TIME);
                 GENERIC_SetUpMatch();
                 break;
             case MATCH_STATE_POSTMATCH:
