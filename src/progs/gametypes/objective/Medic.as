@@ -47,6 +47,7 @@ class Medic : Class {
         if (player.takeArmor(HEALTH_ARMOR))
             player.getEnt().dropItem(G_GetItemByName("25 Health").tag);
         else
-            player.centerPrint(HEALTH_ARMOR + " armor is required to drop health");
+            player.centerPrint(HEALTH_ARMOR
+                    + " armor is required to drop health");
     }
 }
