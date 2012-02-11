@@ -60,8 +60,8 @@ class Objective {
     Objectives @objectives;
     Players @players;
 
-    Objective(cEntity @ent, Objectives @objectives, Players @players) {
-        id = ent.getTargetnameString();
+    Objective(cEntity @target, Objectives @objectives, Players @players) {
+        id = target.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
 
@@ -70,8 +70,8 @@ class Objective {
 
         solid = true;
         model = "";
-        origin = ent.getOrigin();
-        angles = ent.getAngles();
+        origin = target.getOrigin();
+        angles = target.getAngles();
         moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
@@ -83,8 +83,8 @@ class Objective {
 
         radius = 150;
 
-        ent.unlinkEntity();
-        ent.freeEntity();
+        target.unlinkEntity();
+        target.freeEntity();
 
         constructProgress = 0;
         notConstructed = 0;
