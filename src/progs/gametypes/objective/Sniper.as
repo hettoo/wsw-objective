@@ -45,26 +45,34 @@ class Sniper : Class {
     }
 
     void classAction1() {
-        if (player.takeArmor(ARTILLERY_ARMOR)) {
-            cEntity @ent = player.getEnt();
+        cEntity @ent = player.getEnt();
 
-            cVec3 start = ent.getOrigin();
-            start.z += ent.viewHeight;
+        cVec3 start = ent.getOrigin();
+        start.z += ent.viewHeight;
 
-            cVec3 end = start;
-            cVec3 angles = ent.getAngles();
-            cVec3 dir;
-            angles.angleVectors(dir, null, null);
-            end += dir * MAX_ARTILLERY_DISTANCE;
+        cVec3 end = start;
+        cVec3 angles = ent.getAngles();
+        cVec3 dir;
+        angles.angleVectors(dir, null, null);
+        end += dir * MAX_ARTILLERY_DISTANCE;
 
-            cTrace trace;
-            trace.doTrace(start, cVec3(-SMALL, -SMALL, -SMALL),
-                    cVec3(SMALL, SMALL, SMALL), end, ent.entNum(), MASK_SOLID);
-
-            player.getPlayers().getWorld().addArtillery(trace.getEndPos(), ent);
+        cTrace view;
+        if (view.doTrace(start, cVec3(), cVec3(), end, ent.entNum(),
+                    MASK_SOLID)) {
+            cTrace up;
+            if (up.doTrace(view.getEndPos(), cVec3(), cVec3(),
+                        view.getEndPos() + cVec3(0, 0, ARTILLERY_HEIGHT), 0,
+                        MASK_SOLID))
+                player.centerPrint("Can't spawn artillery there");
+            else if (!player.takeArmor(ARTILLERY_ARMOR)) {
+                player.centerPrint("Not enough armor, " + ARTILLERY_ARMOR
+                        + " required");
+            } else {
+                player.getPlayers().getWorld().addArtillery(view.getEndPos(),
+                        ent);
+            }
         } else {
-            player.centerPrint("Not enough armor, " + ARTILLERY_ARMOR
-                    + " required");
+            player.centerPrint("Not solid or too far away to spawn artillery");
         }
     }
 }
