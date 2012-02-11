@@ -208,8 +208,11 @@ class Core {
 
     void checkMatchState() {
         if (match.scoreLimitHit() || match.timeLimitHit()
-                || match.suddenDeathFinished())
+                || match.suddenDeathFinished()) {
+            if (match.getState() == MATCH_STATE_PLAYTIME)
+                G_GetTeam(TEAM_DEFENSE).stats.addScore(1);
             match.launchState(match.getState() + 1);
+        }
 
         if (match.getState() >= MATCH_STATE_POSTMATCH)
             return;
