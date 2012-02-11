@@ -104,7 +104,7 @@ class Player {
 
     bool takeArmor(float armor) {
         client.armor -= armor;
-        if (client.armor < 0) {
+        if (client.armor < -0.5) {
             client.armor += armor;
             return false;
         }
