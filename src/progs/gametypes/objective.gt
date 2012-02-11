@@ -24,6 +24,7 @@ objective/Class.as;
 objective/Soldier.as;
 objective/Engineer.as;
 objective/Medic.as;
+objective/FieldOps.as;
 objective/Sniper.as;
 objective/Bombs.as;
 objective/Bomb.as;

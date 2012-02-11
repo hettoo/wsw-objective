@@ -21,6 +21,7 @@ enum ClassIds {
     CLASS_SOLDIER,
     CLASS_ENGINEER,
     CLASS_MEDIC,
+    CLASS_FIELD_OPS,
     CLASS_SNIPER,
     CLASSES
 }
@@ -35,6 +36,7 @@ class Classes {
         @classes[CLASS_SOLDIER] = Soldier();
         @classes[CLASS_ENGINEER] = Engineer();
         @classes[CLASS_MEDIC] = Medic();
+        @classes[CLASS_FIELD_OPS] = FieldOps();
         @classes[CLASS_SNIPER] = Sniper();
 
         currentClass = CLASS_SOLDIER;
@@ -89,7 +91,8 @@ class Classes {
     cString @createMenu() {
         cString menu = "mecu \"Select Class\"";
         for (int i = 0; i < CLASSES; i++)
-            menu += classes[i].getName() + " \"class " + classes[i].getName() + "\"";
+            menu += classes[i].getName()
+                + " \"class " + classes[i].getName() + "\"";
         return menu;
     }
 
