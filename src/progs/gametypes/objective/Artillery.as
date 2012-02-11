@@ -21,8 +21,8 @@ const int ARTILLERY_HEIGHT = 1200;
 const float ARTILLERY_MIN_WAIT = 0.05f;
 const float ARTILLERY_MAX_WAIT = 3.0f;
 const int ARTILLERY_ROCKETS = 14;
-const int ARTILLERY_IMPACT = 320;
-const float ARTILLERY_MAX_DIVERGENCY = 30.0f;
+const int ARTILLERY_IMPACT = 300;
+const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 
 class Artillery {
     bool active;

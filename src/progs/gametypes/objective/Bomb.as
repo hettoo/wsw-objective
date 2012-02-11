@@ -23,7 +23,7 @@ cVec3 BOMB_MAXS(16, 16, 40);
 const float BOMB_TIME = 30.0f;
 const float BOMB_SPEED = 0.015f;
 const int BOMB_RADIUS = 70;
-const int BOMB_EFFECT_RADIUS = 200;
+const int BOMB_EFFECT_RADIUS = 400;
 const float BOMB_WAIT_LIMIT = 15.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
 

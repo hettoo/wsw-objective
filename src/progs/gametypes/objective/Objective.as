@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
 const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 
@@ -77,7 +78,7 @@ class Objective {
         team = GS_MAX_TEAMS;
 
         constructable = false;
-        constructArmor = 70;
+        constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 
         destroyable = false;
 
@@ -213,7 +214,13 @@ class Objective {
         if (constructed == "")
             return;
 
-        objectives.find(constructed).spawn();
+        Objective @new = objectives.find(constructed);
+        new.spawn();
+        if (new.isDestroyable()) {
+            players.sound(ent.team, "announcer/bomb/defense/start");
+            players.sound(players.otherTeam(ent.team),
+                    "announcer/bomb/offense/start");
+        }
         objectives.goalTest();
     }
 
@@ -255,14 +262,9 @@ class Objective {
     }
 
     void constructed() {
-        if (constructed != "" && objectives.find(constructed).isDestroyable()) {
-            players.sound(ent.team, "announcer/bomb/defense/start");
-            players.sound(players.otherTeam(ent.team),
-                    "announcer/bomb/offense/start");
-        }
+        spawnConstructed();
         destroy();
         destroyGhost();
-        spawnConstructed();
         constructProgress = 0;
         players.say(message);
     }

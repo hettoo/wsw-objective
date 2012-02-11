@@ -64,7 +64,8 @@ class Engineer : Class {
             player.getPlayers().getWorld().addBomb(origin, ent.getAngles(),
                     velocity, ent);
         } else {
-            player.centerPrint("Not enough armor, " + BOMB_ARMOR + " required");
+            player.centerPrint(BOMB_ARMOR
+                    + " armor is required to plant a bomb");
         }
     }
 }

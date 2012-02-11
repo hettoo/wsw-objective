@@ -65,8 +65,8 @@ class Sniper : Class {
                         MASK_SOLID))
                 player.centerPrint("Can't spawn artillery there");
             else if (!player.takeArmor(ARTILLERY_ARMOR)) {
-                player.centerPrint("Not enough armor, " + ARTILLERY_ARMOR
-                        + " required");
+                player.centerPrint(ARTILLERY_ARMOR
+                        + " armor is required to spawn artillery");
             } else {
                 player.getPlayers().getWorld().addArtillery(view.getEndPos(),
                         ent);
