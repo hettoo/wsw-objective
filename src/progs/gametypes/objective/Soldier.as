@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int RAGE_ARMOR = 10; // I forgot to reset this after testing!
-const int RAGE_TIME = 8;
+const int RAGE_ARMOR = 80;
 
 class Soldier : Class {
     float raging;
@@ -49,21 +48,11 @@ class Soldier : Class {
     }
 
     void classAction1() {
-        if (raging > 0) {
+        if (raging > 0)
             player.centerPrint("You are already raging");
-        } else if (!player.takeArmor(RAGE_ARMOR)) {
+        else if (!player.takeArmor(RAGE_ARMOR))
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
-        } else {
-            raging = RAGE_TIME;
-        }
-    }
-
-    void think() {
-        Class::think();
-        if (raging > 0) {
-            raging -= frameTime * 0.001;
-            if (raging > 0)
-                player.getEnt().effects |= EF_QUAD;
-        }
+        else
+            player.getClient().inventoryGiveItem(POWERUP_QUAD);
     }
 }
