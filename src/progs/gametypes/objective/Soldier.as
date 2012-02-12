@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int RAGE_ARMOR = 80;
+const int RAGE_TIME = 15;
 
 class Soldier : Class {
     float raging;
@@ -53,6 +54,6 @@ class Soldier : Class {
         else if (!player.takeArmor(RAGE_ARMOR))
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
         else
-            player.getClient().inventoryGiveItem(POWERUP_QUAD);
+            player.giveItem(POWERUP_QUAD, RAGE_TIME);
     }
 }

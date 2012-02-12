@@ -111,6 +111,11 @@ class Player {
         return true;
     }
 
+    void giveItem(int item, int amount) {
+        client.inventoryGiveItem(item);
+        client.inventorySetCount(item, amount);
+    }
+
     void giveAmmo(int weapon, int strongAmmo, int weakAmmo) {
         cItem @item = G_GetItem(weapon);
 
