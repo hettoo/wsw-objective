@@ -50,4 +50,6 @@ class Medic : Class {
             player.centerPrint(HEALTH_ARMOR
                     + " armor is required to drop health");
     }
+
+    // classaction2: revive
 }

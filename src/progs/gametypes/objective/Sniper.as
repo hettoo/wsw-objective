@@ -75,4 +75,7 @@ class Sniper : Class {
             player.centerPrint("Not solid or too far away to spawn artillery");
         }
     }
+
+    // classaction2: spot landmines?
+    // throw a satchel charge?
 }

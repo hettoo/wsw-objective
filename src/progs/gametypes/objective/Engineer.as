@@ -68,4 +68,10 @@ class Engineer : Class {
                     + " armor is required to plant a bomb");
         }
     }
+
+    // classaction2: shoot a grenade far away?
+    // create a turret (perhaps it might only be activated if a teammember is
+    // standing next to it)?
+    // spawn a(n invisible) landmine?
+    // create a fence, destroyable by satchel charges and / or bombs?
 }

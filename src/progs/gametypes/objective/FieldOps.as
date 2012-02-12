@@ -40,4 +40,8 @@ class FieldOps : Class {
         player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
         player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
     }
+
+    // classaction1: ammopack
+
+    // classaction2: clusterbomb
 }
