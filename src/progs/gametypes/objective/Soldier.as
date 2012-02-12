@@ -20,6 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int RAGE_ARMOR = 80;
 const int RAGE_TIME = 15;
 
+const int SHIELD_ARMOR = 65;
+const int SHIELD_TIME = 18;
+
 class Soldier : Class {
     float raging;
 
@@ -55,5 +58,15 @@ class Soldier : Class {
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
         else
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
+    }
+
+    void classAction2() {
+        if (raging > 0)
+            player.centerPrint("You already have a shield");
+        else if (!player.takeArmor(SHIELD_ARMOR))
+            player.centerPrint(SHIELD_ARMOR
+                    + " armor is required to get a shield");
+        else
+            player.giveItem(POWERUP_SHELL, SHIELD_TIME);
     }
 }
