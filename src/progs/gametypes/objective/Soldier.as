@@ -17,13 +17,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const int RAGE_ARMOR = 10; // I forgot to reset this after testing!
+const int RAGE_TIME = 8;
+
 class Soldier : Class {
+    float raging;
+
     Soldier() {
         spawnHealth = 100;
         spawnArmor = 30;
 
         maxHealth = 100;
         maxArmor = 80;
+
+        raging = 0;
     }
 
     cString @getName() {
@@ -39,5 +46,24 @@ class Soldier : Class {
 
         player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
         player.giveAmmo(WEAP_RIOTGUN, 5, 20, 10, 30);
+    }
+
+    void classAction1() {
+        if (raging > 0) {
+            player.centerPrint("You are already raging");
+        } else if (!player.takeArmor(RAGE_ARMOR)) {
+            player.centerPrint(RAGE_ARMOR + " armor is required to rage");
+        } else {
+            raging = RAGE_TIME;
+        }
+    }
+
+    void think() {
+        Class::think();
+        if (raging > 0) {
+            raging -= frameTime * 0.001;
+            if (raging > 0)
+                player.getEnt().effects |= EF_QUAD;
+        }
     }
 }
