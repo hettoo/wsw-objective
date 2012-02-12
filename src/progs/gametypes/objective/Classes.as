@@ -91,7 +91,7 @@ class Classes {
     cString @createMenu() {
         cString menu = "mecu \"Select Class\"";
         for (int i = 0; i < CLASSES; i++)
-            menu += classes[i].getName()
+            menu += " \"" + classes[i].getName() + "\" "
                 + " \"class " + classes[i].getName() + "\"";
         return menu;
     }
