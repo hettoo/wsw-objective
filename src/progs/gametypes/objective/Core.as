@@ -90,7 +90,7 @@ class Core {
     }
 
     void setGametypeSettings() {
-        gametype.spawnableItemsMask = (IT_ARMOR | IT_POWERUP | IT_HEALTH);
+        gametype.spawnableItemsMask = IT_ARMOR;
 
         if (gametype.isInstagib())
             gametype.spawnableItemsMask &= ~uint(G_INSTAGIB_NEGATE_ITEMMASK);
