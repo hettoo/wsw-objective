@@ -29,8 +29,6 @@ const int DEFAULT_DEFENSE_RESPAWN_TIME = 18;
 
 const int PROGRESS_FINISHED = 100;
 
-const float SMALL = 0.01f;
-
 cString WTF = "???";
 const int UNKNOWN = -1;
 
