@@ -93,6 +93,10 @@ class Class {
         player.centerPrint("This class has no classaction1");
     }
 
+    void classAction2() {
+        player.centerPrint("This class has no classaction2");
+    }
+
     void think() {
     }
 }

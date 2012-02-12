@@ -154,6 +154,7 @@ class Core {
     void registerCommands() {
         G_RegisterCommand("class");
         G_RegisterCommand("classaction1");
+        G_RegisterCommand("classaction2");
         G_RegisterCommand("gamemenu");
         G_RegisterCommand("gametype");
     }
@@ -185,6 +186,9 @@ class Core {
             return true;
         } else if (cmd == "classaction1") {
             world.getPlayers().get(client).classAction1();
+            return true;
+        } else if (cmd == "classaction2") {
+            world.getPlayers().get(client).classAction2();
             return true;
         }
         return false;

@@ -115,6 +115,10 @@ class Classes {
         classes[currentClass].classAction1();
     }
 
+    void classAction2() {
+        classes[currentClass].classAction2();
+    }
+
     void think() {
         addArmor(ARMOR_FRAME_BONUS * frameTime);
         getClass().think();

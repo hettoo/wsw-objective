@@ -168,4 +168,8 @@ class Player {
     void classAction1() {
         classes.classAction1();
     }
+
+    void classAction2() {
+        classes.classAction2();
+    }
 }
