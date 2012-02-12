@@ -31,6 +31,9 @@ class Constructable {
     float notConstructed;
     bool spawnedGhost;
 
+    int constructOwnSound;
+    int constructOtherSound;
+
     Objective @objective;
 
     Constructable() {
@@ -44,6 +47,11 @@ class Constructable {
 
     void register(Objective @objective) {
         @this.objective = objective;
+
+        constructOwnSound
+            = objective.getPlayers().soundIndex("announcer/bomb/defense/start");
+        constructOtherSound
+            = objective.getPlayers().soundIndex("announcer/bomb/offense/start");
     }
 
     bool isActive() {
@@ -88,10 +96,10 @@ class Constructable {
         new.spawn();
         if (new.isDestroyable()) {
             objective.getPlayers().sound(objective.getTeam(),
-                    "announcer/bomb/defense/start");
+                    constructOwnSound);
             objective.getPlayers().sound(
                     objective.getPlayers().otherTeam(objective.getTeam()),
-                    "announcer/bomb/offense/start");
+                    constructOtherSound);
         }
         objective.getObjectives().goalTest();
     }

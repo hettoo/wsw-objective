@@ -22,10 +22,12 @@ class Objective {
 
     cEntity @ent;
     bool spawned;
+    int plantSound;
+    int defuseSound;
 
     bool start;
     bool solid;
-    cString model;
+    int model;
     cVec3 origin;
     cVec3 angles;
     cVec3 mins;
@@ -47,8 +49,11 @@ class Objective {
         id = id.substr(1, id.len());
         spawned = false;
 
+        plantSound = players.soundIndex("announcer/bomb/offense/planted");
+        defuseSound = players.soundIndex("announcer/bomb/offense/defused");
+
         solid = true;
-        model = "";
+        model = 0;
         origin = target.getOrigin();
         angles = target.getAngles();
         moveType = MOVETYPE_NONE;
@@ -85,7 +90,7 @@ class Objective {
         } else if (name == "solid") {
             solid = value.toInt() == 1;
         } else if (name == "model") {
-            model = value;
+            model = G_ModelIndex("models/" + value + ".md3");
         } else if (name == "moveType") {
             moveType = value.toInt();
         } else if (name == "mins") {
@@ -113,10 +118,10 @@ class Objective {
         if (spawned)
             return;
 
-        if (model != "") {
+        if (model != 0) {
             @ent = G_SpawnEntity("objective");
             ent.type = ET_GENERIC;
-            ent.modelindex = G_ModelIndex("models/" + model + ".md3");
+            ent.modelindex = model;
             ent.team = team;
             ent.setOrigin(origin);
             ent.setAngles(angles);
@@ -205,11 +210,11 @@ class Objective {
 
     void planted(cEntity @bomb) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            players.sound("announcer/bomb/offense/planted");
+            players.sound(plantSound);
     }
 
     void defused(cEntity @bomb) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            players.sound("announcer/bomb/offense/defused");
+            players.sound(defuseSound);
     }
 }

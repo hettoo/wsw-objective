@@ -94,12 +94,23 @@ class Players {
         G_PrintMsg(null, message + "\n");
     }
 
+    void sound(int sound) {
+        G_GlobalSound(CHAN_VOICE, sound);
+    }
+
+    int soundIndex(cString sound) {
+        return G_SoundIndex("sounds/" + sound);
+    }
+
     void sound(cString &sound) {
-        G_GlobalSound(CHAN_VOICE, G_SoundIndex("sounds/" + sound));
+        sound(soundIndex(sound));
+    }
+
+    void sound(int team, int sound) {
+        G_AnnouncerSound(null, sound, team, true, null);
     }
 
     void sound(int team, cString &sound) {
-        G_AnnouncerSound(null, G_SoundIndex("sounds/" + sound), team, true,
-                null);
+        sound(team, soundIndex("sounds/" + sound));
     }
 }
