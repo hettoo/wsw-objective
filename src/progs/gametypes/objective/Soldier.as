@@ -24,16 +24,12 @@ const int SHIELD_ARMOR = 65;
 const int SHIELD_TIME = 18;
 
 class Soldier : Class {
-    float raging;
-
     Soldier() {
         spawnHealth = 100;
         spawnArmor = 30;
 
         maxHealth = 100;
         maxArmor = 80;
-
-        raging = 0;
     }
 
     cString @getName() {
@@ -52,18 +48,14 @@ class Soldier : Class {
     }
 
     void classAction1() {
-        if (raging > 0)
-            player.centerPrint("You are already raging");
-        else if (!player.takeArmor(RAGE_ARMOR))
+        if (!player.takeArmor(RAGE_ARMOR))
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
         else
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
     }
 
     void classAction2() {
-        if (raging > 0)
-            player.centerPrint("You already have a shield");
-        else if (!player.takeArmor(SHIELD_ARMOR))
+        if (!player.takeArmor(SHIELD_ARMOR))
             player.centerPrint(SHIELD_ARMOR
                     + " armor is required to get a shield");
         else
