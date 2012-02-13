@@ -22,19 +22,12 @@ const int MAX_ARTILLERY_DISTANCE = 3000;
 
 class Sniper : Class {
     Sniper() {
-        spawnHealth = 100;
-        spawnArmor = 20;
-
-        maxHealth = 100;
+        spawnArmor = 0;
         maxArmor = 100;
     }
 
     cString @getName() {
         return "Sniper";
-    }
-
-    cString @getSimpleName() {
-        return "sniper";
     }
 
     void giveAmmoPack() {

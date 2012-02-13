@@ -22,19 +22,12 @@ const int BOMB_ARMOR = 70;
 
 class Engineer : Class {
     Engineer() {
-        spawnHealth = 100;
         spawnArmor = 40;
-
-        maxHealth = 100;
         maxArmor = 100;
     }
 
     cString @getName() {
         return "Engineer";
-    }
-
-    cString @getSimpleName() {
-        return "engineer";
     }
 
     void giveAmmoPack() {

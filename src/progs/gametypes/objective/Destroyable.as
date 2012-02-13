@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Destroyable {
-    bool active;
+class Destroyable : Component {
     cString destroyed;
 
     int destroyIcon;
@@ -33,10 +32,6 @@ class Destroyable {
 
     void register(Objective @objective) {
         @this.objective = objective;
-    }
-
-    bool isActive() {
-        return active;
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -58,10 +53,7 @@ class Destroyable {
             objective.getObjectives().find(destroyed).spawn();
     }
 
-    void think() {
-        if (!active)
-            return;
-
+    void thinkActive() {
         int players = objective.getPlayers().getSize();
         for (int i = 0; i < players; i++) {
             Player @player = objective.getPlayers().get(i);

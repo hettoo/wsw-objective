@@ -33,6 +33,9 @@ class Class {
     Player @player;
 
     Class() {
+        spawnHealth = 80;
+        maxHealth = 100;
+
         spawnAmmoPacks = 2;
 
         classIcon = G_ImageIndex("gfx/hud/icons/objective/classes/"
@@ -44,7 +47,7 @@ class Class {
     }
 
     cString @getSimpleName() {
-        return "";
+        return replaceSpaces(getName().tolower());
     }
 
     cString @getName() {

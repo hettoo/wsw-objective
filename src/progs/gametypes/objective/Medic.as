@@ -22,18 +22,14 @@ const int HEALTH_ARMOR = 15;
 class Medic : Class {
     Medic() {
         spawnHealth = 100;
-        spawnArmor = 50;
-
         maxHealth = 120;
+
+        spawnArmor = 50;
         maxArmor = 90;
     }
 
     cString @getName() {
         return "Medic";
-    }
-
-    cString @getSimpleName() {
-        return "medic";
     }
 
     void giveAmmoPack() {

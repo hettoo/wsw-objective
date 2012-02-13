@@ -21,8 +21,7 @@ const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
 const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 
-class Constructable {
-    bool active;
+class Constructable : Component {
     float constructArmor;
     cString constructing;
     cString constructed;
@@ -52,10 +51,6 @@ class Constructable {
             = objective.getPlayers().soundIndex("announcer/bomb/defense/start");
         constructOtherSound
             = objective.getPlayers().soundIndex("announcer/bomb/offense/start");
-    }
-
-    bool isActive() {
-        return active;
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -151,10 +146,7 @@ class Constructable {
         }
     }
 
-    void think() {
-        if (!active)
-            return;
-
+    void thinkActive() {
         bool madeProgress = checkPlayers();
         if (constructProgress > 0 && !madeProgress)
             notConstructed();

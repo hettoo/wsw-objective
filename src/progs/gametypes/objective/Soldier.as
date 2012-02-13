@@ -25,19 +25,12 @@ const int SHIELD_TIME = 18;
 
 class Soldier : Class {
     Soldier() {
-        spawnHealth = 100;
         spawnArmor = 30;
-
-        maxHealth = 100;
         maxArmor = 80;
     }
 
     cString @getName() {
         return "Soldier";
-    }
-
-    cString @getSimpleName() {
-        return "soldier";
     }
 
     void giveAmmoPack() {

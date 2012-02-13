@@ -17,24 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class FieldOps : Class {
-    FieldOps() {
-        spawnArmor = 40;
-        maxArmor = 80;
+class Component {
+    bool active;
+
+    bool isActive() {
+        return active;
     }
 
-    cString @getName() {
-        return "Field Ops";
+    void thinkActive() {
     }
 
-    void giveAmmoPack() {
-        Class::giveAmmoPack();
-
-        player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
-        player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
+    void think() {
+        if (active)
+            thinkActive();
     }
-
-    // classaction1: ammopack
-
-    // classaction2: clusterbomb
 }

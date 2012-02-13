@@ -334,3 +334,19 @@ class Core {
     void shutdown() {
     }
 }
+
+cString @replaceSpaces(cString &string, cString replacement) {
+    cString result;
+    for (int i = 0; i < string.len(); i++) {
+        cString character = string.substr(i, 1);
+        if (character == " ")
+            result += replacement;
+        else
+            result += character;
+    }
+    return result;
+}
+
+cString @replaceSpaces(cString &string) {
+    return replaceSpaces(string, "_");
+}

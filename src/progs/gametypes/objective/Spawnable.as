@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Spawnable {
-    bool active;
+class Spawnable : Component {
     SpawnPoints @spawnPoints;
 
     Objective @objective;
@@ -28,7 +27,7 @@ class Spawnable {
     }
 
     bool isActive() {
-        return active && spawnPoints.getSize() > 0;
+        return Component::isActive() && spawnPoints.getSize() > 0;
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -44,10 +43,5 @@ class Spawnable {
 
     cEntity @getRandomSpawnPoint() {
         return spawnPoints.getRandom();
-    }
-
-    void think() {
-        if (!active)
-            return;
     }
 }
