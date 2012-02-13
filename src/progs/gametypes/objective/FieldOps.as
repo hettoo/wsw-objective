@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class FieldOps : Class {
     FieldOps() {
-        spawnArmor = 40;
-        maxArmor = 80;
+        spawnArmor = 50;
+        maxArmor = 90;
     }
 
     cString @getName() {

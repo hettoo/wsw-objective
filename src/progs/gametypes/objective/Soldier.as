@@ -17,16 +17,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int RAGE_ARMOR = 80;
-const int RAGE_TIME = 15;
+const int RAGE_ARMOR = 70;
+const int RAGE_TIME = 18;
 
-const int SHIELD_ARMOR = 65;
-const int SHIELD_TIME = 18;
+const int SHIELD_ARMOR = 70;
+const int SHIELD_TIME = 20;
 
 class Soldier : Class {
     Soldier() {
         spawnArmor = 30;
-        maxArmor = 80;
+        maxArmor = 90;
     }
 
     cString @getName() {
