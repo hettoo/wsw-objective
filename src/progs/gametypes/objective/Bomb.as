@@ -45,8 +45,8 @@ class Bomb {
     Objectives @objectives;
 
     Bomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner,
-            Players @players, Objectives @objectives) {
-        spawn(origin, angles, velocity);
+            Players @players, Objectives @objectives, int model) {
+        spawn(origin, angles, velocity, model);
         @ent.owner = owner;
         team = owner.team;
         state = BS_PLACED;
@@ -57,10 +57,10 @@ class Bomb {
         @this.objectives = objectives;
     }
 
-    void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity) {
+    void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity, int model) {
         @ent = G_SpawnEntity("bomb");
         ent.type = ET_GENERIC;
-        ent.modelindex = G_ModelIndex("models/objects/misc/bomb_centered.md3");
+        ent.modelindex = model;
         ent.setOrigin(origin);
         ent.setAngles(angles);
         ent.setVelocity(velocity);

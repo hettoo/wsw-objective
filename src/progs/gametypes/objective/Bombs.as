@@ -22,12 +22,16 @@ class Bombs {
     int size;
     int capacity;
 
+    int bombModel;
+
     Players @players;
     Objectives @objectives;
 
     Bombs() {
         capacity = 0;
         size = 0;
+
+        bombModel = G_ModelIndex("models/objects/misc/bomb_centered.md3");
     }
 
     void register(Players @players, Objectives @objectives) {
@@ -46,7 +50,7 @@ class Bombs {
     void add(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner) {
         makeRoom();
         @bombs[size++] = Bomb(origin, angles, velocity, owner, players,
-                objectives);
+                objectives, bombModel);
     }
 
     void think() {
