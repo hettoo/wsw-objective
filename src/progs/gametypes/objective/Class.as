@@ -47,7 +47,7 @@ class Class {
     }
 
     cString @getSimpleName() {
-        return replaceSpaces(getName().tolower());
+        return G_ReplaceSpaces(getName().tolower());
     }
 
     cString @getName() {

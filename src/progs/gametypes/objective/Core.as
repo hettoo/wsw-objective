@@ -17,14 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int TEAM_ASSAULT = TEAM_ALPHA;
-const int TEAM_DEFENSE = TEAM_BETA;
-
-const int PROGRESS_FINISHED = 100;
-
-cString WTF = "???";
-const int UNKNOWN = -1;
-
 class Core {
     Settings settings;
     Scoreboard scoreboard;
@@ -140,20 +132,4 @@ class Core {
 
     void shutdown() {
     }
-}
-
-cString @replaceSpaces(cString &string, cString replacement) {
-    cString result;
-    for (int i = 0; i < string.len(); i++) {
-        cString character = string.substr(i, 1);
-        if (character == " ")
-            result += replacement;
-        else
-            result += character;
-    }
-    return result;
-}
-
-cString @replaceSpaces(cString &string) {
-    return replaceSpaces(string, "_");
 }

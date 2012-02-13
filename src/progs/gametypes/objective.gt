@@ -15,6 +15,7 @@ legacy/quake3_items.as;
 legacy_items.as;
 
 objective.as;
+objective/globals.as;
 objective/Core.as;
 objective/Settings.as;
 objective/Scoreboard.as;
