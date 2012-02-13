@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int AMMOPACK_ARMOR = 20;
-const int AMMOPACK_THROW_SPEED = 400;
 
 class FieldOps : Class {
     FieldOps() {
@@ -41,7 +40,7 @@ class FieldOps : Class {
         if (player.takeArmor(AMMOPACK_ARMOR)) {
             cVec3 origin, angles, velocity;
             cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), AMMOPACK_THROW_SPEED,
+            G_InitThrow(player.getEnt(), ITEM_THROW_SPEED,
                     origin, angles, velocity);
             player.getPlayers().getWorld().addAmmopack(origin, angles, velocity,
                     ent);

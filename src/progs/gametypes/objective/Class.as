@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const float BOT_CLASS_CHANGE_CHANCE = 0.2f;
+const float HEALTHPACK_HEALTH = 20;
 
 class Class {
     int spawnHealth;
@@ -62,6 +63,16 @@ class Class {
         bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
         bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
         return gaveGL || gaveMG;
+    }
+
+    bool giveHealthpack() {
+        cEntity @ent = player.getEnt();
+        if (ent.health == maxHealth)
+            return false;
+        ent.health += HEALTHPACK_HEALTH;
+        if (ent.health > maxHealth)
+            ent.health = maxHealth;
+        return true;
     }
 
     void giveSpawnAmmopacks() {

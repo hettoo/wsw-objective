@@ -40,11 +40,17 @@ class Medic : Class {
     }
 
     void classAction1() {
-        if (player.takeArmor(HEALTH_ARMOR))
-            player.getEnt().dropItem(G_GetItemByName("25 Health").tag);
-        else
+        if (player.takeArmor(HEALTH_ARMOR)) {
+            cVec3 origin, angles, velocity;
+            cEntity @ent = player.getEnt();
+            G_InitThrow(player.getEnt(), ITEM_THROW_SPEED,
+                    origin, angles, velocity);
+            player.getPlayers().getWorld().addHealthpack(
+                    origin, angles, velocity, ent);
+        } else {
             player.centerPrint(HEALTH_ARMOR
                     + " armor is required to drop health");
+        }
     }
 
     // classaction2: revive

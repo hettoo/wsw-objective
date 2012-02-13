@@ -155,6 +155,10 @@ class Player {
         return classes.giveAmmopack();
     }
 
+    bool giveHealthpack() {
+        return classes.giveHealthpack();
+    }
+
     void spawn() {
         classes.applyNext();
         classes.spawn();

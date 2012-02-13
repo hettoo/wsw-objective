@@ -115,6 +115,10 @@ class Classes {
         return classes[currentClass].giveAmmopack();
     }
 
+    bool giveHealthpack() {
+        return classes[currentClass].giveHealthpack();
+    }
+
     void classAction1() {
         classes[currentClass].classAction1();
     }

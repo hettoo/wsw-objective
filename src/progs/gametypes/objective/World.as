@@ -20,13 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class World {
     Players players;
     ObjectiveSet objectiveSet;
-    AmmopackSet ammopackSet;
+    ItemSet itemSet;
     BombSet bombSet;
     ArtillerySet artillerySet;
 
     World() {
         players.register(this);
-        ammopackSet.register(players);
+        itemSet.register(players);
         bombSet.register(players, objectiveSet);
     }
 
@@ -49,7 +49,7 @@ class World {
     void think() {
         players.think();
         objectiveSet.think();
-        ammopackSet.think();
+        itemSet.think();
         bombSet.think();
         artillerySet.think();
     }
@@ -76,7 +76,12 @@ class World {
 
     void addAmmopack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
             cEntity @owner) {
-        ammopackSet.add(origin, angles, velocity, owner);
+        itemSet.addAmmopack(origin, angles, velocity, owner);
+    }
+
+    void addHealthpack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
+            cEntity @owner) {
+        itemSet.addHealthpack(origin, angles, velocity, owner);
     }
 
     void addBomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
