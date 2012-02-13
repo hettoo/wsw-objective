@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Spawnable : Component {
-    SpawnPoints @spawnPoints;
+    SpawnPointSet @spawnPointSet;
 
     Objective @objective;
 
@@ -27,14 +27,14 @@ class Spawnable : Component {
     }
 
     bool isActive() {
-        return Component::isActive() && spawnPoints.getSize() > 0;
+        return Component::isActive() && spawnPointSet.getSize() > 0;
     }
 
     bool setAttribute(cString &name, cString &value) {
         if (name == "spawnLocation") {
             active = value.toInt() == 1;
-            @spawnPoints = SpawnPoints();
-            spawnPoints.analyze(objective.getId());
+            @spawnPointSet = SpawnPointSet();
+            spawnPointSet.analyze(objective.getId());
         } else {
             return false;
         }
@@ -42,6 +42,6 @@ class Spawnable : Component {
     }
 
     cEntity @getRandomSpawnPoint() {
-        return spawnPoints.getRandom();
+        return spawnPointSet.getRandom();
     }
 }

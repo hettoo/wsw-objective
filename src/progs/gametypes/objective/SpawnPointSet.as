@@ -17,44 +17,45 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Bombs {
-    Bomb@[] bombs;
+class SpawnPointSet {
+    cEntity@[] points;
     int size;
     int capacity;
 
-    int bombModel;
-
-    Players @players;
-    Objectives @objectives;
-
-    Bombs() {
+    SpawnPointSet() {
         capacity = 0;
         size = 0;
-
-        bombModel = G_ModelIndex("models/objects/misc/bomb_centered.md3");
-    }
-
-    void register(Players @players, Objectives @objectives) {
-        @this.players = players;
-        @this.objectives = objectives;
     }
 
     void makeRoom() {
         if (capacity == size) {
             capacity *= 2;
             capacity += 1;
-            bombs.resize(capacity);
+            points.resize(capacity);
         }
     }
 
-    void add(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner) {
-        makeRoom();
-        @bombs[size++] = Bomb(origin, angles, velocity, owner, players,
-                objectives, bombModel);
+    int getSize() {
+        return size;
     }
 
-    void think() {
-        for (int i = 0; i < size; i++)
-            bombs[i].think();
+    cEntity @getRandom() {
+        return points[brandom(0, size)];
+    }
+
+    void add(cEntity @ent) {
+        makeRoom();
+        @points[size++] = ent;
+    }
+
+    void analyze(cString &name) {
+        for (int i = 0; @G_GetEntity(i) != null; i++) {
+            cEntity @ent = G_GetEntity(i);
+            cString target = ent.getTargetString();
+            if (target.substr(0, 1) == OBJECTIVE_NAME_PREFIX
+                    && target.substr(1, target.len()) == name) {
+                add(ent);
+            }
+        }
     }
 }

@@ -42,10 +42,10 @@ class Bomb {
     float notArmed;
 
     Players @players;
-    Objectives @objectives;
+    ObjectiveSet @objectiveSet;
 
     Bomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner,
-            Players @players, Objectives @objectives, int model) {
+            Players @players, ObjectiveSet @objectiveSet, int model) {
         spawn(origin, angles, velocity, model);
         @ent.owner = owner;
         team = owner.team;
@@ -54,7 +54,7 @@ class Bomb {
         notArmed = 0;
 
         @this.players = players;
-        @this.objectives = objectives;
+        @this.objectiveSet = objectiveSet;
     }
 
     void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity, int model) {
@@ -82,7 +82,7 @@ class Bomb {
         ent.explosionEffect(BOMB_EFFECT_RADIUS);
         ent.splashDamage(@ent.owner, BOMB_EFFECT_RADIUS, 100, 100, 100,
                 MOD_EXPLOSIVE);
-        objectives.exploded(ent);
+        objectiveSet.exploded(ent);
         remove();
     }
 
@@ -111,7 +111,7 @@ class Bomb {
         progress = PROGRESS_FINISHED;
         state = BS_PLANTED;
         timer = BOMB_TIME;
-        objectives.planted(ent);
+        objectiveSet.planted(ent);
     }
 
     void defuseProgress() {
@@ -119,7 +119,7 @@ class Bomb {
     }
 
     void defused() {
-        objectives.defused(ent);
+        objectiveSet.defused(ent);
         remove();
     }
 

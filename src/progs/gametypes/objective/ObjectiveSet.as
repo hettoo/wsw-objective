@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const cString OBJECTIVE_NAME_PREFIX = "!";
 
-class Objectives {
-    Objective@[] objectives;
+class ObjectiveSet {
+    Objective@[] objectiveSet;
     int size;
     int capacity;
 
@@ -28,7 +28,7 @@ class Objectives {
 
     Players @players;
 
-    Objectives() {
+    ObjectiveSet() {
         capacity = 0;
         size = 0;
     }
@@ -41,13 +41,13 @@ class Objectives {
         if (capacity == size) {
             capacity *= 2;
             capacity += 1;
-            objectives.resize(capacity);
+            objectiveSet.resize(capacity);
         }
     }
 
     void add(cEntity @ent) {
         makeRoom();
-        @objectives[size++] = Objective(ent, this, players);
+        @objectiveSet[size++] = Objective(ent, this, players);
     }
 
     void analyze() {
@@ -61,8 +61,8 @@ class Objectives {
 
     Objective @find(cString &id) {
         for (int i = 0; i < size; i++) {
-            if (objectives[i].getId() == id)
-                return @objectives[i];
+            if (objectiveSet[i].getId() == id)
+                return @objectiveSet[i];
         }
         return null;
     }
@@ -91,7 +91,8 @@ class Objectives {
         int suitableSpawnCount = 0;
         suitableSpawns.resize(size);
         for (int i = 0; i < size; i++) {
-            if (objectives[i].isSpawn() && objectives[i].getTeam() == self.team)
+            if (objectiveSet[i].isSpawn()
+                    && objectiveSet[i].getTeam() == self.team)
                 suitableSpawns[suitableSpawnCount++] = i;
         }
 
@@ -99,7 +100,7 @@ class Objectives {
             return null;
 
         int spawnLocation = suitableSpawns[brandom(0, suitableSpawnCount)];
-        return objectives[spawnLocation].getRandomSpawnPoint();
+        return objectiveSet[spawnLocation].getRandomSpawnPoint();
     }
 
     void setAttribute(cString &fieldname, cString &value) {
@@ -134,27 +135,27 @@ class Objectives {
 
     void initialSpawn() {
         for (int i = 0; i < size; i++)
-            objectives[i].initialSpawn();
+            objectiveSet[i].initialSpawn();
     }
 
     void think() {
         for (int i = 0; i < size; i++)
-            objectives[i].think();
+            objectiveSet[i].think();
     }
 
     void exploded(cEntity @ent) {
         for (int i = 0; i < size; i++)
-            objectives[i].exploded(ent);
+            objectiveSet[i].exploded(ent);
         goalTest();
     }
 
     void planted(cEntity @ent) {
         for (int i = 0; i < size; i++)
-            objectives[i].planted(ent);
+            objectiveSet[i].planted(ent);
     }
 
     void defused(cEntity @ent) {
         for (int i = 0; i < size; i++)
-            objectives[i].defused(ent);
+            objectiveSet[i].defused(ent);
     }
 }

@@ -41,10 +41,10 @@ class Objective {
     Destroyable destroyable;
     Spawnable spawnable;
 
-    Objectives @objectives;
+    ObjectiveSet @objectiveSet;
     Players @players;
 
-    Objective(cEntity @target, Objectives @objectives, Players @players) {
+    Objective(cEntity @target, ObjectiveSet @objectiveSet, Players @players) {
         id = target.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
@@ -64,7 +64,7 @@ class Objective {
         target.unlinkEntity();
         target.freeEntity();
 
-        @this.objectives = objectives;
+        @this.objectiveSet = objectiveSet;
         @this.players = players;
 
         constructable.register(this);
@@ -76,8 +76,8 @@ class Objective {
         return id;
     }
 
-    Objectives @getObjectives() {
-        return objectives;
+    ObjectiveSet @getObjectiveSet() {
+        return objectiveSet;
     }
 
     Players @getPlayers() {

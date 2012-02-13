@@ -17,12 +17,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Artilleries {
-    Artillery@[] artilleries;
+class ArtillerySet {
+    Artillery@[] artillerySet;
     int size;
     int capacity;
 
-    Artilleries() {
+    ArtillerySet() {
         capacity = 0;
         size = 0;
     }
@@ -31,17 +31,17 @@ class Artilleries {
         if (capacity == size) {
             capacity *= 2;
             capacity += 1;
-            artilleries.resize(capacity);
+            artillerySet.resize(capacity);
         }
     }
 
     void add(cVec3 @origin, cEntity @owner) {
         makeRoom();
-        @artilleries[size++] = Artillery(origin, owner);
+        @artillerySet[size++] = Artillery(origin, owner);
     }
 
     void think() {
         for (int i = 0; i < size; i++)
-            artilleries[i].think();
+            artillerySet[i].think();
     }
 }

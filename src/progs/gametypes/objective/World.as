@@ -19,13 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class World {
     Players players;
-    Objectives objectives;
-    Bombs bombs;
-    Artilleries artilleries;
+    ObjectiveSet objectiveSet;
+    BombSet bombSet;
+    ArtillerySet artillerySet;
 
     World() {
         players.register(this);
-        bombs.register(players, objectives);
+        bombSet.register(players, objectiveSet);
     }
 
     Players @getPlayers() {
@@ -33,22 +33,22 @@ class World {
     }
 
     void spawn() {
-        objectives.register(players);
-        objectives.analyze();
-        objectives.parse("mapscripts/" + cVar("mapname", "", 0).getString()
+        objectiveSet.register(players);
+        objectiveSet.analyze();
+        objectiveSet.parse("mapscripts/" + cVar("mapname", "", 0).getString()
                 + ".cfg");
-        objectives.initialSpawn();
+        objectiveSet.initialSpawn();
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        return objectives.randomSpawnPoint(self);
+        return objectiveSet.randomSpawnPoint(self);
     }
 
     void think() {
         players.think();
-        objectives.think();
-        bombs.think();
-        artilleries.think();
+        objectiveSet.think();
+        bombSet.think();
+        artillerySet.think();
     }
 
     void initClient(cClient @client) {
@@ -73,10 +73,10 @@ class World {
 
     void addBomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
             cEntity @owner) {
-        bombs.add(origin, angles, velocity, owner);
+        bombSet.add(origin, angles, velocity, owner);
     }
 
     void addArtillery(cVec3 @origin, cEntity @owner) {
-        artilleries.add(origin, owner);
+        artillerySet.add(origin, owner);
     }
 }

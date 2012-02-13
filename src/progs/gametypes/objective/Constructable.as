@@ -71,7 +71,7 @@ class Constructable : Component {
         if (spawnedGhost || constructing == "")
             return;
 
-        objective.getObjectives().find(constructing).spawn();
+        objective.getObjectiveSet().find(constructing).spawn();
         spawnedGhost = true;
     }
 
@@ -79,7 +79,7 @@ class Constructable : Component {
         if (!spawnedGhost)
             return;
 
-        objective.getObjectives().find(constructing).destroy();
+        objective.getObjectiveSet().find(constructing).destroy();
         spawnedGhost = false;
     }
 
@@ -87,7 +87,7 @@ class Constructable : Component {
         if (constructed == "")
             return;
 
-        Objective @new = objective.getObjectives().find(constructed);
+        Objective @new = objective.getObjectiveSet().find(constructed);
         new.spawn();
         if (new.isDestroyable()) {
             objective.getPlayers().sound(objective.getTeam(),
@@ -96,7 +96,7 @@ class Constructable : Component {
                     objective.getPlayers().otherTeam(objective.getTeam()),
                     constructOtherSound);
         }
-        objective.getObjectives().goalTest();
+        objective.getObjectiveSet().goalTest();
     }
 
     void constructed() {

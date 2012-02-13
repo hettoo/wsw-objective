@@ -50,7 +50,7 @@ class Destroyable : Component {
         objective.getPlayers().say(objective.message);
 
         if (destroyed != "")
-            objective.getObjectives().find(destroyed).spawn();
+            objective.getObjectiveSet().find(destroyed).spawn();
     }
 
     void thinkActive() {
