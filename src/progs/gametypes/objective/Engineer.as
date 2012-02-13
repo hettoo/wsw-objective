@@ -30,35 +30,24 @@ class Engineer : Class {
         return "Engineer";
     }
 
-    void giveAmmoPack() {
-        Class::giveAmmoPack();
-
-        player.giveAmmo(WEAP_RIOTGUN, 5, 20, 5, 5);
-        player.giveAmmo(WEAP_LASERGUN, 10, 40, 60, 80);
+    bool giveAmmopack() {
+        bool gaveClass = Class::giveAmmopack();
+        bool gaveRG = player.giveAmmo(WEAP_RIOTGUN, 5, 20, 5, 5);
+        bool gaveLG = player.giveAmmo(WEAP_LASERGUN, 10, 40, 60, 80);
+        return gaveClass || gaveRG || gaveLG;
     }
 
     void classAction1() {
         if (player.takeArmor(BOMB_ARMOR)) {
+            cVec3 origin, angles, velocity;
             cEntity @ent = player.getEnt();
-
-            cVec3 origin = ent.getOrigin();
-            origin.z += ent.viewHeight;
-
-            cVec3 @angles = ent.getAngles() + cVec3(-10, 0, 0);
-            if (angles.x < -90)
-                angles.x = -90;
-
-            cVec3 dir;
-            angles.angleVectors(dir, null, null);
-            origin += dir * 24;
-
-            cVec3 velocity = ent.getVelocity() + dir * BOMB_THROW_SPEED;
-
-            player.getPlayers().getWorld().addBomb(origin, ent.getAngles(),
-                    velocity, ent);
+            G_InitThrow(player.getEnt(), BOMB_THROW_SPEED,
+                    origin, angles, velocity);
+            player.getPlayers().getWorld().addBomb(origin, angles, velocity,
+                    ent);
         } else {
             player.centerPrint(BOMB_ARMOR
-                    + " armor is required to plant a bomb");
+                    + " armor is required to throw a bomb");
         }
     }
 

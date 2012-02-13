@@ -58,14 +58,15 @@ class Class {
         return classIcon;
     }
 
-    void giveAmmoPack() {
-        player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
-        player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
+    bool giveAmmopack() {
+        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
+        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
+        return gaveGL || gaveMG;
     }
 
-    void giveSpawnAmmoPacks() {
+    void giveSpawnAmmopacks() {
         for (int i = 0; i < spawnAmmoPacks; i++)
-            giveAmmoPack();
+            giveAmmopack();
     }
 
     void spawn() {
@@ -73,7 +74,7 @@ class Class {
             player.setClass(brandom(0, CLASSES - 1));
 
         player.giveAmmo(WEAP_GUNBLADE, 4, 0);
-        giveSpawnAmmoPacks();
+        giveSpawnAmmopacks();
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);

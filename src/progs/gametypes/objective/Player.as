@@ -130,21 +130,29 @@ class Player {
         client.inventorySetCount(item.weakAmmoTag, weakAmmo);
     }
 
-    void giveAmmo(int weapon, int strongAmmo, int maxStrongAmmo, int weakAmmo,
+    bool giveAmmo(int weapon, int strongAmmo, int maxStrongAmmo, int weakAmmo,
             int maxWeakAmmo) {
         if (client.canSelectWeapon(weapon)) {
             cItem @item = G_GetItem(weapon);
-            if (client.inventoryCount(item.ammoTag) + strongAmmo
-                    > maxStrongAmmo)
-                strongAmmo = maxStrongAmmo
-                    - client.inventoryCount(item.ammoTag);
-            if (client.inventoryCount(item.weakAmmoTag) + weakAmmo
-                    > maxWeakAmmo)
-                weakAmmo = maxWeakAmmo
-                    - client.inventoryCount(item.weakAmmoTag);
+            int currentWeakAmmo = client.inventoryCount(item.weakAmmoTag);
+            int currentStrongAmmo = client.inventoryCount(item.ammoTag);
+
+            if (currentWeakAmmo >= maxWeakAmmo
+                    && currentStrongAmmo >= maxStrongAmmo)
+                return false;
+
+            if (currentWeakAmmo + weakAmmo > maxWeakAmmo)
+                weakAmmo = maxWeakAmmo - currentWeakAmmo;
+            if (currentStrongAmmo + strongAmmo > maxStrongAmmo)
+                strongAmmo = maxStrongAmmo - currentStrongAmmo;
         }
 
         giveAmmo(weapon, strongAmmo, weakAmmo);
+        return true;
+    }
+
+    bool giveAmmopack() {
+        return classes.giveAmmopack();
     }
 
     void spawn() {

@@ -32,11 +32,11 @@ class Medic : Class {
         return "Medic";
     }
 
-    void giveAmmoPack() {
-        Class::giveAmmoPack();
-
-        player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
-        player.giveAmmo(WEAP_LASERGUN, 30, 80, 20, 60);
+    bool giveAmmopack() {
+        bool gaveClass = Class::giveAmmopack();
+        bool gavePG = player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
+        bool gaveLG = player.giveAmmo(WEAP_LASERGUN, 30, 80, 20, 60);
+        return gaveClass || gavePG || gaveLG;
     }
 
     void classAction1() {

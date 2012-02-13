@@ -111,6 +111,10 @@ class Classes {
         classes[currentClass].addArmor(armor);
     }
 
+    bool giveAmmopack() {
+        return classes[currentClass].giveAmmopack();
+    }
+
     void classAction1() {
         classes[currentClass].classAction1();
     }

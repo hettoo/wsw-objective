@@ -33,11 +33,11 @@ class Soldier : Class {
         return "Soldier";
     }
 
-    void giveAmmoPack() {
-        Class::giveAmmoPack();
-
-        player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
-        player.giveAmmo(WEAP_RIOTGUN, 5, 20, 10, 30);
+    bool giveAmmopack() {
+        bool gaveClass = Class::giveAmmopack();
+        bool gaveRL = player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
+        bool gaveRG = player.giveAmmo(WEAP_RIOTGUN, 5, 20, 10, 30);
+        return gaveClass || gaveRL || gaveRG;
     }
 
     void classAction1() {
