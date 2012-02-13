@@ -27,21 +27,15 @@ const int UNKNOWN = -1;
 
 class Core {
     Settings settings;
+    Scoreboard scoreboard;
     World world;
-
-    int noIcon;
-    int yesIcon;
-
-    Core() {
-        noIcon = G_ImageIndex("gfx/hud/icons/vsay/no");
-        yesIcon = G_ImageIndex("gfx/hud/icons/vsay/yes");
-    }
 
     void spawnGametype() {
         world.spawn();
     }
 
     void initGametype() {
+        scoreboard.register(world);
         settings.set();
     }
 
@@ -140,49 +134,8 @@ class Core {
         return true;
     }
 
-    cString @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
-        cEntity @ent = team.ent(entId);
-        cClient @client = ent.client;
-        Player @player = world.getPlayers().get(client.playerNum());
-        int readyIcon = noIcon;
-
-        if (client.isReady())
-            readyIcon = yesIcon;
-
-        int playerId = (ent.isGhosting()
-                && (match.getState() == MATCH_STATE_PLAYTIME))
-            ? -(ent.playerNum() + 1) : ent.playerNum();
-
-        cString entry = "&p " + playerId + " " + client.getClanName() + " "
-            + client.stats.score + " " + client.ping + " "
-            + player.getClassIcon() + " " + readyIcon + " ";
-
-        if (entry.len() <= maxLen)
-            return entry;
-        return "";
-    }
-
-    cString @scoreboardTeam(int teamId, int maxLen) {
-            cTeam @team = @G_GetTeam(teamId);
-
-            cString message = "";
-            cString entry = "&t " + teamId + " " + team.stats.score + " "
-                + team.ping + " ";
-
-            if (entry.len() <= maxLen) {
-                message += entry;
-                for (int j = 0; @team.ent(j) != null; j++)
-                    message +=scoreboardPlayer(team, j, maxLen - message.len());
-            }
-
-            return message;
-    }
-
     cString @scoreboardMessage(int maxLen) {
-        cString message = "";
-        message += scoreboardTeam(TEAM_ASSAULT, maxLen - message.len());
-        message += scoreboardTeam(TEAM_DEFENSE, maxLen - message.len());
-        return message;
+        return scoreboard.createMessage(maxLen);
     }
 
     void shutdown() {

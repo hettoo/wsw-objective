@@ -17,6 +17,7 @@ legacy_items.as;
 objective.as;
 objective/Core.as;
 objective/Settings.as;
+objective/Scoreboard.as;
 objective/World.as;
 objective/Players.as;
 objective/Player.as;
