@@ -24,7 +24,7 @@ const float BOMB_TIME = 30.0f;
 const float BOMB_SPEED = 0.015f;
 const int BOMB_RADIUS = 60;
 const int BOMB_EFFECT_RADIUS = 450;
-const float BOMB_WAIT_LIMIT = 15.0f;
+const float BOMB_WAIT_LIMIT = 20.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
 
 enum BombState {

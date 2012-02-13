@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int ITEM_RADIUS = 24;
-const float ITEM_WAIT_LIMIT = 16.0f;
+const float ITEM_WAIT_LIMIT = 20.0f;
 
 const int ITEM_THROW_SPEED = 400;
 
