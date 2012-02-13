@@ -66,15 +66,11 @@ class Class {
     }
 
     void spawn() {
-        if (gametype.isInstagib()) {
-            player.giveAmmo(WEAP_INSTAGUN, 1, 1);
-        } else {
-            if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
-                player.setClass(brandom(0, CLASSES - 1));
+        if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
+            player.setClass(brandom(0, CLASSES - 1));
 
-            player.giveAmmo(WEAP_GUNBLADE, 4, 0);
-            giveSpawnAmmoPacks();
-        }
+        player.giveAmmo(WEAP_GUNBLADE, 4, 0);
+        giveSpawnAmmoPacks();
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
