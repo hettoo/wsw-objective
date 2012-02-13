@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int RAGE_ARMOR = 70;
 const int RAGE_TIME = 18;
 
-const int SHIELD_ARMOR = 70;
+const int SHIELD_ARMOR = 60;
 const int SHIELD_TIME = 20;
 
 class Soldier : Class {
@@ -47,6 +47,7 @@ class Soldier : Class {
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
     }
 
+    // TODO: shield the teammembers around him as well?
     void classAction2() {
         if (!player.takeArmor(SHIELD_ARMOR))
             player.centerPrint(SHIELD_ARMOR

@@ -22,6 +22,7 @@ class World {
     ObjectiveSet objectiveSet;
     ItemSet itemSet;
     BombSet bombSet;
+    ClusterbombSet clusterbombSet;
     ArtillerySet artillerySet;
 
     World() {
@@ -51,6 +52,7 @@ class World {
         objectiveSet.think();
         itemSet.think();
         bombSet.think();
+        clusterbombSet.think();
         artillerySet.think();
     }
 
@@ -87,6 +89,11 @@ class World {
     void addBomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
             cEntity @owner) {
         bombSet.add(origin, angles, velocity, owner);
+    }
+
+    void addClusterbomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
+            cEntity @owner) {
+        clusterbombSet.add(origin, angles, velocity, owner);
     }
 
     void addArtillery(cVec3 @origin, cEntity @owner) {

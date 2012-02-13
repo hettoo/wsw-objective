@@ -34,6 +34,8 @@ objective/ItemSet.as;
 objective/Item.as;
 objective/BombSet.as;
 objective/Bomb.as;
+objective/ClusterbombSet.as;
+objective/Clusterbomb.as;
 objective/ArtillerySet.as;
 objective/Artillery.as;
 objective/ObjectiveSet.as;

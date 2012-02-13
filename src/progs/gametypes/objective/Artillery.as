@@ -52,7 +52,7 @@ class Artillery {
                 - ARTILLERY_MAX_DIVERGENCY), 0);
 
         G_FireRocket(origin, angles, 1500, ARTILLERY_IMPACT, ARTILLERY_IMPACT,
-                ARTILLERY_IMPACT, ARTILLERY_IMPACT, owner);
+                ARTILLERY_IMPACT, 1, owner);
 
         if (++rocketsFired == ARTILLERY_ROCKETS)
             active = false;

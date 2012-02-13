@@ -19,10 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const int AMMOPACK_ARMOR = 20;
 
+const int CLUSTERBOMB_ARMOR = 70;
+const int CLUSTERBOMB_THROW_SPEED = 1000;
+
 class FieldOps : Class {
     FieldOps() {
-        spawnArmor = 50;
-        maxArmor = 90;
+        spawnArmor = 40;
+        maxArmor = 100;
     }
 
     cString @getName() {
@@ -50,5 +53,17 @@ class FieldOps : Class {
         }
     }
 
-    // classaction2: clusterbomb
+    void classAction2() {
+        if (player.takeArmor(CLUSTERBOMB_ARMOR)) {
+            cVec3 origin, angles, velocity;
+            cEntity @ent = player.getEnt();
+            G_InitThrow(player.getEnt(), CLUSTERBOMB_THROW_SPEED,
+                    origin, angles, velocity);
+            player.getPlayers().getWorld().addClusterbomb(
+                    origin, angles, velocity, ent);
+        } else {
+            player.centerPrint(CLUSTERBOMB_ARMOR
+                    + " armor is required to throw a clusterbomb");
+        }
+    }
 }
