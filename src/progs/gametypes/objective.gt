@@ -19,6 +19,7 @@ objective/globals.as;
 objective/Core.as;
 objective/Settings.as;
 objective/Scoreboard.as;
+objective/Set.as;
 objective/World.as;
 objective/Players.as;
 objective/Player.as;

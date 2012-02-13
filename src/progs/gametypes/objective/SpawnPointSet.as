@@ -17,22 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class SpawnPointSet {
+class SpawnPointSet : Set {
     cEntity@[] points;
-    int size;
-    int capacity;
 
-    SpawnPointSet() {
-        capacity = 0;
-        size = 0;
-    }
-
-    void makeRoom() {
-        if (capacity == size) {
-            capacity *= 2;
-            capacity += 1;
-            points.resize(capacity);
-        }
+    void resize() {
+        points.resize(capacity);
     }
 
     int getSize() {

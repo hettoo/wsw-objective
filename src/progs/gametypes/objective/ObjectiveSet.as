@@ -19,30 +19,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const cString OBJECTIVE_NAME_PREFIX = "!";
 
-class ObjectiveSet {
+class ObjectiveSet : Set {
     Objective@[] objectiveSet;
-    int size;
-    int capacity;
 
     cString goal;
 
     Players @players;
 
-    ObjectiveSet() {
-        capacity = 0;
-        size = 0;
-    }
-
     void register(Players @players) {
         @this.players = players;
     }
 
-    void makeRoom() {
-        if (capacity == size) {
-            capacity *= 2;
-            capacity += 1;
-            objectiveSet.resize(capacity);
-        }
+    void resize() {
+        objectiveSet.resize(capacity);
     }
 
     void add(cEntity @ent) {

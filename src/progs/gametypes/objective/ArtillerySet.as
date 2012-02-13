@@ -17,22 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class ArtillerySet {
+class ArtillerySet : Set {
     Artillery@[] artillerySet;
-    int size;
-    int capacity;
 
-    ArtillerySet() {
-        capacity = 0;
-        size = 0;
-    }
-
-    void makeRoom() {
-        if (capacity == size) {
-            capacity *= 2;
-            capacity += 1;
-            artillerySet.resize(capacity);
-        }
+    void resize() {
+        artillerySet.resize(capacity);
     }
 
     void add(cVec3 @origin, cEntity @owner) {

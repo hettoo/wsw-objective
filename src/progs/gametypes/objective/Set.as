@@ -17,35 +17,23 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class BombSet : Set {
-    Bomb@[] bombSet;
+class Set {
+    int size;
+    int capacity;
 
-    int bombModel;
-
-    Players @players;
-    ObjectiveSet @objectiveSet;
-
-    BombSet() {
-        bombModel = G_ModelIndex("models/objects/misc/bomb_centered.md3");
+    Set() {
+        capacity = 0;
+        size = 0;
     }
 
-    void register(Players @players, ObjectiveSet @objectiveSet) {
-        @this.players = players;
-        @this.objectiveSet = objectiveSet;
+    void makeRoom() {
+        if (capacity == size) {
+            capacity *= 2;
+            capacity += 1;
+            resize();
+        }
     }
 
     void resize() {
-        bombSet.resize(capacity);
-    }
-
-    void add(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner) {
-        makeRoom();
-        @bombSet[size++] = Bomb(origin, angles, velocity, owner, players,
-                objectiveSet, bombModel);
-    }
-
-    void think() {
-        for (int i = 0; i < size; i++)
-            bombSet[i].think();
     }
 }
