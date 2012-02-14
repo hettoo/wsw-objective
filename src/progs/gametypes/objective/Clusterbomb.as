@@ -47,7 +47,7 @@ class Clusterbomb {
         ent.setAngles(angles);
         ent.setVelocity(velocity);
         ent.setSize(CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS);
-        ent.solid = SOLID_TRIGGER;
+        ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();

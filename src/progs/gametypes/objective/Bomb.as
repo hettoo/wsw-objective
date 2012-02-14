@@ -65,7 +65,7 @@ class Bomb {
         ent.setAngles(angles);
         ent.setVelocity(velocity);
         ent.setSize(BOMB_MINS, BOMB_MAXS);
-        ent.solid = SOLID_TRIGGER;
+        ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
