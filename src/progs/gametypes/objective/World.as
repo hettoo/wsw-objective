@@ -24,6 +24,7 @@ class World {
     BombSet bombSet;
     ClusterbombSet clusterbombSet;
     ArtillerySet artillerySet;
+    TransporterSet transporterSet;
 
     World() {
         players.register(this);
@@ -98,5 +99,10 @@ class World {
 
     void addArtillery(cVec3 @origin, cEntity @owner) {
         artillerySet.add(origin, owner);
+    }
+
+    Transporter @addTransporter(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
+            cEntity @owner) {
+        return transporterSet.add(origin, angles, velocity, owner);
     }
 }

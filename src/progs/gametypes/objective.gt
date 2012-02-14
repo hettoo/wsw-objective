@@ -38,6 +38,8 @@ objective/ClusterbombSet.as;
 objective/Clusterbomb.as;
 objective/ArtillerySet.as;
 objective/Artillery.as;
+objective/TransporterSet.as;
+objective/Transporter.as;
 objective/ObjectiveSet.as;
 objective/Objective.as;
 objective/Component.as;

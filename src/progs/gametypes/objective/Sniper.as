@@ -20,7 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int ARTILLERY_ARMOR = 70;
 const int MAX_ARTILLERY_DISTANCE = 3000;
 
+const int TRANSPORTER_ARMOR = 55;
+const int TRANSPORTER_THROW_SPEED = 900;
+
 class Sniper : Class {
+    Transporter @transporter;
+
     Sniper() {
         spawnArmor = 0;
         maxArmor = 100;
@@ -69,6 +74,23 @@ class Sniper : Class {
         }
     }
 
-    // classaction2: spot landmines?
-    // throw a satchel charge?
+    void classAction2() {
+        if (@transporter != null) {
+            transporter.teleport();
+            @transporter = null;
+        } else {
+            if (player.takeArmor(TRANSPORTER_ARMOR)) {
+                cVec3 origin, angles, velocity;
+                cEntity @ent = player.getEnt();
+                G_InitThrow(player.getEnt(), TRANSPORTER_THROW_SPEED,
+                        origin, angles, velocity);
+                @transporter = player.getPlayers().getWorld().addTransporter(
+                        origin, angles, velocity, ent);
+                player.centerPrint("Press again to teleport yourself");
+            } else {
+                player.centerPrint(TRANSPORTER_ARMOR
+                        + " armor is required to throw a transporter");
+            }
+        }
+    }
 }
