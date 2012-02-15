@@ -21,13 +21,16 @@ cVec3 CLUSTERBOMB_MINS(-11, -11, -11);
 cVec3 CLUSTERBOMB_MAXS(11, 11, 11);
 
 const int CLUSTERBOMB_THROW_SPEED = 1000;
-const int CLUSTERBOMB_EFFECT_RADIUS = 320;
-const int CLUSTERBOMB_EFFECT = 120;
+const int CLUSTERBOMB_EFFECT_RADIUS = 360;
+const int CLUSTERBOMB_EFFECT = 130;
 const float CLUSTERBOMB_TIME = 3.2f;
 
-const int CB_NADES = 5;
-const float CB_NADE_TIME = 1.4f;
-const int CB_NADE_SPREAD = 1200;
+const int CB_NADES = 6;
+const float CB_NADE_TIME = 1.6f;
+const int CB_NADE_SPEED = 220;
+
+const int CB_ROCKETS = 8;
+const int CB_ROCKET_SPEED = 1000;
 
 class Clusterbomb {
     cEntity @ent;
@@ -64,14 +67,22 @@ class Clusterbomb {
 
     void releaseAmmo() {
         for (int i = 0; i < CB_NADES; i++) {
-            cEntity @nade = G_FireGrenade(ent.getOrigin(),
-                    CB_NADE_SPREAD * cVec3(random() * 2 - 1, random() * 2 - 1,
-                        random()),
-                    CLUSTERBOMB_EFFECT_RADIUS,
+            cVec3 dir = cVec3(random() * 2 - 1, random() * 2 - 1, random());
+            dir.toAngles(dir);
+            cEntity @nade = G_FireGrenade(ent.getOrigin(), dir,
+                    CB_NADE_SPEED / random(),
                     CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                     1, ent.owner);
             if (@nade != null)
                 nade.nextThink = levelTime + CB_NADE_TIME * 1000;
+        }
+        for (int i = 0; i < CB_ROCKETS; i++) {
+            cVec3 dir = cVec3(random() * 2 - 1, random() * 2 - 1, random());
+            dir.toAngles(dir);
+            G_FireRocket(ent.getOrigin(), dir,
+                    CB_ROCKET_SPEED / random(),
+                    CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
+                    1, ent.owner);
         }
     }
 
