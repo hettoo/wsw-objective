@@ -22,8 +22,8 @@ cVec3 BOMB_MAXS(16, 16, 40);
 
 const float BOMB_TIME = 30.0f;
 const float BOMB_SPEED = 0.015f;
-const int BOMB_RADIUS = 60;
-const int BOMB_EFFECT_RADIUS = 450;
+const int BOMB_RADIUS = 80;
+const int BOMB_EFFECT_RADIUS = 420;
 const float BOMB_WAIT_LIMIT = 20.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
 
@@ -80,7 +80,7 @@ class Bomb {
 
     void explode() {
         ent.explosionEffect(BOMB_EFFECT_RADIUS);
-        ent.splashDamage(@ent.owner, BOMB_EFFECT_RADIUS, 160, 100, 100,
+        ent.splashDamage(@ent.owner, BOMB_EFFECT_RADIUS, 180, 100, 1,
                 MOD_EXPLOSIVE);
         objectiveSet.exploded(ent);
         remove();
