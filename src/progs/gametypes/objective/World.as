@@ -77,32 +77,27 @@ class World {
         players.respawnPlayer(client);
     }
 
-    void addAmmopack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
-        itemSet.addAmmopack(origin, angles, velocity, owner);
+    void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+        itemSet.addAmmopack(origin, angles, owner);
     }
 
-    void addHealthpack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
-        itemSet.addHealthpack(origin, angles, velocity, owner);
+    void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+        itemSet.addHealthpack(origin, angles, owner);
     }
 
-    void addBomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
-        bombSet.add(origin, angles, velocity, owner);
+    void addBomb(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+        bombSet.add(origin, angles, owner);
     }
 
-    void addClusterbomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
-        clusterbombSet.add(origin, angles, velocity, owner);
+    void addClusterbomb(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+        clusterbombSet.add(origin, angles, owner);
     }
 
     void addArtillery(cVec3 @origin, cEntity @owner) {
         artillerySet.add(origin, owner);
     }
 
-    Transporter @addTransporter(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
-        return transporterSet.add(origin, angles, velocity, owner);
+    Transporter @addTransporter(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+        return transporterSet.add(origin, angles, owner);
     }
 }

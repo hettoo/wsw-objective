@@ -18,9 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int AMMOPACK_ARMOR = 20;
-
 const int CLUSTERBOMB_ARMOR = 70;
-const int CLUSTERBOMB_THROW_SPEED = 1000;
 
 class FieldOps : Class {
     FieldOps() {
@@ -41,12 +39,10 @@ class FieldOps : Class {
 
     void classAction1() {
         if (player.takeArmor(AMMOPACK_ARMOR)) {
-            cVec3 origin, angles, velocity;
+            cVec3 origin, angles;
             cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), ITEM_THROW_SPEED,
-                    origin, angles, velocity);
-            player.getPlayers().getWorld().addAmmopack(origin, angles, velocity,
-                    ent);
+            G_InitThrow(player.getEnt(), origin, angles);
+            player.getPlayers().getWorld().addAmmopack(origin, angles, ent);
         } else {
             player.centerPrint(AMMOPACK_ARMOR
                     + " armor is required to throw an ammopack");
@@ -55,12 +51,10 @@ class FieldOps : Class {
 
     void classAction2() {
         if (player.takeArmor(CLUSTERBOMB_ARMOR)) {
-            cVec3 origin, angles, velocity;
+            cVec3 origin, angles;
             cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), CLUSTERBOMB_THROW_SPEED,
-                    origin, angles, velocity);
-            player.getPlayers().getWorld().addClusterbomb(
-                    origin, angles, velocity, ent);
+            G_InitThrow(player.getEnt(), origin, angles);
+            player.getPlayers().getWorld().addClusterbomb(origin, angles, ent);
         } else {
             player.centerPrint(CLUSTERBOMB_ARMOR
                     + " armor is required to throw a clusterbomb");

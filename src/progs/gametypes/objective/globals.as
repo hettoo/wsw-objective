@@ -41,8 +41,7 @@ cString @G_ReplaceSpaces(cString &string) {
     return G_ReplaceSpaces(string, "_");
 }
 
-void G_InitThrow(cEntity @ent, int speed,
-        cVec3 @origin, cVec3 @angles, cVec3 @velocity) {
+void G_InitThrow(cEntity @ent, cVec3 @origin, cVec3 @angles) {
     origin = ent.getOrigin();
     origin.z += ent.viewHeight;
 
@@ -53,8 +52,4 @@ void G_InitThrow(cEntity @ent, int speed,
     cVec3 dir;
     angles.angleVectors(dir, null, null);
     origin += dir * 24;
-
-    angles.x = 0;
-
-    velocity = ent.getVelocity() + dir * speed;
 }

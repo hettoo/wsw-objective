@@ -17,25 +17,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const int TRANSPORTER_THROW_SPEED = 900;
+
 cVec3 TRANSPORTER_MINS(-11, -11, -11);
 cVec3 TRANSPORTER_MAXS(11, 11, 11);
 
 class Transporter {
     cEntity @ent;
 
-    Transporter(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner,
-            int model) {
-        spawn(origin, angles, velocity, model);
-        @ent.owner = owner;
+    Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+        spawn(origin, angles, owner, model);
     }
 
-    void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity, int model) {
+    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
         @ent = G_SpawnEntity("transporter");
         ent.type = ET_GENERIC;
         ent.modelindex = model;
         ent.setOrigin(origin);
         ent.setAngles(angles);
-        ent.setVelocity(velocity);
+        cVec3 dir;
+        angles.angleVectors(dir, null, null);
+        ent.setVelocity(owner.getVelocity() + dir * TRANSPORTER_THROW_SPEED);
+        @ent.owner = owner;
         ent.setSize(TRANSPORTER_MINS, TRANSPORTER_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;

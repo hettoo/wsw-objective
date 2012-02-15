@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int BOMB_THROW_SPEED = 400;
 const int BOMB_ARMOR = 70;
 
 class Engineer : Class {
@@ -39,12 +38,10 @@ class Engineer : Class {
 
     void classAction1() {
         if (player.takeArmor(BOMB_ARMOR)) {
-            cVec3 origin, angles, velocity;
+            cVec3 origin, angles;
             cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), BOMB_THROW_SPEED,
-                    origin, angles, velocity);
-            player.getPlayers().getWorld().addBomb(origin, angles, velocity,
-                    ent);
+            G_InitThrow(player.getEnt(), origin, angles);
+            player.getPlayers().getWorld().addBomb(origin, angles, ent);
         } else {
             player.centerPrint(BOMB_ARMOR
                     + " armor is required to throw a bomb");

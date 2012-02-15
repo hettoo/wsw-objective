@@ -38,10 +38,10 @@ class BombSet : Set {
         bombSet.resize(capacity);
     }
 
-    void add(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner) {
+    void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @bombSet[size++] = Bomb(origin, angles, velocity, owner, players,
-                objectiveSet, bombModel);
+        @bombSet[size++] = Bomb(origin, angles, owner, players, objectiveSet,
+                bombModel);
     }
 
     void think() {

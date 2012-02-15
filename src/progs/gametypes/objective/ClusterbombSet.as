@@ -28,9 +28,9 @@ class ClusterbombSet : Set {
         clusterbombModel = G_ModelIndex("models/items/ammo/pack/pack.md3");
     }
 
-    void add(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner) {
+    void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @clusterbombSet[size++] = Clusterbomb(origin, angles, velocity, owner,
+        @clusterbombSet[size++] = Clusterbomb(origin, angles, owner,
                 clusterbombModel);
     }
 

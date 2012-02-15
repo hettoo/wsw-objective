@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 cVec3 BOMB_MINS(-16, -16, -16);
 cVec3 BOMB_MAXS(16, 16, 40);
 
+const int BOMB_THROW_SPEED = 400;
 const float BOMB_TIME = 30.0f;
 const float BOMB_SPEED = 0.015f;
 const int BOMB_RADIUS = 80;
@@ -44,10 +45,10 @@ class Bomb {
     Players @players;
     ObjectiveSet @objectiveSet;
 
-    Bomb(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner,
-            Players @players, ObjectiveSet @objectiveSet, int model) {
-        spawn(origin, angles, velocity, model);
-        @ent.owner = owner;
+    Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
+            ObjectiveSet @objectiveSet, int model) {
+        spawn(origin, angles, owner, model);
+
         team = owner.team;
         state = BS_PLACED;
         progress = 0;
@@ -57,13 +58,16 @@ class Bomb {
         @this.objectiveSet = objectiveSet;
     }
 
-    void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity, int model) {
+    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
         @ent = G_SpawnEntity("bomb");
         ent.type = ET_GENERIC;
         ent.modelindex = model;
         ent.setOrigin(origin);
         ent.setAngles(angles);
-        ent.setVelocity(velocity);
+        cVec3 dir;
+        angles.angleVectors(dir, null, null);
+        ent.setVelocity(owner.getVelocity() + dir * BOMB_THROW_SPEED);
+        @ent.owner = owner;
         ent.setSize(BOMB_MINS, BOMB_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;

@@ -30,23 +30,25 @@ class Item {
 
     Players @players;
 
-    Item(cVec3 @origin, cVec3 @angles, cVec3 @velocity, cEntity @owner,
-            Players @players, int model, cVec3 @mins, cVec3 @maxs, int type) {
+    Item(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
+            int model, cVec3 @mins, cVec3 @maxs, int type) {
         this.type = type;
-        spawn(origin, angles, velocity, model, mins, maxs);
-        @ent.owner = owner;
+        spawn(origin, angles, owner, model, mins, maxs);
 
         @this.players = players;
     }
 
-    void spawn(cVec3 origin, cVec3 angles, cVec3 @velocity, int model,
+    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model,
             cVec3 @mins, cVec3 @maxs) {
         @ent = G_SpawnEntity("item");
         ent.type = ET_GENERIC;
         ent.modelindex = model;
         ent.setOrigin(origin);
         ent.setAngles(angles);
-        ent.setVelocity(velocity);
+        cVec3 dir;
+        angles.angleVectors(dir, null, null);
+        ent.setVelocity(owner.getVelocity() + dir * ITEM_THROW_SPEED);
+        @ent.owner = owner;
         ent.setSize(mins, maxs);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;

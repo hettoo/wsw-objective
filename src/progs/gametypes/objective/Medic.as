@@ -41,12 +41,10 @@ class Medic : Class {
 
     void classAction1() {
         if (player.takeArmor(HEALTH_ARMOR)) {
-            cVec3 origin, angles, velocity;
+            cVec3 origin, angles;
             cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), ITEM_THROW_SPEED,
-                    origin, angles, velocity);
-            player.getPlayers().getWorld().addHealthpack(
-                    origin, angles, velocity, ent);
+            G_InitThrow(player.getEnt(), origin, angles);
+            player.getPlayers().getWorld().addHealthpack(origin, angles, ent);
         } else {
             player.centerPrint(HEALTH_ARMOR
                     + " armor is required to drop health");

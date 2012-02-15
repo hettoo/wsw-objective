@@ -21,7 +21,6 @@ const int ARTILLERY_ARMOR = 70;
 const int MAX_ARTILLERY_DISTANCE = 3000;
 
 const int TRANSPORTER_ARMOR = 55;
-const int TRANSPORTER_THROW_SPEED = 900;
 
 class Sniper : Class {
     Transporter @transporter;
@@ -80,12 +79,11 @@ class Sniper : Class {
             @transporter = null;
         } else {
             if (player.takeArmor(TRANSPORTER_ARMOR)) {
-                cVec3 origin, angles, velocity;
+                cVec3 origin, angles;
                 cEntity @ent = player.getEnt();
-                G_InitThrow(player.getEnt(), TRANSPORTER_THROW_SPEED,
-                        origin, angles, velocity);
+                G_InitThrow(player.getEnt(), origin, angles);
                 @transporter = player.getPlayers().getWorld().addTransporter(
-                        origin, angles, velocity, ent);
+                        origin, angles, ent);
                 player.centerPrint("Press again to teleport yourself");
             } else {
                 player.centerPrint(TRANSPORTER_ARMOR

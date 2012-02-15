@@ -59,20 +59,16 @@ class ItemSet {
         }
     }
 
-    void addHealthpack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
+    void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @itemSet[size++] = Item(origin, angles, velocity, owner,
-                players, healthpackModel, HEALTHPACK_MINS, HEALTHPACK_MAXS,
-                ITEM_HEALTHPACK);
+        @itemSet[size++] = Item(origin, angles, owner, players, healthpackModel,
+                HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
-    void addAmmopack(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
+    void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @itemSet[size++] = Item(origin, angles, velocity, owner,
-                players, ammopackModel, AMMOPACK_MINS, AMMOPACK_MAXS,
-                ITEM_AMMOPACK);
+        @itemSet[size++] = Item(origin, angles, owner, players, ammopackModel,
+                AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
     }
 
     void think() {

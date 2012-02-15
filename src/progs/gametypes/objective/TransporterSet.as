@@ -28,11 +28,9 @@ class TransporterSet : Set {
         transporterModel = G_ModelIndex("models/items/ammo/pack/pack.md3");
     }
 
-    Transporter @add(cVec3 @origin, cVec3 @angles, cVec3 @velocity,
-            cEntity @owner) {
+    Transporter @add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        Transporter @new = Transporter(origin, angles, velocity, owner,
-                transporterModel);
+        Transporter @new = Transporter(origin, angles, owner, transporterModel);
         @transporterSet[size++] = new;
         return new;
     }
