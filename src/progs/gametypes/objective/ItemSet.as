@@ -36,11 +36,17 @@ class ItemSet {
     int healthpackModel;
     int ammopackModel;
 
+    int healthpackSound;
+    int ammopackSound;
+
     Players @players;
 
     ItemSet() {
         capacity = 0;
         size = 0;
+
+        healthpackSound = G_SoundIndex("sounds/items/item_spawn");
+        ammopackSound = G_SoundIndex("sounds/items/item_spawn");
 
         healthpackModel
             = G_ModelIndex("models/items/health/small/small_health.md3");
@@ -61,13 +67,15 @@ class ItemSet {
 
     void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @itemSet[size++] = Item(origin, angles, owner, players, healthpackModel,
+        @itemSet[size++] = Item(origin, angles, owner, players,
+                healthpackModel, healthpackSound,
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
     void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         makeRoom();
-        @itemSet[size++] = Item(origin, angles, owner, players, ammopackModel,
+        @itemSet[size++] = Item(origin, angles, owner, players,
+                ammopackModel, ammopackSound,
                 AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
     }
 

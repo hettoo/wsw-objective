@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int ITEM_RADIUS = 24;
+const int ITEM_RADIUS = 30;
 const float ITEM_WAIT_LIMIT = 20.0f;
 
 const int ITEM_THROW_SPEED = 400;
@@ -31,15 +31,15 @@ class Item {
     Players @players;
 
     Item(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
-            int model, cVec3 @mins, cVec3 @maxs, int type) {
+            int model, int sound, cVec3 @mins, cVec3 @maxs, int type) {
         this.type = type;
-        spawn(origin, angles, owner, model, mins, maxs);
+        spawn(origin, angles, owner, model, sound, mins, maxs);
 
         @this.players = players;
     }
 
     void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model,
-            cVec3 @mins, cVec3 @maxs) {
+            int sound, cVec3 @mins, cVec3 @maxs) {
         @ent = G_SpawnEntity("item");
         ent.type = ET_GENERIC;
         ent.modelindex = model;
@@ -55,6 +55,7 @@ class Item {
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
         removeTime = ITEM_WAIT_LIMIT;
+        G_Sound(ent, CHAN_ITEM, sound, ATTN_ITEM_SPAWN);
     }
 
     void remove() {

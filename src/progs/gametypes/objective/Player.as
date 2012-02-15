@@ -25,9 +25,15 @@ class Player {
     cClient @client;
     cEntity @ent;
 
+    int ammopackSound;
+    int healthpackSound;
+
     Players @players;
 
     Player(Players @players) {
+        ammopackSound = G_SoundIndex("sounds/items/ammo_pickup");
+        healthpackSound = G_SoundIndex("sounds/items/health_5");
+
         @this.players = players;
         classes.register(this);
     }
@@ -152,11 +158,17 @@ class Player {
     }
 
     bool giveAmmopack() {
-        return classes.giveAmmopack();
+        bool done = classes.giveAmmopack();
+        if (done)
+            itemPickupSound(ammopackSound);
+        return done;
     }
 
     bool giveHealthpack() {
-        return classes.giveHealthpack();
+        bool done = classes.giveHealthpack();
+        if (done)
+            itemPickupSound(healthpackSound);
+        return done;
     }
 
     void spawn() {
@@ -183,5 +195,9 @@ class Player {
 
     void classAction2() {
         classes.classAction2();
+    }
+
+    void itemPickupSound(int sound) {
+        G_Sound(ent, CHAN_ITEM, sound, ATTN_ITEM_PICKUP);
     }
 }

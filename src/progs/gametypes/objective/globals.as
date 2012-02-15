@@ -20,6 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int TEAM_ASSAULT = TEAM_ALPHA;
 const int TEAM_DEFENSE = TEAM_BETA;
 
+const float ATTN_ITEM_SPAWN = 4.0;
+const float ATTN_ITEM_PICKUP = 4.5;
+
 const int PROGRESS_FINISHED = 100;
 
 cString WTF = "???";
