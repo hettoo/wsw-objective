@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int ARTILLERY_ARMOR = 70;
 const int MAX_ARTILLERY_DISTANCE = 3000;
 
-const int TRANSPORTER_ARMOR = 55;
+const int TRANSPORTER_ARMOR = 50;
 
 class Sniper : Class {
     Transporter @transporter;

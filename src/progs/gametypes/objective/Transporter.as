@@ -17,10 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int TRANSPORTER_THROW_SPEED = 900;
+const int TRANSPORTER_THROW_SPEED = 1100;
 
-cVec3 TRANSPORTER_MINS(-11, -11, -11);
-cVec3 TRANSPORTER_MAXS(11, 11, 11);
+cVec3 TRANSPORTER_MINS(-16, -16, -16);
+cVec3 TRANSPORTER_MAXS(16, 16, 40);
 
 class Transporter {
     cEntity @ent;
