@@ -78,16 +78,18 @@ class Sniper : Class {
             transporter.teleport();
             @transporter = null;
         } else {
-            if (player.takeArmor(TRANSPORTER_ARMOR)) {
-                cVec3 origin, angles;
-                cEntity @ent = player.getEnt();
-                G_InitThrow(player.getEnt(), origin, angles);
+            cVec3 origin, angles;
+            cEntity @ent = player.getEnt();
+            if (!G_CheckInitThrow(player.getEnt(), origin, angles,
+                        TRANSPORTER_MINS, TRANSPORTER_MAXS)) {
+                player.centerPrint("Can't spawn a transporter there");
+            } else if (!player.takeArmor(TRANSPORTER_ARMOR)) {
+                player.centerPrint(TRANSPORTER_ARMOR
+                        + " armor is required to throw a transporter");
+            } else {
                 @transporter = player.getPlayers().getWorld().addTransporter(
                         origin, angles, ent);
                 player.centerPrint("Press again to teleport yourself");
-            } else {
-                player.centerPrint(TRANSPORTER_ARMOR
-                        + " armor is required to throw a transporter");
             }
         }
     }

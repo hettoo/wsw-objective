@@ -36,6 +36,12 @@ enum BombState {
 
 class Bomb {
     cEntity @ent;
+
+    cVec3 @origin;
+    cVec3 @angles;
+    cEntity @owner;
+    int model;
+
     int team;
     int state;
     float progress;
@@ -47,7 +53,10 @@ class Bomb {
 
     Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
             ObjectiveSet @objectiveSet, int model) {
-        spawn(origin, angles, owner, model);
+        @this.origin = origin;
+        @this.angles = angles;
+        @this.owner = owner;
+        this.model = model;
 
         team = owner.team;
         state = BS_PLACED;
@@ -58,7 +67,7 @@ class Bomb {
         @this.objectiveSet = objectiveSet;
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+    void spawn() {
         @ent = G_SpawnEntity("bomb");
         ent.type = ET_GENERIC;
         ent.modelindex = model;

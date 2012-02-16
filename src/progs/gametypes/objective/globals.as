@@ -56,3 +56,18 @@ void G_InitThrow(cEntity @ent, cVec3 @origin, cVec3 @angles) {
     angles.angleVectors(dir, null, null);
     origin += dir * 24;
 }
+
+bool G_CheckInitThrow(cEntity @ent, cVec3 @origin, cVec3 @angles,
+        cVec3 @mins, cVec3 @maxs) {
+    G_InitThrow(ent, origin, angles);
+    return G_CanSpawn(origin, mins, maxs, ent.entNum());
+}
+
+bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs, int ignore) {
+    return !cTrace().doTrace(origin, mins , maxs, origin, ignore,
+            MASK_PLAYERSOLID);
+}
+
+bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs) {
+    return G_CanSpawn(origin, mins, maxs, -1);
+}

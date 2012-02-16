@@ -40,15 +40,16 @@ class Medic : Class {
     }
 
     void classAction1() {
-        if (player.takeArmor(HEALTH_ARMOR)) {
-            cVec3 origin, angles;
-            cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), origin, angles);
-            player.getPlayers().getWorld().addHealthpack(origin, angles, ent);
-        } else {
+        cVec3 origin, angles;
+        cEntity @ent = player.getEnt();
+        if (!G_CheckInitThrow(player.getEnt(), origin, angles,
+                    HEALTHPACK_MINS, HEALTHPACK_MAXS))
+            player.centerPrint("Can't spawn a healthpack there");
+        else if (!player.takeArmor(HEALTH_ARMOR))
             player.centerPrint(HEALTH_ARMOR
                     + " armor is required to drop health");
-        }
+        else
+            player.getPlayers().getWorld().addHealthpack(origin, angles, ent);
     }
 
     // classaction2: revive

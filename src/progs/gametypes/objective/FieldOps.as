@@ -38,26 +38,28 @@ class FieldOps : Class {
     }
 
     void classAction1() {
-        if (player.takeArmor(AMMOPACK_ARMOR)) {
-            cVec3 origin, angles;
-            cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), origin, angles);
-            player.getPlayers().getWorld().addAmmopack(origin, angles, ent);
-        } else {
+        cVec3 origin, angles;
+        cEntity @ent = player.getEnt();
+        if (!G_CheckInitThrow(player.getEnt(), origin, angles,
+                    AMMOPACK_MINS, AMMOPACK_MAXS))
+            player.centerPrint("Can't spawn an ammopack there");
+        else if (!player.takeArmor(AMMOPACK_ARMOR))
             player.centerPrint(AMMOPACK_ARMOR
                     + " armor is required to throw an ammopack");
-        }
+        else
+            player.getPlayers().getWorld().addAmmopack(origin, angles, ent);
     }
 
     void classAction2() {
-        if (player.takeArmor(CLUSTERBOMB_ARMOR)) {
-            cVec3 origin, angles;
-            cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), origin, angles);
-            player.getPlayers().getWorld().addClusterbomb(origin, angles, ent);
-        } else {
+        cVec3 origin, angles;
+        cEntity @ent = player.getEnt();
+        if (!G_CheckInitThrow(player.getEnt(), origin, angles,
+                    CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS))
+            player.centerPrint("Can't spawn a clusterbomb there");
+        else if (!player.takeArmor(CLUSTERBOMB_ARMOR))
             player.centerPrint(CLUSTERBOMB_ARMOR
                     + " armor is required to throw a clusterbomb");
-        }
+        else
+            player.getPlayers().getWorld().addClusterbomb(origin, angles, ent);
     }
 }

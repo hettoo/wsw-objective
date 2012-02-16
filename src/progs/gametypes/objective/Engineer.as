@@ -37,14 +37,16 @@ class Engineer : Class {
     }
 
     void classAction1() {
-        if (player.takeArmor(BOMB_ARMOR)) {
-            cVec3 origin, angles;
-            cEntity @ent = player.getEnt();
-            G_InitThrow(player.getEnt(), origin, angles);
-            player.getPlayers().getWorld().addBomb(origin, angles, ent);
-        } else {
+        cVec3 origin, angles;
+        cEntity @ent = player.getEnt();
+        if (!G_CheckInitThrow(player.getEnt(), origin, angles,
+                    BOMB_MINS, BOMB_MAXS)) {
+            player.centerPrint("Can't spawn a bomb there");
+        } else if (!player.takeArmor(BOMB_ARMOR)) {
             player.centerPrint(BOMB_ARMOR
                     + " armor is required to throw a bomb");
+        } else {
+            player.getPlayers().getWorld().addBomb(origin, angles, ent);
         }
     }
 
