@@ -18,12 +18,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int TRANSPORTER_THROW_SPEED = 1100;
+const float TRANSPORTER_WAIT_LIMIT = 16.0;
 
 cVec3 TRANSPORTER_MINS(-24, -24, -24);
 cVec3 TRANSPORTER_MAXS(24, 24, 40);
 
 class Transporter {
     cEntity @ent;
+
+    float removeTime;
 
     Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
         spawn(origin, angles, owner, model);
@@ -43,6 +46,7 @@ class Transporter {
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;
         ent.svflags &= ~SVF_NOCLIENT;
+        removeTime = TRANSPORTER_WAIT_LIMIT;
         ent.linkEntity();
     }
 
@@ -52,11 +56,24 @@ class Transporter {
         @ent = null;
     }
 
+    bool isActive() {
+        return @ent != null;
+    }
+
     void teleport() {
         ent.owner.teleportEffect(false);
         ent.owner.setOrigin(ent.getOrigin());
         ent.owner.setVelocity(ent.getVelocity());
         ent.owner.teleportEffect(true);
         remove();
+    }
+
+    void think() {
+        if (@ent == null)
+            return;
+
+        removeTime -= frameTime * 0.001;
+        if (removeTime <= 0)
+            remove();
     }
 }

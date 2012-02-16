@@ -74,21 +74,22 @@ class Item {
     }
 
     void think() {
-        if (@ent != null) {
-            removeTime -= frameTime * 0.001;
-            if (removeTime <= 0) {
-                remove();
-            } else {
-                for (int i = 0; i < players.getSize(); i++) {
-                    Player @player = players.get(i);
-                    if (@player != null && near(player)) {
-                        if ((type == ITEM_HEALTHPACK && player.giveHealthpack())
-                                || (type == ITEM_AMMOPACK
-                                    && player.giveAmmopack())) {
-                            remove();
-                            return;
-                        }
-                    }
+        if (@ent == null)
+            return;
+
+        removeTime -= frameTime * 0.001;
+        if (removeTime <= 0) {
+            remove();
+            return;
+        }
+
+        for (int i = 0; i < players.getSize(); i++) {
+            Player @player = players.get(i);
+            if (@player != null && near(player)) {
+                if ((type == ITEM_HEALTHPACK && player.giveHealthpack())
+                        || (type == ITEM_AMMOPACK && player.giveAmmopack())) {
+                    remove();
+                    return;
                 }
             }
         }

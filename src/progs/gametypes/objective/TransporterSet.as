@@ -35,4 +35,9 @@ class TransporterSet : Set {
         @transporterSet[size++] = new;
         return new;
     }
+
+    void think() {
+        for (int i = 0; i < size; i++)
+            transporterSet[i].think();
+    }
 }

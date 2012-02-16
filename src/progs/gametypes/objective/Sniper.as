@@ -74,7 +74,7 @@ class Sniper : Class {
     }
 
     void classAction2() {
-        if (@transporter != null) {
+        if (@transporter != null && transporter.isActive()) {
             transporter.teleport();
             @transporter = null;
         } else {

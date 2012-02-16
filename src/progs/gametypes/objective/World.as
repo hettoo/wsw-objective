@@ -55,6 +55,7 @@ class World {
         bombSet.think();
         clusterbombSet.think();
         artillerySet.think();
+        transporterSet.think();
     }
 
     void initClient(cClient @client) {
