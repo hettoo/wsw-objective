@@ -26,7 +26,7 @@ class TransporterSet : Set {
         transporterSet.resize(capacity);
 
         transporterModel = G_ModelIndex(
-                "models/objects/projectile/gunblade/proj_gunbladeblast.md3");
+                "models/objects/projectile/plasmagun/proj_plasmagun.md3");
     }
 
     Transporter @add(cVec3 @origin, cVec3 @angles, cEntity @owner) {

@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const int TRANSPORTER_THROW_SPEED = 1100;
 
-cVec3 TRANSPORTER_MINS(-16, -16, -16);
-cVec3 TRANSPORTER_MAXS(16, 16, 40);
+cVec3 TRANSPORTER_MINS(-24, -24, -24);
+cVec3 TRANSPORTER_MAXS(24, 24, 40);
 
 class Transporter {
     cEntity @ent;
