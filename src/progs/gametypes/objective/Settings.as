@@ -99,8 +99,8 @@ class Settings {
         gametype.shootingDisabled = false;
         gametype.infiniteAmmo = false;
         gametype.canForceModels = true;
-        gametype.canShowMinimap = false;
-        gametype.teamOnlyMinimap = false;
+        gametype.canShowMinimap = true;
+        gametype.teamOnlyMinimap = true;
 
         gametype.spawnpointRadius = 256;
 
@@ -111,7 +111,7 @@ class Settings {
     void setSpawnsystem(int team, int spawnSystem, int waveTime,
             int maxPlayers) {
         gametype.setTeamSpawnsystem(team, spawnSystem, waveTime,
-                maxPlayers, false);
+                maxPlayers, true);
     }
 
     void setSpawnsystem(int spawnSystem, int waveTime, int maxPlayers) {
