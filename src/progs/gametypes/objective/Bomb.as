@@ -77,6 +77,7 @@ class Bomb {
         angles.angleVectors(dir, null, null);
         ent.setVelocity(owner.getVelocity() + dir * BOMB_THROW_SPEED);
         @ent.owner = owner;
+        ent.team = team;
         ent.setSize(BOMB_MINS, BOMB_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;
