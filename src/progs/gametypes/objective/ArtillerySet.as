@@ -25,12 +25,26 @@ class ArtillerySet : Set {
     }
 
     void add(cVec3 @origin, cEntity @owner) {
-        makeRoom();
-        @artillerySet[size++] = Artillery(origin, owner);
+        int id = UNKNOWN;
+        for (int i = 0; i < size && id == UNKNOWN; i++) {
+            if (@artillerySet[i] == null)
+                id = i;
+        }
+        if (id == UNKNOWN) {
+            makeRoom();
+            id = size++;
+        }
+        @artillerySet[id] = Artillery(origin, owner, id, this);
+    }
+
+    void remove(int id) {
+        @artillerySet[id] = null;
     }
 
     void think() {
-        for (int i = 0; i < size; i++)
-            artillerySet[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@artillerySet[i] != null)
+                artillerySet[i].think();
+        }
     }
 }

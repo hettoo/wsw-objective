@@ -22,22 +22,38 @@ class TransporterSet : Set {
 
     int transporterModel;
 
-    void resize() {
-        transporterSet.resize(capacity);
-
+    TransporterSet() {
         transporterModel = G_ModelIndex(
                 "models/objects/projectile/plasmagun/proj_plasmagun.md3");
     }
 
+    void resize() {
+        transporterSet.resize(capacity);
+    }
+
     Transporter @add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
-        makeRoom();
-        Transporter @new = Transporter(origin, angles, owner, transporterModel);
-        @transporterSet[size++] = new;
-        return new;
+        int id = UNKNOWN;
+        for (int i = 0; i < size && id == UNKNOWN; i++) {
+            if (@transporterSet[i] == null)
+                id = i;
+        }
+        if (id == UNKNOWN) {
+            makeRoom();
+            id = size++;
+        }
+        @transporterSet[id] = Transporter(origin, angles, owner, id, this,
+                transporterModel);
+        return transporterSet[id];
+    }
+
+    void remove(int n) {
+        @transporterSet[n] = null;
     }
 
     void think() {
-        for (int i = 0; i < size; i++)
-            transporterSet[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@transporterSet[i] != null)
+                transporterSet[i].think();
+        }
     }
 }

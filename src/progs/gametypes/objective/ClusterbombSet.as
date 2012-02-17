@@ -29,13 +29,27 @@ class ClusterbombSet : Set {
     }
 
     void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
-        makeRoom();
-        @clusterbombSet[size++] = Clusterbomb(origin, angles, owner,
+        int id = UNKNOWN;
+        for (int i = 0; i < size && id == UNKNOWN; i++) {
+            if (@clusterbombSet[i] == null)
+                id = i;
+        }
+        if (id == UNKNOWN) {
+            makeRoom();
+            id = size++;
+        }
+        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id, this,
                 clusterbombModel);
     }
 
+    void remove(int n) {
+        @clusterbombSet[n] = null;
+    }
+
     void think() {
-        for (int i = 0; i < size; i++)
-            clusterbombSet[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@clusterbombSet[i] != null)
+                clusterbombSet[i].think();
+        }
     }
 }

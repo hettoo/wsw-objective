@@ -28,10 +28,8 @@ enum Items {
     ITEM_AMMOPACK
 }
 
-class ItemSet {
+class ItemSet : Set {
     Item@[] itemSet;
-    int size;
-    int capacity;
 
     int healthpackModel;
     int ammopackModel;
@@ -42,9 +40,6 @@ class ItemSet {
     Players @players;
 
     ItemSet() {
-        capacity = 0;
-        size = 0;
-
         healthpackSound = G_SoundIndex("sounds/items/item_spawn");
         ammopackSound = G_SoundIndex("sounds/items/item_spawn");
 
@@ -57,30 +52,45 @@ class ItemSet {
         @this.players = players;
     }
 
-    void makeRoom() {
-        if (capacity == size) {
-            capacity *= 2;
-            capacity += 1;
-            itemSet.resize(capacity);
+    void resize() {
+        itemSet.resize(capacity);
+    }
+
+    int getNextId() {
+        int id = UNKNOWN;
+        for (int i = 0; i < size && id == UNKNOWN; i++) {
+            if (@itemSet[i] == null)
+                id = i;
         }
+        if (id == UNKNOWN) {
+            makeRoom();
+            id = size++;
+        }
+        return id;
     }
 
     void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
-        makeRoom();
-        @itemSet[size++] = Item(origin, angles, owner, players,
+        int id = getNextId();
+        @itemSet[id] = Item(origin, angles, owner, id, this, players,
                 healthpackModel, healthpackSound,
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
     void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
-        makeRoom();
-        @itemSet[size++] = Item(origin, angles, owner, players,
+        int id = getNextId();
+        @itemSet[id] = Item(origin, angles, owner, id, this, players,
                 ammopackModel, ammopackSound,
                 AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
     }
 
+    void remove(int n) {
+        @itemSet[n] = null;
+    }
+
     void think() {
-        for (int i = 0; i < size; i++)
-            itemSet[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@itemSet[i] != null)
+                itemSet[i].think();
+        }
     }
 }

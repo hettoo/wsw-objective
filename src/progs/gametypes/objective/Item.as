@@ -23,18 +23,25 @@ const float ITEM_WAIT_LIMIT = 20.0f;
 const int ITEM_THROW_SPEED = 400;
 
 class Item {
+    int id;
+
     cEntity @ent;
     int type;
 
     float removeTime;
 
+    ItemSet @itemSet;
     Players @players;
 
-    Item(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
-            int model, int sound, cVec3 @mins, cVec3 @maxs, int type) {
+    Item(cVec3 @origin, cVec3 @angles, cEntity @owner, int id, ItemSet @itemSet,
+            Players @players, int model, int sound, cVec3 @mins, cVec3 @maxs,
+            int type) {
+        this.id = id;
         this.type = type;
+
         spawn(origin, angles, owner, model, sound, mins, maxs);
 
+        @this.itemSet = itemSet;
         @this.players = players;
     }
 
@@ -62,6 +69,7 @@ class Item {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
+        itemSet.remove(id);
     }
 
     bool near(cEntity @other) {
@@ -74,9 +82,6 @@ class Item {
     }
 
     void think() {
-        if (@ent == null)
-            return;
-
         removeTime -= frameTime * 0.001;
         if (removeTime <= 0) {
             remove();

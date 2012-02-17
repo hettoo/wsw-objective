@@ -24,11 +24,20 @@ cVec3 TRANSPORTER_MINS(-24, -24, -24);
 cVec3 TRANSPORTER_MAXS(24, 24, 40);
 
 class Transporter {
+    int id;
+
     cEntity @ent;
 
     float removeTime;
 
-    Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+    TransporterSet @transporterSet;
+
+    Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
+            TransporterSet @transporterSet, int model) {
+        this.id = id;
+
+        @this.transporterSet = transporterSet;
+
         spawn(origin, angles, owner, model);
     }
 
@@ -54,6 +63,7 @@ class Transporter {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
+        transporterSet.remove(id);
     }
 
     bool isActive() {
@@ -69,9 +79,6 @@ class Transporter {
     }
 
     void think() {
-        if (@ent == null)
-            return;
-
         removeTime -= frameTime * 0.001;
         if (removeTime <= 0)
             remove();

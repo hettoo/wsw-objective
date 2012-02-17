@@ -33,12 +33,21 @@ const int CB_ROCKETS = 8;
 const int CB_ROCKET_SPEED = 1000;
 
 class Clusterbomb {
+    int id;
+
     cEntity @ent;
 
     float timer;
 
-    Clusterbomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+    ClusterbombSet @clusterbombSet;
+
+    Clusterbomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
+            ClusterbombSet @clusterbombSet, int model) {
+        this.id = id;
+
         spawn(origin, angles, owner, model);
+
+        @this.clusterbombSet = clusterbombSet;
     }
 
     void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
@@ -63,6 +72,7 @@ class Clusterbomb {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
+        clusterbombSet.remove(id);
     }
 
     void releaseAmmo() {
@@ -96,9 +106,6 @@ class Clusterbomb {
     }
 
     void think() {
-        if (@ent == null)
-            return;
-        
         timer -= frameTime * 0.001;
         if (timer <= 0)
             explode();

@@ -29,12 +29,13 @@ const float BOMB_WAIT_LIMIT = 20.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
 
 enum BombState {
-    BS_REMOVED,
     BS_PLACED,
     BS_PLANTED
 }
 
 class Bomb {
+    int id;
+
     cEntity @ent;
 
     cVec3 @origin;
@@ -49,10 +50,13 @@ class Bomb {
     float notArmed;
 
     Players @players;
+    BombSet @bombSet;
     ObjectiveSet @objectiveSet;
 
-    Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, Players @players,
-            ObjectiveSet @objectiveSet, int model) {
+    Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id, Players @players,
+            BombSet @bombSet, ObjectiveSet @objectiveSet, int model) {
+        this.id = id;
+
         @this.origin = origin;
         @this.angles = angles;
         @this.owner = owner;
@@ -63,6 +67,7 @@ class Bomb {
         progress = 0;
         notArmed = 0;
 
+        @this.bombSet = bombSet;
         @this.players = players;
         @this.objectiveSet = objectiveSet;
     }
@@ -89,7 +94,7 @@ class Bomb {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
-        state = BS_REMOVED;
+        bombSet.remove(id);
     }
 
     void explode() {

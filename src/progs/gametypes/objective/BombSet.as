@@ -39,15 +39,29 @@ class BombSet : Set {
     }
 
     void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
-        makeRoom();
-        Bomb @new = Bomb(origin, angles, owner, players, objectiveSet,
-                bombModel);
+        int id = UNKNOWN;
+        for (int i = 0; i < size && id == UNKNOWN; i++) {
+            if (@bombSet[i] == null)
+                id = i;
+        }
+        if (id == UNKNOWN) {
+            makeRoom();
+            id = size++;
+        }
+        Bomb @new = Bomb(origin, angles, owner, id, players,
+                this, objectiveSet, bombModel);
         new.spawn();
-        @bombSet[size++] = new;
+        @bombSet[id] = new;
+    }
+
+    void remove(int n) {
+        @bombSet[n] = null;
     }
 
     void think() {
-        for (int i = 0; i < size; i++)
-            bombSet[i].think();
+        for (int i = 0; i < size; i++) {
+            if (@bombSet[i] != null)
+                bombSet[i].think();
+        }
     }
 }

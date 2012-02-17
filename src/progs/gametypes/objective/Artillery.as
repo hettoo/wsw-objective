@@ -25,17 +25,25 @@ const int ARTILLERY_IMPACT = 300;
 const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 
 class Artillery {
-    bool active;
+    int id;
+
     cVec3 @origin;
     cEntity @owner;
     int rocketsFired;
     float wait;
 
-    Artillery(cVec3 @origin, cEntity @owner) {
+    ArtillerySet @artillerySet;
+
+    Artillery(cVec3 @origin, cEntity @owner, int id,
+            ArtillerySet @artillerySet) {
+        this.id = id;
+
         @this.origin = origin;
         this.origin.z += ARTILLERY_HEIGHT;
         @this.owner = owner;
-        active = ARTILLERY_ROCKETS > 0;
+
+        @this.artillerySet = artillerySet;
+
         rocketsFired = 0;
         setNextLaunch();
     }
@@ -55,13 +63,10 @@ class Artillery {
                 ARTILLERY_IMPACT, 1, owner);
 
         if (++rocketsFired == ARTILLERY_ROCKETS)
-            active = false;
+            artillerySet.remove(id);
     }
 
     void think() {
-        if (!active)
-            return;
-
         wait -= 0.001f * frameTime;
 
         if (wait <= 0) {
