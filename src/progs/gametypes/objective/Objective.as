@@ -173,6 +173,10 @@ class Objective {
         return owningTeam;
     }
 
+    void setTeam(int team) {
+        owningTeam = team;
+    }
+
     int getOtherTeam() {
         return players.otherTeam(owningTeam);
     }

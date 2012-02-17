@@ -18,11 +18,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Spawnable : Component {
+    bool capturable;
+
     SpawnPointSet @spawnPointSet;
+    int captureSound;
 
     Objective @objective;
 
     Spawnable(Objective @objective) {
+        capturable = false;
+
+        captureSound = objective.players.soundIndex(
+                "announcer/objective/captured");
+
         @this.objective = objective;
     }
 
@@ -35,6 +43,8 @@ class Spawnable : Component {
             active = value.toInt() == 1;
             @spawnPointSet = SpawnPointSet();
             spawnPointSet.analyze(objective.getId());
+        } else if (name == "capturable") {
+            capturable = value.toInt() == 1;
         } else {
             return false;
         }
@@ -43,5 +53,17 @@ class Spawnable : Component {
 
     cEntity @getRandomSpawnPoint() {
         return spawnPointSet.getRandom();
+    }
+
+    void thinkActive(Player @player) {
+        int playerTeam = player.getClient().team;
+        if (capturable && objective.getTeam() != playerTeam) {
+            objective.setTeam(playerTeam);
+            Players @players = objective.getPlayers();
+            if (objective.getName() != "")
+                players.say(G_GetTeamName(playerTeam)
+                        + " has captured " + objective.getName() + "!");
+            players.sound(captureSound);
+        }
     }
 }
