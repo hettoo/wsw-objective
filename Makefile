@@ -14,7 +14,7 @@ CONFIG_DIR = configs/server/gametypes
 EVERY_PK3 = objective-*.pk3
 CFG = objective.cfg
 
-GT_PK3 = objective-dev.pk3
+GT_PK3 = objective-0_1-dev_pure.pk3
 
 all: $(GT_PK3)
 
