@@ -31,4 +31,12 @@ class Component {
         if (active)
             thinkActive();
     }
+
+    void thinkActive(Player @player) {
+    }
+
+    void think(Player @player) {
+        if (active)
+            thinkActive(player);
+    }
 }

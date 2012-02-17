@@ -71,3 +71,12 @@ bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs, int ignore) {
 bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs) {
     return G_CanSpawn(origin, mins, maxs, -1);
 }
+
+cString @G_GetTeamName(int team) {
+    if (team == TEAM_ASSAULT)
+        return "ASSAULT";
+    else if (team == TEAM_DEFENSE)
+        return "DEFENSE";
+    else
+        return G_GetTeam(team).getName();
+}

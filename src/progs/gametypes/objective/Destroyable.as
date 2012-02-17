@@ -22,16 +22,25 @@ class Destroyable : Component {
 
     int destroyIcon;
 
+    int plantSound;
+    int defuseSound;
+    int destroySound;
+
     Objective @objective;
 
-    Destroyable() {
+    Destroyable(Objective @objective) {
         active = false;
 
         destroyIcon = G_ImageIndex("gfx/bomb/carriericon");
-    }
 
-    void register(Objective @objective) {
         @this.objective = objective;
+
+        plantSound = objective.players.soundIndex(
+                "announcer/objective/planted");
+        defuseSound = objective.players.soundIndex(
+                "announcer/objective/defused");
+        destroySound = objective.players.soundIndex(
+                "announcer/objective/destroyed");
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -47,18 +56,33 @@ class Destroyable : Component {
     void destruct() {
         objective.destroy();
 
-        objective.getPlayers().say(objective.message);
+        Players @players = objective.getPlayers();
+        if (objective.getName() != "")
+            players.say(G_GetTeamName(objective.getOtherTeam())
+                    + " has destroyed " + objective.getName() + "!");
+        players.sound(destroySound);
 
         if (destroyed != "")
             objective.getObjectiveSet().find(destroyed).spawn();
     }
 
-    void thinkActive() {
-        int players = objective.getPlayers().getSize();
-        for (int i = 0; i < players; i++) {
-            Player @player = objective.getPlayers().get(i);
-            if (@player != null && objective.nearOtherTeam(player))
-                player.setHUDStat(STAT_IMAGE_OTHER, destroyIcon);
-        }
+    void planted() {
+        Players @players = objective.getPlayers();
+        if (objective.getName() != "")
+            players.say(G_GetTeamName(objective.getOtherTeam())
+                    + " planted a bomb at " + objective.getName() + "!");
+        players.sound(plantSound);
+    }
+
+    void defused() {
+        if (objective.getName() != "")
+            objective.getPlayers().say(G_GetTeamName(objective.getTeam())
+                    + " defused the bomb at " + objective.getName() + "!");
+        objective.getPlayers().sound(defuseSound);
+    }
+
+    void thinkActive(Player @player) {
+        if (objective.nearOtherTeam(player))
+            player.setHUDStat(STAT_IMAGE_OTHER, destroyIcon);
     }
 }

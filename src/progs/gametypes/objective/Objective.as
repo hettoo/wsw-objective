@@ -20,10 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Objective {
     cString id;
 
+    cString name;
     cEntity @ent;
     bool spawned;
-    int plantSound;
-    int defuseSound;
 
     bool start;
     bool solid;
@@ -35,11 +34,10 @@ class Objective {
     int moveType;
     int team;
     float radius;
-    cString message;
 
-    Constructable constructable;
-    Destroyable destroyable;
-    Spawnable spawnable;
+    Constructable @constructable;
+    Destroyable @destroyable;
+    Spawnable @spawnable;
 
     ObjectiveSet @objectiveSet;
     Players @players;
@@ -48,9 +46,6 @@ class Objective {
         id = target.getTargetnameString();
         id = id.substr(1, id.len());
         spawned = false;
-
-        plantSound = players.soundIndex("announcer/bomb/offense/planted");
-        defuseSound = players.soundIndex("announcer/bomb/offense/defused");
 
         solid = true;
         model = 0;
@@ -67,13 +62,17 @@ class Objective {
         @this.objectiveSet = objectiveSet;
         @this.players = players;
 
-        constructable.register(this);
-        destroyable.register(this);
-        spawnable.register(this);
+        @constructable = Constructable(this);
+        @destroyable = Destroyable(this);
+        @spawnable = Spawnable(this);
     }
 
     cString @getId() {
         return id;
+    }
+
+    cString @getName() {
+        return name;
     }
 
     ObjectiveSet @getObjectiveSet() {
@@ -85,7 +84,9 @@ class Objective {
     }
 
     void setAttribute(cString &name, cString &value) {
-        if (name == "start") {
+        if (name == "name") {
+            this.name = value;
+        } else if (name == "start") {
             start = value.toInt() == 1;
         } else if (name == "solid") {
             solid = value.toInt() == 1;
@@ -100,14 +101,12 @@ class Objective {
             maxs = cVec3(value.getToken(0).toFloat(),
                     value.getToken(1).toFloat(), value.getToken(2).toFloat());
         } else if (name == "team") {
-            if (value == "ASSAULT")
+            if (value.tolower() == "assault")
                 team = TEAM_ASSAULT;
-            else if (value == "DEFENSE")
+            else if (value.tolower() == "defense")
                 team = TEAM_DEFENSE;
         } else if (name == "radius") {
             radius = value.toInt();
-        } else if (name == "message") {
-            message = value;
         } else if (constructable.setAttribute(name, value)) {
         } else if (destroyable.setAttribute(name, value)) {
         } else if (spawnable.setAttribute(name, value)) {
@@ -165,6 +164,10 @@ class Objective {
         return team;
     }
 
+    int getOtherTeam() {
+        return players.otherTeam(team);
+    }
+
     cEntity @getRandomSpawnPoint() {
         return spawnable.getRandomSpawnPoint();
     }
@@ -198,6 +201,21 @@ class Objective {
         if (!spawned)
             return;
 
+        for (int i = 0; i < players.getSize(); i++) {
+            Player @player = players.get(i);
+            if (@player != null && near(player)) {
+                if (name != "") {
+                    int configStringId = CS_GENERAL
+                        + player.getClient().playerNum();
+                    G_ConfigString(configStringId, "You are near " + name);
+                    player.setHUDStat(STAT_MESSAGE_SELF, configStringId);
+                }
+                constructable.think(player);
+                destroyable.think(player);
+                spawnable.think(player);
+            }
+        }
+
         constructable.think();
         destroyable.think();
         spawnable.think();
@@ -210,11 +228,11 @@ class Objective {
 
     void planted(cEntity @bomb) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            players.sound(plantSound);
+            destroyable.planted();
     }
 
     void defused(cEntity @bomb) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            players.sound(defuseSound);
+            destroyable.defused();
     }
 }

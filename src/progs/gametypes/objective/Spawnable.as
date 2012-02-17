@@ -22,7 +22,7 @@ class Spawnable : Component {
 
     Objective @objective;
 
-    void register(Objective @objective) {
+    Spawnable(Objective @objective) {
         @this.objective = objective;
     }
 

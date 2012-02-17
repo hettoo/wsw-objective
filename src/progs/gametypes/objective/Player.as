@@ -185,6 +185,7 @@ class Player {
         setHUDStat(STAT_PROGRESS_SELF, 0);
         setHUDStat(STAT_PROGRESS_OTHER, 0);
         setHUDStat(STAT_IMAGE_OTHER, 0);
+        setHUDStat(STAT_MESSAGE_SELF, 0);
         classes.think();
         GENERIC_ChargeGunblade(client);
     }

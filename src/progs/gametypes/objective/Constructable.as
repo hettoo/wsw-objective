@@ -27,30 +27,27 @@ class Constructable : Component {
     cString constructed;
 
     float constructProgress;
+    bool madeProgress;
     float notConstructed;
     bool spawnedGhost;
 
-    int constructOwnSound;
-    int constructOtherSound;
+    int constructedSound;
 
     Objective @objective;
 
-    Constructable() {
+    Constructable(Objective @objective) {
         active = false;
         constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 
         constructProgress = 0;
+        madeProgress = false;
         notConstructed = 0;
         spawnedGhost = false;
-    }
 
-    void register(Objective @objective) {
         @this.objective = objective;
 
-        constructOwnSound
-            = objective.getPlayers().soundIndex("announcer/bomb/defense/start");
-        constructOtherSound
-            = objective.getPlayers().soundIndex("announcer/bomb/offense/start");
+        constructedSound = objective.players.soundIndex(
+                "announcer/objective/constructed");
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -89,13 +86,11 @@ class Constructable : Component {
 
         Objective @new = objective.getObjectiveSet().find(constructed);
         new.spawn();
-        if (new.isDestroyable()) {
-            objective.getPlayers().sound(objective.getTeam(),
-                    constructOwnSound);
-            objective.getPlayers().sound(
-                    objective.getPlayers().otherTeam(objective.getTeam()),
-                    constructOtherSound);
-        }
+        Players @players = objective.getPlayers();
+        if (new.getName() != "")
+            players.say(G_GetTeamName(objective.getTeam())
+                    + " has constructed " + new.getName() + "!");
+        players.sound(constructedSound);
         objective.getObjectiveSet().goalTest();
     }
 
@@ -104,7 +99,6 @@ class Constructable : Component {
         objective.destroy();
         destroyGhost();
         constructProgress = 0;
-        objective.getPlayers().say(objective.message);
     }
 
     void constructProgress() {
@@ -112,29 +106,22 @@ class Constructable : Component {
         spawnGhost();
     }
 
-    bool checkPlayers() {
-        bool madeConstructProgress = false;
-        int players = objective.getPlayers().getSize();
-        for (int i = 0; i < players; i++) {
-            Player @player = objective.getPlayers().get(i);
-            if (@player != null && objective.nearOwnTeam(player)) {
-                if (player.getClassId() == CLASS_ENGINEER) {
-                    if (constructProgress >= PROGRESS_FINISHED)
-                        constructed();
-                    else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
-                                / PROGRESS_FINISHED * constructArmor))
-                        constructProgress();
+    void thinkActive(Player @player) {
+        if (objective.nearOwnTeam(player)) {
+            if (player.getClassId() == CLASS_ENGINEER) {
+                if (constructProgress >= PROGRESS_FINISHED)
+                    constructed();
+                else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
+                            / PROGRESS_FINISHED * constructArmor))
+                    constructProgress();
 
-                    player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
-                    madeConstructProgress = true;
-                    notConstructed = 0;
-                }
-                player.setHUDStat(STAT_IMAGE_OTHER,
-                        player.getClassIcon(CLASS_ENGINEER));
+                player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
+                madeProgress = true;
+                notConstructed = 0;
             }
+            player.setHUDStat(STAT_IMAGE_OTHER,
+                    player.getClassIcon(CLASS_ENGINEER));
         }
-
-        return madeConstructProgress;
     }
 
     void notConstructed() {
@@ -147,8 +134,8 @@ class Constructable : Component {
     }
 
     void thinkActive() {
-        bool madeProgress = checkPlayers();
         if (constructProgress > 0 && !madeProgress)
             notConstructed();
+        madeProgress = false;
     }
 }
