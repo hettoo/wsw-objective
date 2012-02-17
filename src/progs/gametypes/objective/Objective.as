@@ -33,6 +33,7 @@ class Objective {
     cVec3 maxs;
     int moveType;
     int team;
+    int owningTeam;
     float radius;
 
     Constructable @constructable;
@@ -54,6 +55,7 @@ class Objective {
         moveType = MOVETYPE_NONE;
         start = true;
         team = GS_MAX_TEAMS;
+        owningTeam = team;
         radius = 125;
 
         target.unlinkEntity();
@@ -105,6 +107,7 @@ class Objective {
                 team = TEAM_ASSAULT;
             else if (value.tolower() == "defense")
                 team = TEAM_DEFENSE;
+            owningTeam = team;
         } else if (name == "radius") {
             radius = value.toInt();
         } else if (constructable.setAttribute(name, value)) {
@@ -121,7 +124,7 @@ class Objective {
             @ent = G_SpawnEntity("objective");
             ent.type = ET_GENERIC;
             ent.modelindex = model;
-            ent.team = team;
+            ent.team = owningTeam;
             ent.setOrigin(origin);
             ent.setAngles(angles);
             ent.setSize(mins, maxs);
@@ -133,6 +136,11 @@ class Objective {
         }
 
         spawned = true;
+    }
+
+    void spawn(int team) {
+        owningTeam = team;
+        spawn();
     }
 
     bool isDestroyable() {
@@ -154,6 +162,7 @@ class Objective {
             @ent = null;
         }
         spawned = false;
+        owningTeam = team;
     }
 
     bool isSpawn() {
@@ -161,11 +170,11 @@ class Objective {
     }
 
     int getTeam() {
-        return team;
+        return owningTeam;
     }
 
     int getOtherTeam() {
-        return players.otherTeam(team);
+        return players.otherTeam(owningTeam);
     }
 
     cEntity @getRandomSpawnPoint() {
@@ -186,11 +195,12 @@ class Objective {
     }
 
     bool nearOwnTeam(Player @player) {
-        return player.getClient().team == team && near(player);
+        return (owningTeam == GS_MAX_TEAMS
+                || player.getClient().team == owningTeam) && near(player);
     }
 
     bool nearOtherTeam(cEntity @other) {
-        return other.team != team && near(other);
+        return other.team != owningTeam && near(other);
     }
 
     bool nearOtherTeam(Player @player) {

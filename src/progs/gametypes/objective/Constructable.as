@@ -68,7 +68,7 @@ class Constructable : Component {
         if (spawnedGhost || constructing == "")
             return;
 
-        objective.getObjectiveSet().find(constructing).spawn();
+        objective.getObjectiveSet().find(constructing).spawn(0);
         spawnedGhost = true;
     }
 
@@ -80,22 +80,23 @@ class Constructable : Component {
         spawnedGhost = false;
     }
 
-    void spawnConstructed() {
+    void spawnConstructed(Player @player) {
         if (constructed == "")
             return;
 
         Objective @new = objective.getObjectiveSet().find(constructed);
-        new.spawn();
+        int team = player.getClient().team;
+        new.spawn(team);
         Players @players = objective.getPlayers();
         if (new.getName() != "")
-            players.say(G_GetTeamName(objective.getTeam())
+            players.say(G_GetTeamName(team)
                     + " has constructed " + new.getName() + "!");
         players.sound(constructedSound);
         objective.getObjectiveSet().goalTest();
     }
 
-    void constructed() {
-        spawnConstructed();
+    void constructed(Player @player) {
+        spawnConstructed(player);
         objective.destroy();
         destroyGhost();
         constructProgress = 0;
@@ -110,7 +111,7 @@ class Constructable : Component {
         if (objective.nearOwnTeam(player)) {
             if (player.getClassId() == CLASS_ENGINEER) {
                 if (constructProgress >= PROGRESS_FINISHED)
-                    constructed();
+                    constructed(player);
                 else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
                             / PROGRESS_FINISHED * constructArmor))
                     constructProgress();

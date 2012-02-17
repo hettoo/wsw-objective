@@ -54,14 +54,13 @@ class Destroyable : Component {
     }
 
     void destruct() {
-        objective.destroy();
-
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(objective.getOtherTeam())
                     + " has destroyed " + objective.getName() + "!");
         players.sound(destroySound);
 
+        objective.destroy();
         if (destroyed != "")
             objective.getObjectiveSet().find(destroyed).spawn();
     }
