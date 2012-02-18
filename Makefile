@@ -11,10 +11,14 @@ GT_DIR = src
 TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
+SETTINGS_FILE = progs/gametypes/objective/Settings.as
 EVERY_PK3 = objective-*.pk3
 CFG = objective.cfg
 
-GT_PK3 = objective-0_1-dev_pure.pk3
+VERSION = $(shell grep VERSION $(GT_DIR)/$(SETTINGS_FILE) \
+		  | head -n1 | sed 's/.*"\(.*\)".*/\1/')
+VERSION_WORD = $(subst .,_,$(VERSION))
+GT_PK3 = objective-$(VERSION_WORD)_pure.pk3
 
 all: $(GT_PK3)
 
