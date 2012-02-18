@@ -23,20 +23,29 @@ class Engineer : Class {
     Engineer() {
         spawnArmor = 40;
         maxArmor = 100;
+
+        primaryWeapon = WEAP_RIOTGUN;
+        primaryStrongSpawnAmmo = 8;
+        primaryStrongAmmo = 4;
+        primaryStrongMaxAmmo = 10;
+        primaryWeakSpawnAmmo = 10;
+        primaryWeakAmmo = 5;
+        primaryWeakMaxAmmo = 12;
+
+        secondaryWeapon = WEAP_LASERGUN;
+        secondaryStrongSpawnAmmo = 40;
+        secondaryStrongAmmo = 30;
+        secondaryStrongMaxAmmo = 80;
+        secondaryWeakSpawnAmmo = 60;
+        secondaryWeakAmmo = 40;
+        secondaryWeakMaxAmmo = 100;
     }
 
     cString @getName() {
         return "Engineer";
     }
 
-    bool giveAmmopack() {
-        bool gaveClass = Class::giveAmmopack();
-        bool gaveRG = player.giveAmmo(WEAP_RIOTGUN, 5, 20, 5, 5);
-        bool gaveLG = player.giveAmmo(WEAP_LASERGUN, 10, 40, 60, 80);
-        return gaveClass || gaveRG || gaveLG;
-    }
-
-    void classAction1() {
+    void classAction1(Player @player) {
         cVec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
@@ -54,5 +63,4 @@ class Engineer : Class {
     // create a turret (perhaps it might only be activated if a teammember is
     // standing next to it)?
     // spawn a(n invisible) landmine?
-    // create a fence, destroyable by satchel charges and / or bombs?
 }

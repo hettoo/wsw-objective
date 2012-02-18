@@ -24,20 +24,29 @@ class FieldOps : Class {
     FieldOps() {
         spawnArmor = 40;
         maxArmor = 100;
+
+        primaryWeapon = WEAP_PLASMAGUN;
+        primaryStrongSpawnAmmo = 50;
+        primaryStrongAmmo = 25;
+        primaryStrongMaxAmmo = 80;
+        primaryWeakSpawnAmmo = 60;
+        primaryWeakAmmo = 30;
+        primaryWeakMaxAmmo = 100;
+
+        secondaryWeapon = WEAP_ROCKETLAUNCHER;
+        secondaryStrongSpawnAmmo = 10;
+        secondaryStrongAmmo = 4;
+        secondaryStrongMaxAmmo = 20;
+        secondaryWeakSpawnAmmo = 15;
+        secondaryWeakAmmo = 5;
+        secondaryWeakMaxAmmo = 25;
     }
 
     cString @getName() {
         return "Field Ops";
     }
 
-    bool giveAmmopack() {
-        bool gaveClass = Class::giveAmmopack();
-        bool gaveRL = player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
-        bool gavePG = player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
-        return gaveClass || gaveRL || gavePG;
-    }
-
-    void classAction1() {
+    void classAction1(Player @player) {
         cVec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
@@ -50,7 +59,7 @@ class FieldOps : Class {
             player.getPlayers().getWorld().addAmmopack(origin, angles, ent);
     }
 
-    void classAction2() {
+    void classAction2(Player @player) {
         cVec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,

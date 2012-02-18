@@ -27,24 +27,30 @@ class Class {
     int maxHealth;
     int maxArmor;
 
-    int spawnAmmoPacks;
-
     int classIcon;
 
-    Player @player;
+    int primaryWeapon;
+    int primaryWeakSpawnAmmo;
+    int primaryWeakAmmo;
+    int primaryWeakMaxAmmo;
+    int primaryStrongSpawnAmmo;
+    int primaryStrongAmmo;
+    int primaryStrongMaxAmmo;
+
+    int secondaryWeapon;
+    int secondaryWeakSpawnAmmo;
+    int secondaryWeakAmmo;
+    int secondaryWeakMaxAmmo;
+    int secondaryStrongSpawnAmmo;
+    int secondaryStrongAmmo;
+    int secondaryStrongMaxAmmo;
 
     Class() {
         spawnHealth = 80;
         maxHealth = 100;
 
-        spawnAmmoPacks = 2;
-
         classIcon = G_ImageIndex("gfx/hud/icons/objective/classes/"
                 + getSimpleName());
-    }
-
-    void register(Player @player) {
-        @this.player = player;
     }
 
     cString @getSimpleName() {
@@ -59,13 +65,21 @@ class Class {
         return classIcon;
     }
 
-    bool giveAmmopack() {
-        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 5, 10);
-        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 0, 0, 40, 120);
-        return gaveGL || gaveMG;
+    bool giveAmmopack(Player @player) {
+        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 4, 12);
+        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 40, 100, 0, 0);
+
+        bool gavePrimary = player.giveAmmo(primaryWeapon,
+                primaryStrongAmmo, primaryStrongMaxAmmo,
+                primaryWeakAmmo, primaryWeakMaxAmmo);
+        bool gaveSecondary = player.giveAmmo(secondaryWeapon,
+                secondaryStrongAmmo, secondaryStrongMaxAmmo,
+                secondaryWeakAmmo, secondaryWeakMaxAmmo);
+
+        return gaveGL || gaveMG || gavePrimary || gaveSecondary;
     }
 
-    bool giveHealthpack() {
+    bool giveHealthpack(Player @player) {
         cEntity @ent = player.getEnt();
         if (ent.health == maxHealth)
             return false;
@@ -75,17 +89,23 @@ class Class {
         return true;
     }
 
-    void giveSpawnAmmopacks() {
-        for (int i = 0; i < spawnAmmoPacks; i++)
-            giveAmmopack();
+    void giveSpawnAmmo(Player @player) {
+        player.giveAmmo(WEAP_GUNBLADE, 4, 0);
+        player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 6);
+        player.giveAmmo(WEAP_MACHINEGUN, 60, 0);
+
+        player.giveAmmo(primaryWeapon,
+                primaryStrongSpawnAmmo, primaryWeakSpawnAmmo);
+        player.giveAmmo(secondaryWeapon,
+                secondaryStrongSpawnAmmo, secondaryWeakSpawnAmmo);
     }
 
-    void spawn() {
+    void spawn(Player @player) {
         if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
             player.setClass(brandom(0, CLASSES - 1));
 
-        player.giveAmmo(WEAP_GUNBLADE, 4, 0);
-        giveSpawnAmmopacks();
+        giveSpawnAmmo(player);
+        player.getClient().selectWeapon(primaryWeapon);
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
@@ -93,21 +113,18 @@ class Class {
                 ? STAT_IMAGE_ALPHA : STAT_IMAGE_BETA, classIcon);
     }
 
-    void addArmor(float armor) {
+    void classAction1(Player @player) {
+        player.centerPrint("This class has no classaction1");
+    }
+
+    void classAction2(Player @player) {
+        player.centerPrint("This class has no classaction2");
+    }
+
+    void addArmor(Player @player, float armor) {
         cClient @client = player.getClient();
         client.armor += armor;
         if (client.armor > maxArmor)
             client.armor = maxArmor;
-    }
-
-    void classAction1() {
-        player.centerPrint("This class has no classaction1");
-    }
-
-    void classAction2() {
-        player.centerPrint("This class has no classaction2");
-    }
-
-    void think() {
     }
 }

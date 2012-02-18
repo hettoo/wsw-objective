@@ -28,8 +28,6 @@ enum ClassIds {
 
 class Classes {
     Class@[] classes;
-    int currentClass;
-    int nextClass;
 
     Classes() {
         classes.resize(CLASSES);
@@ -38,38 +36,14 @@ class Classes {
         @classes[CLASS_MEDIC] = Medic();
         @classes[CLASS_FIELD_OPS] = FieldOps();
         @classes[CLASS_SNIPER] = Sniper();
-
-        currentClass = CLASS_SOLDIER;
-        nextClass = CLASSES;
     }
 
-    void register(Player @player) {
-        for (int i = 0; i < CLASSES; i++)
-            classes[i].register(player);
-    }
-
-    int getId() {
-        return currentClass;
-    }
-
-    Class @getClass() {
-        return classes[currentClass];
-    }
-
-    int getIcon() {
-        return classes[currentClass].getIcon();
+    Class @get(int id) {
+        return classes[id];
     }
 
     int getIcon(int classId) {
         return classes[classId].getIcon();
-    }
-
-    bool setNext(int newClass) {
-        if (newClass >= 0 && newClass < CLASSES) {
-            nextClass = newClass;
-            return true;
-        }
-        return false;
     }
 
     int find(cString &newClass) {
@@ -80,55 +54,11 @@ class Classes {
         return UNKNOWN;
     }
 
-    cString @getName() {
-        return classes[currentClass].getName();
-    }
-
-    cString @getNextName() {
-        return classes[nextClass].getName();
-    }
-
     cString @createMenu() {
         cString menu = "mecu \"Select Class\"";
         for (int i = 0; i < CLASSES; i++)
             menu += " \"" + classes[i].getName() + "\" "
                 + " \"class " + classes[i].getName() + "\"";
         return menu;
-    }
-
-    void applyNext() {
-        if (nextClass < CLASSES) {
-            currentClass = nextClass;
-            nextClass = CLASSES;
-        }
-    }
-
-    void spawn() {
-        classes[currentClass].spawn();
-    }
-
-    void addArmor(float armor) {
-        classes[currentClass].addArmor(armor);
-    }
-
-    bool giveAmmopack() {
-        return classes[currentClass].giveAmmopack();
-    }
-
-    bool giveHealthpack() {
-        return classes[currentClass].giveHealthpack();
-    }
-
-    void classAction1() {
-        classes[currentClass].classAction1();
-    }
-
-    void classAction2() {
-        classes[currentClass].classAction2();
-    }
-
-    void think() {
-        addArmor(ARMOR_FRAME_BONUS * frameTime);
-        getClass().think();
     }
 }

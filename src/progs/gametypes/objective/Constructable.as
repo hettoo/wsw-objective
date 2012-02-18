@@ -121,7 +121,8 @@ class Constructable : Component {
                 notConstructed = 0;
             }
             player.setHUDStat(STAT_IMAGE_OTHER,
-                    player.getClassIcon(CLASS_ENGINEER));
+                    objective.getPlayers().getClasses().getIcon(
+                        CLASS_ENGINEER));
         }
     }
 

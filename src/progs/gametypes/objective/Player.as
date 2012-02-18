@@ -20,22 +20,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const float ARMOR_FRAME_BONUS = 0.002f;
 
 class Player {
-    Classes classes;
-
     cClient @client;
     cEntity @ent;
+
+    Class @playerClass;
+    int currentClass;
+    int nextClass;
 
     int ammopackSound;
     int healthpackSound;
 
     Players @players;
+    Classes @classes;
 
     Player(Players @players) {
+        currentClass = CLASS_SOLDIER;
+        nextClass = CLASSES;
+
         ammopackSound = G_SoundIndex("sounds/items/ammo_pickup");
         healthpackSound = G_SoundIndex("sounds/items/health_5");
 
         @this.players = players;
-        classes.register(this);
+        @this.classes = players.getClasses();
+
+        loadClass();
     }
 
     void init(cClient @newClient) {
@@ -59,12 +67,16 @@ class Player {
         return players;
     }
 
-    int getClassIcon(int classId) {
-        return classes.getIcon(classId);
+    int getClassId() {
+        return currentClass;
     }
 
     int getClassIcon() {
-        return classes.getIcon();
+        return playerClass.getIcon();
+    }
+
+    Class @getClass() {
+        return playerClass;
     }
 
     void showGameMenu() {
@@ -80,7 +92,7 @@ class Player {
     }
 
     cString @getClassName() {
-        return classes.getName();
+        return playerClass.getName();
     }
 
     int getTeam() {
@@ -92,12 +104,11 @@ class Player {
     }
 
     void setClass(int newClass) {
-        if (classes.setNext(newClass))
-            centerPrint("You will respawn as a " + classes.getNextName());
-    }
-
-    int getClassId() {
-        return classes.getId();
+        if (newClass >= 0 && newClass < CLASSES) {
+            nextClass = newClass;
+            centerPrint("You will respawn as a "
+                    + classes.get(nextClass).getName());
+        }
     }
 
     void setClass(cString &newClass) {
@@ -158,23 +169,34 @@ class Player {
     }
 
     bool giveAmmopack() {
-        bool done = classes.giveAmmopack();
+        bool done = playerClass.giveAmmopack(this);
         if (done)
             itemPickupSound(ammopackSound);
         return done;
     }
 
     bool giveHealthpack() {
-        bool done = classes.giveHealthpack();
+        bool done = playerClass.giveHealthpack(this);
         if (done)
             itemPickupSound(healthpackSound);
         return done;
     }
 
+    void loadClass() {
+        @playerClass = classes.get(currentClass);
+    }
+
+    void applyNextClass() {
+        if (nextClass < CLASSES) {
+            currentClass = nextClass;
+            nextClass = CLASSES;
+            loadClass();
+        }
+    }
+
     void spawn() {
-        classes.applyNext();
-        classes.spawn();
-        client.selectWeapon(-1);
+        applyNextClass();
+        playerClass.spawn(this);
         ent.respawnEffect();
     }
 
@@ -186,16 +208,17 @@ class Player {
         setHUDStat(STAT_PROGRESS_OTHER, 0);
         setHUDStat(STAT_IMAGE_OTHER, 0);
         setHUDStat(STAT_MESSAGE_SELF, 0);
-        classes.think();
+
         GENERIC_ChargeGunblade(client);
+        playerClass.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
     }
 
     void classAction1() {
-        classes.classAction1();
+        playerClass.classAction1(this);
     }
 
     void classAction2() {
-        classes.classAction2();
+        playerClass.classAction2(this);
     }
 
     void itemPickupSound(int sound) {

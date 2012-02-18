@@ -28,20 +28,29 @@ class Sniper : Class {
     Sniper() {
         spawnArmor = 0;
         maxArmor = 100;
+
+        primaryWeapon = WEAP_ELECTROBOLT;
+        primaryStrongSpawnAmmo = 8;
+        primaryStrongAmmo = 15;
+        primaryStrongMaxAmmo = 4;
+        primaryWeakSpawnAmmo = 10;
+        primaryWeakAmmo = 5;
+        primaryWeakMaxAmmo = 20;
+
+        secondaryWeapon = WEAP_RIOTGUN;
+        secondaryStrongSpawnAmmo = 2;
+        secondaryStrongAmmo = 3;
+        secondaryStrongMaxAmmo = 8;
+        secondaryWeakSpawnAmmo = 10;
+        secondaryWeakAmmo = 5;
+        secondaryWeakMaxAmmo = 20;
     }
 
     cString @getName() {
         return "Sniper";
     }
 
-    bool giveAmmopack() {
-        bool gaveClass = Class::giveAmmopack();
-        bool gaveEB = player.giveAmmo(WEAP_ELECTROBOLT, 6, 18, 5, 20);
-        bool gaveRG = player.giveAmmo(WEAP_RIOTGUN, 0, 0, 10, 30);
-        return gaveClass || gaveEB || gaveRG;
-    }
-
-    void classAction1() {
+    void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
 
         cVec3 start = ent.getOrigin();
@@ -73,7 +82,7 @@ class Sniper : Class {
         }
     }
 
-    void classAction2() {
+    void classAction2(Player @player) {
         if (@transporter != null && transporter.isActive()) {
             transporter.teleport();
             @transporter = null;

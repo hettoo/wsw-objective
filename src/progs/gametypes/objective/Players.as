@@ -21,6 +21,7 @@ class Players {
     Player@[] players;
     int size;
 
+    Classes classes;
     World @world;
 
     Players() {
@@ -37,6 +38,10 @@ class Players {
 
     Player @get(cClient @client) {
         return get(client.playerNum());
+    }
+
+    Classes @getClasses() {
+        return classes;
     }
 
     World @getWorld() {

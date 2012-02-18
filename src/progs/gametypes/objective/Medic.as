@@ -26,20 +26,29 @@ class Medic : Class {
 
         spawnArmor = 50;
         maxArmor = 90;
+
+        primaryWeapon = WEAP_LASERGUN;
+        primaryStrongSpawnAmmo = 50;
+        primaryStrongAmmo = 25;
+        primaryStrongMaxAmmo = 80;
+        primaryWeakSpawnAmmo = 60;
+        primaryWeakAmmo = 30;
+        primaryWeakMaxAmmo = 100;
+
+        secondaryWeapon = WEAP_PLASMAGUN;
+        secondaryStrongSpawnAmmo = 40;
+        secondaryStrongAmmo = 25;
+        secondaryStrongMaxAmmo = 70;
+        secondaryWeakSpawnAmmo = 50;
+        secondaryWeakAmmo = 30;
+        secondaryWeakMaxAmmo = 90;
     }
 
     cString @getName() {
         return "Medic";
     }
 
-    bool giveAmmopack() {
-        bool gaveClass = Class::giveAmmopack();
-        bool gavePG = player.giveAmmo(WEAP_PLASMAGUN, 30, 80, 40, 120);
-        bool gaveLG = player.giveAmmo(WEAP_LASERGUN, 30, 80, 20, 60);
-        return gaveClass || gavePG || gaveLG;
-    }
-
-    void classAction1() {
+    void classAction1(Player @player) {
         cVec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,

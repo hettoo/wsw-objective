@@ -27,20 +27,29 @@ class Soldier : Class {
     Soldier() {
         spawnArmor = 30;
         maxArmor = 90;
+
+        primaryWeapon = WEAP_ROCKETLAUNCHER;
+        primaryStrongSpawnAmmo = 12;
+        primaryStrongAmmo = 4;
+        primaryStrongMaxAmmo = 20;
+        primaryWeakSpawnAmmo = 15;
+        primaryWeakAmmo = 8;
+        primaryWeakMaxAmmo = 30;
+
+        secondaryWeapon = WEAP_RIOTGUN;
+        secondaryStrongSpawnAmmo = 10;
+        secondaryStrongAmmo = 5;
+        secondaryStrongMaxAmmo = 15;
+        secondaryWeakSpawnAmmo = 12;
+        secondaryWeakAmmo = 5;
+        secondaryWeakMaxAmmo = 15;
     }
 
     cString @getName() {
         return "Soldier";
     }
 
-    bool giveAmmopack() {
-        bool gaveClass = Class::giveAmmopack();
-        bool gaveRL = player.giveAmmo(WEAP_ROCKETLAUNCHER, 8, 20, 10, 30);
-        bool gaveRG = player.giveAmmo(WEAP_RIOTGUN, 5, 20, 10, 30);
-        return gaveClass || gaveRL || gaveRG;
-    }
-
-    void classAction1() {
+    void classAction1(Player @player) {
         if (!player.takeArmor(RAGE_ARMOR))
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
         else
@@ -48,7 +57,7 @@ class Soldier : Class {
     }
 
     // TODO: shield the teammembers around him as well?
-    void classAction2() {
+    void classAction2(Player @player) {
         if (!player.takeArmor(SHIELD_ARMOR))
             player.centerPrint(SHIELD_ARMOR
                     + " armor is required to get a shield");
