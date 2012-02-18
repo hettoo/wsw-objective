@@ -22,11 +22,13 @@ class Objective {
 
     cString name;
     cEntity @ent;
+    cEntity @minimap;
     bool spawned;
 
     bool start;
     bool solid;
     int model;
+    int icon;
     cVec3 origin;
     cVec3 angles;
     cVec3 mins;
@@ -93,7 +95,9 @@ class Objective {
         } else if (name == "solid") {
             solid = value.toInt() == 1;
         } else if (name == "model") {
-            model = G_ModelIndex("models/" + value + ".md3");
+            model = Model(value).get();
+        } else if (name == "icon") {
+            icon = Image(value).get();
         } else if (name == "moveType") {
             moveType = value.toInt();
         } else if (name == "mins") {
@@ -135,6 +139,18 @@ class Objective {
             ent.linkEntity();
         }
 
+        if (icon != 0) {
+            @minimap = @G_SpawnEntity("objective_icon");
+            minimap.type = ET_MINIMAP_ICON;
+            minimap.modelindex = icon;
+            minimap.team = owningTeam;
+            minimap.setOrigin(origin);
+            minimap.solid = SOLID_NOT;
+            minimap.frame = 24;
+            minimap.svflags |= SVF_BROADCAST;
+            minimap.svflags &= ~SVF_NOCLIENT;
+        }
+
         spawned = true;
     }
 
@@ -160,6 +176,11 @@ class Objective {
             ent.unlinkEntity();
             ent.freeEntity();
             @ent = null;
+        }
+        if (@minimap != null) {
+            minimap.unlinkEntity();
+            minimap.freeEntity();
+            @minimap = null;
         }
         spawned = false;
         owningTeam = team;
