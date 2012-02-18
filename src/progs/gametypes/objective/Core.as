@@ -78,6 +78,10 @@ class Core {
             world.initClient(client);
         else if (scoreEvent == "disconnect")
             world.removeClient(client);
+        else if (scoreEvent == "dmg")
+            world.getPlayers().get(client).didDamage(args);
+        else if (scoreEvent == "kill")
+            world.getPlayers().get(client).madeKill(args);
     }
 
     void checkMatchState() {
@@ -106,6 +110,7 @@ class Core {
                 settings.setupCountdown();
                 break;
             case MATCH_STATE_PLAYTIME:
+                world.getPlayers().reset();
                 settings.setupPlaytime();
                 break;
             case MATCH_STATE_POSTMATCH:

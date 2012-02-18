@@ -68,11 +68,19 @@ class Players {
         @players[id] = null;
     }
 
+    void reset() {
+        for (int i = 0; i < size; i++) {
+            if (@players[i] != null)
+                players[i].setScore(0);
+        }
+    }
+
     void removeClient(cClient @client) {
         remove(client.playerNum());
     }
 
     void newPlayer(cClient @client) {
+        get(client).syncScore();
     }
 
     void newSpectator(cClient @client) {

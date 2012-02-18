@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const float DAMAGE_BONUS = 0.02f;
+const float KILL_BONUS = 1;
 const float ARMOR_FRAME_BONUS = 0.002f;
 
 const Sound AMMOPACK_DROP_SOUND("items/ammo_pickup");
@@ -26,6 +28,8 @@ class Player {
     cClient @client;
     cEntity @ent;
 
+    float score;
+
     Class @playerClass;
     int currentClass;
     int nextClass;
@@ -34,6 +38,8 @@ class Player {
     Classes @classes;
 
     Player(Players @players) {
+        score = 0;
+
         currentClass = CLASS_SOLDIER;
         nextClass = CLASSES;
 
@@ -220,5 +226,38 @@ class Player {
 
     void itemPickupSound(int sound) {
         G_Sound(ent, CHAN_ITEM, sound, ATTN_ITEM_PICKUP);
+    }
+
+    void syncScore() {
+        client.stats.setScore(score);
+    }
+
+    void addScore(float bonus) {
+        score += bonus;
+        syncScore();
+    }
+
+    void setScore(float score) {
+        this.score = score;
+    }
+
+    void didDamage(cString &args) {
+        cEntity @target = G_GetEntity(args.getToken(0).toInt());
+        if (@target != null && @target.client != null) {
+            float bonus = args.getToken(1).toFloat() * DAMAGE_BONUS;
+            if (target.client.team == client.team)
+                bonus *= -1;
+            addScore(bonus);
+        }
+    }
+
+    void madeKill(cString &args) {
+        cEntity @target = G_GetEntity(args.getToken(0).toInt());
+        if (@target != null && @target.client != null) {
+            float bonus = KILL_BONUS;
+            if (target.client.team == client.team)
+                bonus *= -1;
+            addScore(bonus);
+        }
     }
 }
