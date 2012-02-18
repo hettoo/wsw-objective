@@ -37,6 +37,8 @@ class Players {
     }
 
     Player @get(cClient @client) {
+        if (@client == null)
+            return null;
         return get(client.playerNum());
     }
 
