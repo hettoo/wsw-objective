@@ -93,7 +93,11 @@ class ObjectiveSet : Set {
     }
 
     void setAttribute(cString &fieldname, cString &value) {
-        if (fieldname == "goal")
+        if (fieldname == "author")
+            gametype.setAuthor(gametype.getAuthor()
+                    + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
+                    + S_COLOR_ORANGE + ")");
+        else if (fieldname == "goal")
             goal = value;
     }
 
