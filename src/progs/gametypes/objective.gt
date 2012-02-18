@@ -16,6 +16,9 @@ legacy_items.as;
 
 objective.as;
 objective/globals.as;
+objective/Model.as;
+objective/Sound.as;
+objective/Image.as;
 objective/Core.as;
 objective/Settings.as;
 objective/Scoreboard.as;

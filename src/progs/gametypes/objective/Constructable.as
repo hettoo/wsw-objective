@@ -21,6 +21,8 @@ const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
 const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 
+const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
+
 class Constructable : Component {
     float constructArmor;
     cString constructing;
@@ -31,12 +33,9 @@ class Constructable : Component {
     float notConstructed;
     bool spawnedGhost;
 
-    int constructedSound;
-
     Objective @objective;
 
     Constructable(Objective @objective) {
-        active = false;
         constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 
         constructProgress = 0;
@@ -45,9 +44,6 @@ class Constructable : Component {
         spawnedGhost = false;
 
         @this.objective = objective;
-
-        constructedSound = objective.players.soundIndex(
-                "announcer/objective/constructed");
     }
 
     bool setAttribute(cString &name, cString &value) {
@@ -91,7 +87,7 @@ class Constructable : Component {
         if (new.getName() != "")
             players.say(G_GetTeamName(team)
                     + " has constructed " + new.getName() + "!");
-        players.sound(constructedSound);
+        players.sound(CONSTRUCTED_SOUND.get());
         objective.getObjectiveSet().goalTest();
     }
 

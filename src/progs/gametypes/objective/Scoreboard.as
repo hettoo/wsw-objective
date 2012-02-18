@@ -17,16 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const Image NO_ICON("hud/icons/vsay/no");
+const Image YES_ICON("hud/icons/vsay/yes");
+
 class Scoreboard {
-    int noIcon;
-    int yesIcon;
-
     World @world;
-
-    Scoreboard() {
-        noIcon = G_ImageIndex("gfx/hud/icons/vsay/no");
-        yesIcon = G_ImageIndex("gfx/hud/icons/vsay/yes");
-    }
 
     void register(World @world) {
         @this.world = world;
@@ -36,10 +31,10 @@ class Scoreboard {
         cEntity @ent = team.ent(entId);
         cClient @client = ent.client;
         Player @player = world.getPlayers().get(client.playerNum());
-        int readyIcon = noIcon;
+        int readyIcon = NO_ICON.get();
 
         if (client.isReady())
-            readyIcon = yesIcon;
+            readyIcon = YES_ICON.get();
 
         int playerId = (ent.isGhosting()
                 && (match.getState() == MATCH_STATE_PLAYTIME))
@@ -64,7 +59,8 @@ class Scoreboard {
             if (entry.len() <= maxLen) {
                 message += entry;
                 for (int j = 0; @team.ent(j) != null; j++)
-                    message +=scoreboardPlayer(team, j, maxLen - message.len());
+                    message
+                        += scoreboardPlayer(team, j, maxLen - message.len());
             }
 
             return message;

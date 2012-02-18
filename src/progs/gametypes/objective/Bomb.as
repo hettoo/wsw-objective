@@ -17,9 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-cVec3 BOMB_MINS(-16, -16, -16);
-cVec3 BOMB_MAXS(16, 16, 40);
-
 const int BOMB_THROW_SPEED = 400;
 const float BOMB_TIME = 30.0f;
 const float BOMB_SPEED = 0.015f;
@@ -27,6 +24,10 @@ const int BOMB_RADIUS = 80;
 const int BOMB_EFFECT_RADIUS = 420;
 const float BOMB_WAIT_LIMIT = 20.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
+
+const Model BOMB_MODEL("objects/misc/bomb_centered");
+cVec3 BOMB_MINS(-16, -16, -16);
+cVec3 BOMB_MAXS(16, 16, 40);
 
 enum BombState {
     BS_PLACED,
@@ -41,7 +42,6 @@ class Bomb {
     cVec3 @origin;
     cVec3 @angles;
     cEntity @owner;
-    int model;
 
     int team;
     int state;
@@ -54,13 +54,12 @@ class Bomb {
     ObjectiveSet @objectiveSet;
 
     Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id, Players @players,
-            BombSet @bombSet, ObjectiveSet @objectiveSet, int model) {
+            BombSet @bombSet, ObjectiveSet @objectiveSet) {
         this.id = id;
 
         @this.origin = origin;
         @this.angles = angles;
         @this.owner = owner;
-        this.model = model;
 
         team = owner.team;
         state = BS_PLACED;
@@ -75,7 +74,7 @@ class Bomb {
     void spawn() {
         @ent = G_SpawnEntity("bomb");
         ent.type = ET_GENERIC;
-        ent.modelindex = model;
+        ent.modelindex = BOMB_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
         cVec3 dir;

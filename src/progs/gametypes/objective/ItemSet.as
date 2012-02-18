@@ -17,11 +17,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const Model AMMOPACK_MODEL("items/ammo/ammobox/ammobox");
 cVec3 AMMOPACK_MINS(-11, -11, -11);
 cVec3 AMMOPACK_MAXS(11, 11, 11);
 
+const Model HEALTHPACK_MODEL("items/health/small/small_health");
 cVec3 HEALTHPACK_MINS(-11, -11, -11);
 cVec3 HEALTHPACK_MAXS(11, 11, 11);
+
+const Sound HEALTHPACK_SOUND("items/item_spawn");
+const Sound AMMOPACK_SOUND("items/item_spawn");
 
 enum Items {
     ITEM_HEALTHPACK,
@@ -31,22 +36,7 @@ enum Items {
 class ItemSet : Set {
     Item@[] itemSet;
 
-    int healthpackModel;
-    int ammopackModel;
-
-    int healthpackSound;
-    int ammopackSound;
-
     Players @players;
-
-    ItemSet() {
-        healthpackSound = G_SoundIndex("sounds/items/item_spawn");
-        ammopackSound = G_SoundIndex("sounds/items/item_spawn");
-
-        healthpackModel
-            = G_ModelIndex("models/items/health/small/small_health.md3");
-        ammopackModel = G_ModelIndex("models/items/ammo/ammobox/ammobox.md3");
-    }
 
     void register(Players @players) {
         @this.players = players;
@@ -72,14 +62,14 @@ class ItemSet : Set {
     void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id, this, players,
-                healthpackModel, healthpackSound,
+                HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
     void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id, this, players,
-                ammopackModel, ammopackSound,
+                AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),
                 AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
     }
 

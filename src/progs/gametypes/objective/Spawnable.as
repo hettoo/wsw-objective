@@ -17,19 +17,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const Sound CAPTURE_SOUND("announcer/objective/captured");
+
 class Spawnable : Component {
     bool capturable;
 
     SpawnPointSet @spawnPointSet;
-    int captureSound;
 
     Objective @objective;
 
     Spawnable(Objective @objective) {
         capturable = false;
-
-        captureSound = objective.players.soundIndex(
-                "announcer/objective/captured");
 
         @this.objective = objective;
     }
@@ -63,7 +61,7 @@ class Spawnable : Component {
             if (objective.getName() != "")
                 players.say(G_GetTeamName(playerTeam)
                         + " has captured " + objective.getName() + "!");
-            players.sound(captureSound);
+            players.sound(CAPTURE_SOUND.get());
         }
     }
 }

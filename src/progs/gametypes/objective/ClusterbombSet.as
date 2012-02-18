@@ -20,12 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ClusterbombSet : Set {
     Clusterbomb@[] clusterbombSet;
 
-    int clusterbombModel;
-
     void resize() {
         clusterbombSet.resize(capacity);
-
-        clusterbombModel = G_ModelIndex("models/items/ammo/pack/pack.md3");
     }
 
     void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
@@ -38,8 +34,7 @@ class ClusterbombSet : Set {
             makeRoom();
             id = size++;
         }
-        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id, this,
-                clusterbombModel);
+        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id, this);
     }
 
     void remove(int n) {

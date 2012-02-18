@@ -104,7 +104,7 @@ class Players {
     }
 
     int soundIndex(cString sound) {
-        return G_SoundIndex("sounds/" + sound);
+        return Sound(sound).get();
     }
 
     void sound(cString &sound) {
@@ -113,9 +113,5 @@ class Players {
 
     void sound(int team, int sound) {
         G_AnnouncerSound(null, sound, team, true, null);
-    }
-
-    void sound(int team, cString &sound) {
-        sound(team, soundIndex("sounds/" + sound));
     }
 }

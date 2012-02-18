@@ -17,30 +17,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Component {
-    bool active;
+class Sound {
+    int sound;
 
-    Component() {
-        active = false;
+    Sound(cString &sound) {
+        this.sound = G_SoundIndex("sounds/" + sound);
     }
 
-    bool isActive() {
-        return active;
-    }
-
-    void thinkActive() {
-    }
-
-    void think() {
-        if (active)
-            thinkActive();
-    }
-
-    void thinkActive(Player @player) {
-    }
-
-    void think(Player @player) {
-        if (active)
-            thinkActive(player);
+    int get() const {
+        return sound;
     }
 }

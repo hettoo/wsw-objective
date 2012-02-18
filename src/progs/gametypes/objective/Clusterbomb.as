@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const Model CLUSTERBOMB_MODEL("items/ammo/pack/pack");
 cVec3 CLUSTERBOMB_MINS(-11, -11, -11);
 cVec3 CLUSTERBOMB_MAXS(11, 11, 11);
 
@@ -42,18 +43,18 @@ class Clusterbomb {
     ClusterbombSet @clusterbombSet;
 
     Clusterbomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
-            ClusterbombSet @clusterbombSet, int model) {
+            ClusterbombSet @clusterbombSet) {
         this.id = id;
 
-        spawn(origin, angles, owner, model);
+        spawn(origin, angles, owner);
 
         @this.clusterbombSet = clusterbombSet;
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         @ent = G_SpawnEntity("clusterbomb");
         ent.type = ET_GENERIC;
-        ent.modelindex = model;
+        ent.modelindex = CLUSTERBOMB_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
         cVec3 dir;

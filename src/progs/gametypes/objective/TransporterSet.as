@@ -20,13 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class TransporterSet : Set {
     Transporter@[] transporterSet;
 
-    int transporterModel;
-
-    TransporterSet() {
-        transporterModel = G_ModelIndex(
-                "models/objects/projectile/plasmagun/proj_plasmagun.md3");
-    }
-
     void resize() {
         transporterSet.resize(capacity);
     }
@@ -41,8 +34,7 @@ class TransporterSet : Set {
             makeRoom();
             id = size++;
         }
-        @transporterSet[id] = Transporter(origin, angles, owner, id, this,
-                transporterModel);
+        @transporterSet[id] = Transporter(origin, angles, owner, id, this);
         return transporterSet[id];
     }
 

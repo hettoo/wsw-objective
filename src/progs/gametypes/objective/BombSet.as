@@ -20,14 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class BombSet : Set {
     Bomb@[] bombSet;
 
-    int bombModel;
-
     Players @players;
     ObjectiveSet @objectiveSet;
-
-    BombSet() {
-        bombModel = G_ModelIndex("models/objects/misc/bomb_centered.md3");
-    }
 
     void register(Players @players, ObjectiveSet @objectiveSet) {
         @this.players = players;
@@ -49,7 +43,7 @@ class BombSet : Set {
             id = size++;
         }
         Bomb @new = Bomb(origin, angles, owner, id, players,
-                this, objectiveSet, bombModel);
+                this, objectiveSet);
         new.spawn();
         @bombSet[id] = new;
     }

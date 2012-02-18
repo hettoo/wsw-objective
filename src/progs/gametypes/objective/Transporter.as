@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int TRANSPORTER_THROW_SPEED = 1100;
 const float TRANSPORTER_WAIT_LIMIT = 16.0;
 
+const Model TRANSPORTER_MODEL("objects/projectile/plasmagun/proj_plasmagun");
 cVec3 TRANSPORTER_MINS(-24, -24, -24);
 cVec3 TRANSPORTER_MAXS(24, 24, 40);
 
@@ -33,18 +34,18 @@ class Transporter {
     TransporterSet @transporterSet;
 
     Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
-            TransporterSet @transporterSet, int model) {
+            TransporterSet @transporterSet) {
         this.id = id;
 
         @this.transporterSet = transporterSet;
 
-        spawn(origin, angles, owner, model);
+        spawn(origin, angles, owner);
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner, int model) {
+    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner) {
         @ent = G_SpawnEntity("transporter");
         ent.type = ET_GENERIC;
-        ent.modelindex = model;
+        ent.modelindex = TRANSPORTER_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
         cVec3 dir;

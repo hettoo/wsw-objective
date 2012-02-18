@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const float ARMOR_FRAME_BONUS = 0.002f;
 
+const Sound AMMOPACK_DROP_SOUND("items/ammo_pickup");
+const Sound HEALTHPACK_DROP_SOUND("items/health_5");
+
 class Player {
     cClient @client;
     cEntity @ent;
@@ -27,18 +30,12 @@ class Player {
     int currentClass;
     int nextClass;
 
-    int ammopackSound;
-    int healthpackSound;
-
     Players @players;
     Classes @classes;
 
     Player(Players @players) {
         currentClass = CLASS_SOLDIER;
         nextClass = CLASSES;
-
-        ammopackSound = G_SoundIndex("sounds/items/ammo_pickup");
-        healthpackSound = G_SoundIndex("sounds/items/health_5");
 
         @this.players = players;
         @this.classes = players.getClasses();
@@ -171,14 +168,14 @@ class Player {
     bool giveAmmopack() {
         bool done = playerClass.giveAmmopack(this);
         if (done)
-            itemPickupSound(ammopackSound);
+            itemPickupSound(AMMOPACK_DROP_SOUND.get());
         return done;
     }
 
     bool giveHealthpack() {
         bool done = playerClass.giveHealthpack(this);
         if (done)
-            itemPickupSound(healthpackSound);
+            itemPickupSound(HEALTHPACK_DROP_SOUND.get());
         return done;
     }
 
