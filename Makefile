@@ -4,21 +4,21 @@ WSW_DIR = ~/.warsow-0.6
 EXECUTABLE = wsw-server
 MOD = promod
 
-SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype objective \
-
+NAME = objective
+SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype $(NAME)
 THIS = Makefile
 GT_DIR = src
 TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
-SETTINGS_FILE = progs/gametypes/objective/Settings.as
-EVERY_PK3 = objective-*.pk3
-CFG = objective.cfg
+SETTINGS_FILE = progs/gametypes/$(NAME)/Settings.as
+EVERY_PK3 = $(NAME)-*.pk3
+CFG = $(NAME).cfg
 
 VERSION = $(shell grep VERSION $(GT_DIR)/$(SETTINGS_FILE) \
 		  | head -n1 | sed 's/.*"\(.*\)".*/\1/')
 VERSION_WORD = $(subst .,_,$(VERSION))
-GT_PK3 = objective-$(VERSION_WORD)_pure.pk3
+GT_PK3 = $(NAME)-$(VERSION_WORD)_pure.pk3
 
 all: $(GT_PK3)
 
