@@ -18,12 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int AMMOPACK_ARMOR = 20;
-const int CLUSTERBOMB_ARMOR = 70;
+const int CLUSTERBOMB_ARMOR = 50;
 
 class FieldOps : Class {
     FieldOps() {
-        spawnArmor = 40;
-        maxArmor = 100;
+        spawnArmor = 20;
+        maxArmor = 90;
 
         primaryWeapon = WEAP_PLASMAGUN;
         primaryStrongSpawnAmmo = 50;

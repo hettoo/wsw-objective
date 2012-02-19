@@ -17,10 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int ARTILLERY_ARMOR = 70;
+const int ARTILLERY_ARMOR = 65;
 const int MAX_ARTILLERY_DISTANCE = 3000;
 
-const int TRANSPORTER_ARMOR = 50;
+const int TRANSPORTER_ARMOR = 35;
 
 class Sniper : Class {
     Transporter @transporter;

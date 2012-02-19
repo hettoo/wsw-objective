@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const float BOT_CLASS_CHANGE_CHANCE = 0.2f;
-const float HEALTHPACK_HEALTH = 20;
+const float HEALTHPACK_HEALTH = 15;
 
 class Class {
     int spawnHealth;
@@ -46,8 +46,8 @@ class Class {
     int secondaryStrongMaxAmmo;
 
     Class() {
-        spawnHealth = 80;
-        maxHealth = 100;
+        spawnHealth = 70;
+        maxHealth = 90;
 
         classIcon = G_ImageIndex("gfx/hud/icons/objective/classes/"
                 + getSimpleName());

@@ -17,12 +17,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int BOMB_ARMOR = 70;
+const int BOMB_ARMOR = 60;
 
 class Engineer : Class {
     Engineer() {
         spawnArmor = 40;
-        maxArmor = 100;
+        maxArmor = 90;
 
         primaryWeapon = WEAP_RIOTGUN;
         primaryStrongSpawnAmmo = 8;

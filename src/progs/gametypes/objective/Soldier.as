@@ -17,16 +17,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int RAGE_ARMOR = 70;
-const int RAGE_TIME = 18;
+const int RAGE_ARMOR = 45;
+const int RAGE_TIME = 15;
 
-const int SHIELD_ARMOR = 60;
-const int SHIELD_TIME = 20;
+const int SHIELD_ARMOR = 40;
+const int SHIELD_TIME = 12;
 
 class Soldier : Class {
     Soldier() {
-        spawnArmor = 30;
-        maxArmor = 90;
+        spawnArmor = 20;
+        maxArmor = 80;
 
         primaryWeapon = WEAP_ROCKETLAUNCHER;
         primaryStrongSpawnAmmo = 12;
@@ -56,7 +56,7 @@ class Soldier : Class {
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
     }
 
-    // TODO: shield the teammembers around him as well?
+    // TODO: shield the teammembers around him as well
     void classAction2(Player @player) {
         if (!player.takeArmor(SHIELD_ARMOR))
             player.centerPrint(SHIELD_ARMOR

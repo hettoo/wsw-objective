@@ -17,15 +17,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int HEALTH_ARMOR = 15;
+const int HEALTH_ARMOR = 10;
 
 class Medic : Class {
     Medic() {
-        spawnHealth = 100;
-        maxHealth = 120;
+        spawnHealth = 90;
+        maxHealth = 110;
 
-        spawnArmor = 50;
-        maxArmor = 90;
+        spawnArmor = 30;
+        maxArmor = 80;
 
         primaryWeapon = WEAP_LASERGUN;
         primaryStrongSpawnAmmo = 50;
