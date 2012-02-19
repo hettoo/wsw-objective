@@ -28,13 +28,13 @@ class Artillery {
     int id;
 
     cVec3 @origin;
-    cEntity @owner;
+    Player @owner;
     int rocketsFired;
     float wait;
 
     ArtillerySet @artillerySet;
 
-    Artillery(cVec3 @origin, cEntity @owner, int id,
+    Artillery(cVec3 @origin, Player @owner, int id,
             ArtillerySet @artillerySet) {
         this.id = id;
 
@@ -60,7 +60,7 @@ class Artillery {
                 - ARTILLERY_MAX_DIVERGENCY), 0);
 
         G_FireRocket(origin, angles, 1500, ARTILLERY_IMPACT, ARTILLERY_IMPACT,
-                ARTILLERY_IMPACT, 1, owner);
+                ARTILLERY_IMPACT, 1, owner.getEnt());
 
         if (++rocketsFired == ARTILLERY_ROCKETS)
             artillerySet.remove(id);

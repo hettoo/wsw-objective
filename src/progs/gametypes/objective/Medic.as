@@ -58,7 +58,8 @@ class Medic : Class {
             player.centerPrint(HEALTH_ARMOR
                     + " armor is required to drop health");
         else
-            player.getPlayers().getWorld().addHealthpack(origin, angles, ent);
+            player.getPlayers().getWorld().getItemSet().addHealthpack(
+                    origin, angles, player);
     }
 
     // classaction2: revive

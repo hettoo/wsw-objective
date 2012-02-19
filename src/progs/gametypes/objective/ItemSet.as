@@ -59,14 +59,14 @@ class ItemSet : Set {
         return id;
     }
 
-    void addHealthpack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+    void addHealthpack(cVec3 @origin, cVec3 @angles, Player @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id, this, players,
                 HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
-    void addAmmopack(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+    void addAmmopack(cVec3 @origin, cVec3 @angles, Player @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id, this, players,
                 AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),

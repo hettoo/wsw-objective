@@ -28,30 +28,33 @@ class Transporter {
     int id;
 
     cEntity @ent;
+    Player @owner;
 
     float removeTime;
 
     TransporterSet @transporterSet;
 
-    Transporter(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
+    Transporter(cVec3 @origin, cVec3 @angles, Player @owner, int id,
             TransporterSet @transporterSet) {
         this.id = id;
 
         @this.transporterSet = transporterSet;
 
-        spawn(origin, angles, owner);
+        @this.owner = owner;
+        spawn(origin, angles);
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+    void spawn(cVec3 @origin, cVec3 @angles) {
         @ent = G_SpawnEntity("transporter");
         ent.type = ET_GENERIC;
         ent.modelindex = TRANSPORTER_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
+        @ent.owner = owner.getEnt();
         cVec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(owner.getVelocity() + dir * TRANSPORTER_THROW_SPEED);
-        @ent.owner = owner;
+        ent.setVelocity(ent.owner.getVelocity()
+                + dir * TRANSPORTER_THROW_SPEED);
         ent.setSize(TRANSPORTER_MINS, TRANSPORTER_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;

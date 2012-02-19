@@ -74,8 +74,8 @@ class Sniper : Class {
                 player.centerPrint(ARTILLERY_ARMOR
                         + " armor is required to spawn artillery");
             } else {
-                player.getPlayers().getWorld().addArtillery(view.getEndPos(),
-                        ent);
+                player.getPlayers().getWorld().getArtillerySet().add(
+                        view.getEndPos(), player);
             }
         } else {
             player.centerPrint("Not solid or too far away to spawn artillery");
@@ -96,8 +96,9 @@ class Sniper : Class {
                 player.centerPrint(TRANSPORTER_ARMOR
                         + " armor is required to throw a transporter");
             } else {
-                @transporter = player.getPlayers().getWorld().addTransporter(
-                        origin, angles, ent);
+                @transporter
+                    = player.getPlayers().getWorld().getTransporterSet().add(
+                        origin, angles, player);
                 player.centerPrint("Press again to teleport yourself");
             }
         }

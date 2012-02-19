@@ -37,30 +37,33 @@ class Clusterbomb {
     int id;
 
     cEntity @ent;
+    Player @owner;
 
     float timer;
 
     ClusterbombSet @clusterbombSet;
 
-    Clusterbomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id,
+    Clusterbomb(cVec3 @origin, cVec3 @angles, Player @owner, int id,
             ClusterbombSet @clusterbombSet) {
         this.id = id;
 
-        spawn(origin, angles, owner);
+        @this.owner = owner;
+
+        spawn(origin, angles);
 
         @this.clusterbombSet = clusterbombSet;
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+    void spawn(cVec3 @origin, cVec3 @angles) {
         @ent = G_SpawnEntity("clusterbomb");
         ent.type = ET_GENERIC;
         ent.modelindex = CLUSTERBOMB_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
+        @ent.owner = owner.getEnt();
         cVec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(owner.getVelocity() + dir * CLUSTERBOMB_THROW_SPEED);
-        @ent.owner = owner;
+        ent.setVelocity(ent.owner.getVelocity() + dir * CLUSTERBOMB_THROW_SPEED);
         ent.setSize(CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;

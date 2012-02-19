@@ -24,7 +24,7 @@ class ClusterbombSet : Set {
         clusterbombSet.resize(capacity);
     }
 
-    void add(cVec3 @origin, cVec3 @angles, cEntity @owner) {
+    void add(cVec3 @origin, cVec3 @angles, Player @owner) {
         int id = UNKNOWN;
         for (int i = 0; i < size && id == UNKNOWN; i++) {
             if (@clusterbombSet[i] == null)

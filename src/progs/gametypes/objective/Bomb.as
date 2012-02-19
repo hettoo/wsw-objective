@@ -41,7 +41,7 @@ class Bomb {
 
     cVec3 @origin;
     cVec3 @angles;
-    cEntity @owner;
+    Player @owner;
 
     int team;
     int state;
@@ -53,7 +53,7 @@ class Bomb {
     BombSet @bombSet;
     ObjectiveSet @objectiveSet;
 
-    Bomb(cVec3 @origin, cVec3 @angles, cEntity @owner, int id, Players @players,
+    Bomb(cVec3 @origin, cVec3 @angles, Player @owner, int id, Players @players,
             BombSet @bombSet, ObjectiveSet @objectiveSet) {
         this.id = id;
 
@@ -61,7 +61,7 @@ class Bomb {
         @this.angles = angles;
         @this.owner = owner;
 
-        team = owner.team;
+        team = owner.getEnt().team;
         state = BS_PLACED;
         progress = 0;
         notArmed = 0;
@@ -77,10 +77,10 @@ class Bomb {
         ent.modelindex = BOMB_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
+        @ent.owner = owner.getEnt();
         cVec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(owner.getVelocity() + dir * BOMB_THROW_SPEED);
-        @ent.owner = owner;
+        ent.setVelocity(ent.owner.getVelocity() + dir * BOMB_THROW_SPEED);
         ent.team = team;
         ent.setSize(BOMB_MINS, BOMB_MAXS);
         ent.solid = SOLID_NOT;
