@@ -23,6 +23,9 @@ const Sound PLANT_SOUND("announcer/objective/planted");
 const Sound DEFUSE_SOUND("announcer/objective/defused");
 const Sound DESTROY_SOUND("announcer/objective/destroyed");
 
+const int DESTROY_SCORE = 4;
+const int DEFUSE_SCORE = 4;
+
 class Destroyable : Component {
     cString destroyed;
 
@@ -42,7 +45,7 @@ class Destroyable : Component {
         return true;
     }
 
-    void destruct() {
+    void destruct(Player @planter) {
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(objective.getOtherTeam())
@@ -52,6 +55,7 @@ class Destroyable : Component {
         objective.destroy();
         if (destroyed != "")
             objective.getObjectiveSet().find(destroyed).spawn();
+        planter.addScore(DESTROY_SCORE);
     }
 
     void planted() {
@@ -62,11 +66,12 @@ class Destroyable : Component {
         players.sound(PLANT_SOUND.get());
     }
 
-    void defused() {
+    void defused(Player @defuser) {
         if (objective.getName() != "")
             objective.getPlayers().say(G_GetTeamName(objective.getTeam())
                     + " defused the bomb at " + objective.getName() + "!");
         objective.getPlayers().sound(DEFUSE_SOUND.get());
+        defuser.addScore(DEFUSE_SCORE);
     }
 
     void thinkActive(Player @player) {

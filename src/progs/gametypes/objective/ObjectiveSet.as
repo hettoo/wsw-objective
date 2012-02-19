@@ -136,9 +136,9 @@ class ObjectiveSet : Set {
             objectiveSet[i].think();
     }
 
-    void exploded(cEntity @ent) {
+    void exploded(cEntity @ent, Player @planter) {
         for (int i = 0; i < size; i++)
-            objectiveSet[i].exploded(ent);
+            objectiveSet[i].exploded(ent, planter);
         goalTest();
     }
 
@@ -147,8 +147,8 @@ class ObjectiveSet : Set {
             objectiveSet[i].planted(ent);
     }
 
-    void defused(cEntity @ent) {
+    void defused(cEntity @ent, Player @defuser) {
         for (int i = 0; i < size; i++)
-            objectiveSet[i].defused(ent);
+            objectiveSet[i].defused(ent, defuser);
     }
 }

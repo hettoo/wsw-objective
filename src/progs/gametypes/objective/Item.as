@@ -21,6 +21,7 @@ const int ITEM_RADIUS = 36;
 const float ITEM_WAIT_LIMIT = 20.0f;
 
 const int ITEM_THROW_SPEED = 400;
+const int ITEM_SCORE = 1;
 
 class Item {
     int id;
@@ -94,6 +95,9 @@ class Item {
             if (@player != null && near(player)) {
                 if ((type == ITEM_HEALTHPACK && player.giveHealthpack())
                         || (type == ITEM_AMMOPACK && player.giveAmmopack())) {
+                    if (player.getClient().team == owner.getClient().team
+                            && @player != @owner)
+                        owner.addScore(ITEM_SCORE);
                     remove();
                     return;
                 }

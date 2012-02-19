@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
 const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
+const int CONSTRUCT_SCORE = 4;
 
 const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
@@ -98,9 +99,12 @@ class Constructable : Component {
         constructProgress = 0;
     }
 
-    void constructProgress() {
-        constructProgress += CONSTRUCT_SPEED * frameTime;
+    void constructProgress(Player @player) {
+        float additional = CONSTRUCT_SPEED * frameTime;
+        constructProgress += additional;
         spawnGhost();
+        player.addScore(additional / PROGRESS_FINISHED
+                * constructArmor / DEFAULT_CONSTRUCT_ARMOR * CONSTRUCT_SCORE);
     }
 
     void thinkActive(Player @player) {
@@ -110,7 +114,7 @@ class Constructable : Component {
                     constructed(player);
                 else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
                             / PROGRESS_FINISHED * constructArmor))
-                    constructProgress();
+                    constructProgress(player);
 
                 player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
                 madeProgress = true;

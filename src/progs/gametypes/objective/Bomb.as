@@ -100,7 +100,7 @@ class Bomb {
         ent.explosionEffect(BOMB_EFFECT_RADIUS);
         ent.splashDamage(@ent.owner, BOMB_EFFECT_RADIUS, 180, 100, 1,
                 MOD_EXPLOSIVE);
-        objectiveSet.exploded(ent);
+        objectiveSet.exploded(ent, owner);
         remove();
     }
 
@@ -135,8 +135,8 @@ class Bomb {
         progress -= BOMB_SPEED * frameTime;
     }
 
-    void defused() {
-        objectiveSet.defused(ent);
+    void defused(Player @defuser) {
+        objectiveSet.defused(ent, defuser);
         remove();
     }
 
@@ -169,7 +169,7 @@ class Bomb {
             if (@player != null && nearOtherTeam(player)) {
                 if (player.getClassId() == CLASS_ENGINEER) {
                     if (progress <= 0)
-                        defused();
+                        defused(player);
                     else if (player.takeArmor(BOMB_SPEED * frameTime
                                 / PROGRESS_FINISHED * BOMB_DEFUSE_ARMOR))
                         defuseProgress();

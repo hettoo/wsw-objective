@@ -255,9 +255,9 @@ class Objective {
         spawnable.think();
     }
 
-    void exploded(cEntity @bomb) {
+    void exploded(cEntity @bomb, Player @planter) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            destroyable.destruct();
+            destroyable.destruct(planter);
     }
 
     void planted(cEntity @bomb) {
@@ -265,8 +265,8 @@ class Objective {
             destroyable.planted();
     }
 
-    void defused(cEntity @bomb) {
+    void defused(cEntity @bomb, Player @defuser) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            destroyable.defused();
+            destroyable.defused(defuser);
     }
 }
