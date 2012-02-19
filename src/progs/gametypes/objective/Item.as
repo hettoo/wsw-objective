@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int ITEM_RADIUS = 30;
+const int ITEM_RADIUS = 36;
 const float ITEM_WAIT_LIMIT = 20.0f;
 
 const int ITEM_THROW_SPEED = 400;
