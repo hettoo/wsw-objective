@@ -21,6 +21,8 @@ const float DAMAGE_BONUS = 0.02f;
 const float KILL_BONUS = 1;
 const float ARMOR_FRAME_BONUS = 0.002f;
 
+const int SPAWN_PROTECTION_TIME = 3;
+
 const Sound AMMOPACK_DROP_SOUND("items/ammo_pickup");
 const Sound HEALTHPACK_DROP_SOUND("items/health_5");
 
@@ -199,6 +201,7 @@ class Player {
 
     void spawn() {
         applyNextClass();
+        giveItem(POWERUP_SHELL, SPAWN_PROTECTION_TIME);
         playerClass.spawn(this);
         ent.respawnEffect();
     }
