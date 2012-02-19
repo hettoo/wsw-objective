@@ -82,7 +82,7 @@ cString @G_GetTeamName(int team) {
 }
 
 bool G_Near(cEntity @a, cEntity @b, float radius) {
-    return !a.isGhosting() && !b.isGhosting()
+    return @a != null && @b != null && !a.isGhosting() && !b.isGhosting()
         && a.getOrigin().distance(b.getOrigin()) <= radius;
 }
 
