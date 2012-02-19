@@ -21,7 +21,10 @@ const int DEFAULT_CONSTRUCT_ARMOR = BOMB_ARMOR;
 const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 const int CONSTRUCT_SCORE = 4;
+const float CONSTRUCTING_SOUND_DELAY = 1.2f;
+const float ATTN_CONSTRUCTING = 0.5f;
 
+const Sound CONSTRUCTING_SOUND("objective/constructing");
 const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
 class Constructable : Component {
@@ -30,6 +33,7 @@ class Constructable : Component {
     cString constructed;
 
     float constructProgress;
+    float constructingSoundWait;
     bool madeProgress;
     float notConstructed;
     bool spawnedGhost;
@@ -40,6 +44,7 @@ class Constructable : Component {
         constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 
         constructProgress = 0;
+        constructingSoundWait = 0;
         madeProgress = false;
         notConstructed = 0;
         spawnedGhost = false;
@@ -105,6 +110,13 @@ class Constructable : Component {
         spawnGhost();
         player.addScore(additional / PROGRESS_FINISHED
                 * constructArmor / DEFAULT_CONSTRUCT_ARMOR * CONSTRUCT_SCORE);
+        if (constructingSoundWait <= 0) {
+            G_Sound(player.getEnt(), CHAN_AUTO,
+                    CONSTRUCTING_SOUND.get(), ATTN_CONSTRUCTING);
+            constructingSoundWait = CONSTRUCTING_SOUND_DELAY;
+        } else {
+            constructingSoundWait -= frameTime * 0.001;
+        }
     }
 
     void thinkActive(Player @player) {
