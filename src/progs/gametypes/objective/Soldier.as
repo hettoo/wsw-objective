@@ -18,11 +18,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int RAGE_ARMOR = 45;
-const int RAGE_TIME = 15;
+const int RAGE_TIME = 12;
 
-const int SHIELD_ARMOR = 40;
+const int SHIELD_ARMOR = 45;
 const int SHIELD_TIME = 10;
-const int SHIELD_RADIUS = 180;
+const int SHIELD_RADIUS = 200;
 
 class Soldier : Class {
     Soldier() {
