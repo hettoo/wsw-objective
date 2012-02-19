@@ -21,7 +21,8 @@ const int RAGE_ARMOR = 45;
 const int RAGE_TIME = 15;
 
 const int SHIELD_ARMOR = 40;
-const int SHIELD_TIME = 12;
+const int SHIELD_TIME = 10;
+const int SHIELD_RADIUS = 180;
 
 class Soldier : Class {
     Soldier() {
@@ -56,12 +57,22 @@ class Soldier : Class {
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
     }
 
-    // TODO: shield the teammembers around him as well
     void classAction2(Player @player) {
-        if (!player.takeArmor(SHIELD_ARMOR))
+        if (!player.takeArmor(SHIELD_ARMOR)) {
             player.centerPrint(SHIELD_ARMOR
                     + " armor is required to get a shield");
-        else
-            player.giveItem(POWERUP_SHELL, SHIELD_TIME);
+        } else {
+            int team = player.getClient().team;
+            Players @players = player.getPlayers();
+            for (int i = 0; i < players.getSize(); i++) {
+                Player @other = players.get(i);
+                if (@other != null) {
+                    cClient @client = other.getClient();
+                    if (@client != null && client.team == team
+                            && G_Near(player, other, SHIELD_RADIUS))
+                        other.giveItem(POWERUP_SHELL, SHIELD_TIME);
+                }
+            }
+        }
     }
 }

@@ -80,3 +80,12 @@ cString @G_GetTeamName(int team) {
     else
         return G_GetTeam(team).getName();
 }
+
+bool G_Near(cEntity @a, cEntity @b, float radius) {
+    return !a.isGhosting() && !b.isGhosting()
+        && a.getOrigin().distance(b.getOrigin()) <= radius;
+}
+
+bool G_Near(Player @a, Player @b, float radius) {
+    return G_Near(a.getEnt(), b.getEnt(), radius);
+}

@@ -105,8 +105,7 @@ class Bomb {
     }
 
     bool near(cEntity @other) {
-        return !other.isGhosting()
-            && ent.getOrigin().distance(other.getOrigin()) <= BOMB_RADIUS;
+        return G_Near(ent, other, BOMB_RADIUS);
     }
 
     bool near(Player @player) {
