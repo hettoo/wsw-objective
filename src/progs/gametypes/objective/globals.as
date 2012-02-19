@@ -87,5 +87,5 @@ bool G_Near(cEntity @a, cEntity @b, float radius) {
 }
 
 bool G_Near(Player @a, Player @b, float radius) {
-    return G_Near(a.getEnt(), b.getEnt(), radius);
+    return @a != null && @b != null && G_Near(a.getEnt(), b.getEnt(), radius);
 }
