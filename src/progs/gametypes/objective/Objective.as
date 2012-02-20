@@ -139,17 +139,8 @@ class Objective {
             ent.linkEntity();
         }
 
-        if (icon != 0) {
-            @minimap = @G_SpawnEntity("objective_icon");
-            minimap.type = ET_MINIMAP_ICON;
-            minimap.modelindex = icon;
-            minimap.team = owningTeam;
-            minimap.setOrigin(origin);
-            minimap.solid = SOLID_NOT;
-            minimap.frame = 24;
-            minimap.svflags |= SVF_BROADCAST;
-            minimap.svflags &= ~SVF_NOCLIENT;
-        }
+        if (icon != 0)
+            @minimap = G_SpawnIcon(icon, owningTeam, origin);
 
         spawned = true;
     }
@@ -260,9 +251,12 @@ class Objective {
             destroyable.destruct(planter);
     }
 
-    void planted(cEntity @bomb) {
-        if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
+    bool planted(cEntity @bomb) {
+        if (spawned && destroyable.isActive() && nearOtherTeam(bomb)) {
             destroyable.planted();
+            return true;
+        }
+        return false;
     }
 
     void defused(cEntity @bomb, Player @defuser) {

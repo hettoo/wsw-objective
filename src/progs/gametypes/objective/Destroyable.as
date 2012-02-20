@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const Image DESTROY_ICON("bomb/carrierIcon");
+const Image DESTROY_ICON("bomb/carriericon");
 
 const Sound PLANT_SOUND("announcer/objective/planted");
 const Sound DEFUSE_SOUND("announcer/objective/defused");

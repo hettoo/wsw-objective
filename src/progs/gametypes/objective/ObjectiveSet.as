@@ -142,9 +142,13 @@ class ObjectiveSet : Set {
         goalTest();
     }
 
-    void planted(cEntity @ent) {
-        for (int i = 0; i < size; i++)
-            objectiveSet[i].planted(ent);
+    bool planted(cEntity @ent) {
+        bool effective = false;
+        for (int i = 0; i < size; i++) {
+            if (!effective)
+                effective = objectiveSet[i].planted(ent);
+        }
+        return effective;
     }
 
     void defused(cEntity @ent, Player @defuser) {

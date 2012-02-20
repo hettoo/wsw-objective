@@ -89,3 +89,16 @@ bool G_Near(cEntity @a, cEntity @b, float radius) {
 bool G_Near(Player @a, Player @b, float radius) {
     return @a != null && @b != null && G_Near(a.getEnt(), b.getEnt(), radius);
 }
+
+cEntity @G_SpawnIcon(int image, int team, cVec3 @origin) {
+    cEntity @minimap = @G_SpawnEntity("minimap_icon");
+    minimap.type = ET_MINIMAP_ICON;
+    minimap.modelindex = image;
+    minimap.team = team;
+    minimap.setOrigin(origin);
+    minimap.solid = SOLID_NOT;
+    minimap.frame = 24;
+    minimap.svflags |= SVF_BROADCAST;
+    minimap.svflags &= ~SVF_NOCLIENT;
+    return minimap;
+}

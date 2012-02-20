@@ -25,6 +25,8 @@ const int BOMB_EFFECT_RADIUS = 420;
 const float BOMB_WAIT_LIMIT = 20.0f;
 const int BOMB_DEFUSE_ARMOR = 70;
 
+const Image BOMB_ICON("bomb/carriericon");
+
 const Model BOMB_MODEL("objects/misc/bomb_centered");
 cVec3 BOMB_MINS(-16, -16, -16);
 cVec3 BOMB_MAXS(16, 16, 40);
@@ -38,6 +40,7 @@ class Bomb {
     int id;
 
     cEntity @ent;
+    cEntity @minimap;
 
     cVec3 @origin;
     cVec3 @angles;
@@ -93,6 +96,11 @@ class Bomb {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
+        if (@minimap != null) {
+            minimap.unlinkEntity();
+            minimap.freeEntity();
+            @minimap = null;
+        }
         bombSet.remove(id);
     }
 
@@ -128,7 +136,8 @@ class Bomb {
         progress = PROGRESS_FINISHED;
         state = BS_PLANTED;
         timer = BOMB_TIME;
-        objectiveSet.planted(ent);
+        if (objectiveSet.planted(ent))
+            @minimap = G_SpawnIcon(BOMB_ICON.get(), team, origin);
     }
 
     void defuseProgress() {
