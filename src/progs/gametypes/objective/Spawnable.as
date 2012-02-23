@@ -17,12 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const Sound CAPTURE_SOUND("announcer/objective/captured");
-
 const Model FLAG("objects/flag/flag");
 const Model FLAG_UNCAPTURED("misc/ammobox");
 cVec3 FLAG_MINS(-16, -16, -16);
 cVec3 FLAG_MAXS(16, 16, 40);
+
+const Image FLAG_ICON("hud/icons/flags/iconflag");
+const Sound CAPTURE_SOUND("announcer/objective/captured");
 
 class Spawnable : Component {
     bool capturable;
@@ -73,7 +74,8 @@ class Spawnable : Component {
                 ent.modelindex = FLAG_UNCAPTURED.get();
                 break;
         }
-        ent.setOrigin(objective.getOrigin());
+        cVec3 @origin = objective.getOrigin();
+        ent.setOrigin(origin);
         ent.setAngles(cVec3(-90, 0, 0));
         ent.setSize(FLAG_MINS, FLAG_MAXS);
         ent.solid = SOLID_YES;
@@ -82,6 +84,7 @@ class Spawnable : Component {
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
         objective.setEnt(ent);
+        objective.setIcon(G_SpawnIcon(FLAG_ICON.get(), ent.team, origin));
     }
 
     cEntity @getRandomSpawnPoint() {

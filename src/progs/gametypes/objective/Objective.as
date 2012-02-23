@@ -87,6 +87,10 @@ class Objective {
         @this.ent = ent;
     }
 
+    void setIcon(cEntity @minimap) {
+        @this.minimap = minimap;
+    }
+
     ObjectiveSet @getObjectiveSet() {
         return objectiveSet;
     }
@@ -134,23 +138,26 @@ class Objective {
 
         if (spawnable.isActive() && spawnable.isCapturable()) {
             spawnable.spawn();
-        } else if (model != 0) {
-            @ent = G_SpawnEntity("objective");
-            ent.type = ET_GENERIC;
-            ent.modelindex = model;
-            ent.team = owningTeam;
-            ent.setOrigin(origin);
-            ent.setAngles(angles);
-            ent.setSize(mins, maxs);
-            ent.solid = solid ? SOLID_YES : SOLID_NOT;
-            ent.clipMask = MASK_PLAYERSOLID;
-            ent.moveType = moveType;
-            ent.svflags &= ~SVF_NOCLIENT;
-            ent.linkEntity();
-        }
+        } else {
+            if (model != 0) {
+                @ent = G_SpawnEntity("objective");
+                ent.type = ET_GENERIC;
+                ent.modelindex = model;
+                ent.team = owningTeam;
+                ent.setOrigin(origin);
+                ent.setAngles(angles);
+                ent.setSize(mins, maxs);
+                ent.solid = solid ? SOLID_YES : SOLID_NOT;
+                ent.clipMask = MASK_PLAYERSOLID;
+                ent.moveType = moveType;
+                ent.svflags &= ~SVF_NOCLIENT;
+                ent.linkEntity();
+            }
 
-        if (icon != 0)
-            @minimap = G_SpawnIcon(icon, owningTeam, origin);
+            if (icon != 0)
+                @minimap = G_SpawnIcon(icon, owningTeam, origin);
+
+        }
 
         spawned = true;
     }
