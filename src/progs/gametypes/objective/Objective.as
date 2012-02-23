@@ -79,6 +79,14 @@ class Objective {
         return name;
     }
 
+    cVec3 @getOrigin() {
+        return origin;
+    }
+
+    void setEnt(cEntity @ent) {
+        @this.ent = ent;
+    }
+
     ObjectiveSet @getObjectiveSet() {
         return objectiveSet;
     }
@@ -124,7 +132,9 @@ class Objective {
         if (spawned)
             return;
 
-        if (model != 0) {
+        if (spawnable.isActive() && spawnable.isCapturable()) {
+            spawnable.spawn();
+        } else if (model == 0) {
             @ent = G_SpawnEntity("objective");
             ent.type = ET_GENERIC;
             ent.modelindex = model;
@@ -175,6 +185,15 @@ class Objective {
         }
         spawned = false;
         owningTeam = team;
+    }
+
+    void respawn(int team) {
+        destroy();
+        spawn(team);
+    }
+
+    void respawn() {
+        respawn(owningTeam);
     }
 
     bool isSpawn() {

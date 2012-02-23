@@ -19,6 +19,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const Sound CAPTURE_SOUND("announcer/objective/captured");
 
+const Model FLAG("objects/flag/flag");
+const Model FLAG_UNCAPTURED("misc/ammobox");
+cVec3 FLAG_MINS(-16, -16, -16);
+cVec3 FLAG_MAXS(16, 16, 40);
+
 class Spawnable : Component {
     bool capturable;
 
@@ -36,6 +41,10 @@ class Spawnable : Component {
         return Component::isActive() && spawnPointSet.getSize() > 0;
     }
 
+    bool isCapturable() {
+        return capturable;
+    }
+
     bool setAttribute(cString &name, cString &value) {
         if (name == "spawnLocation") {
             active = value.toInt() == 1;
@@ -49,19 +58,48 @@ class Spawnable : Component {
         return true;
     }
 
+    void spawn() {
+        cEntity @ent = G_SpawnEntity("objective");
+        ent.type = ET_GENERIC;
+        ent.team = objective.getTeam();
+        switch (ent.team) {
+            case TEAM_DEFENSE:
+                ent.modelindex = FLAG.get();
+                break;
+            case TEAM_ASSAULT:
+                ent.modelindex = FLAG.get();
+                break;
+            default:
+                ent.modelindex = FLAG_UNCAPTURED.get();
+                break;
+        }
+        ent.setOrigin(objective.getOrigin());
+        ent.setAngles(cVec3(-90, 0, 0));
+        ent.setSize(FLAG_MINS, FLAG_MAXS);
+        ent.solid = SOLID_YES;
+        ent.clipMask = MASK_PLAYERSOLID;
+        ent.moveType = MOVETYPE_NONE;
+        ent.svflags &= ~SVF_NOCLIENT;
+        ent.linkEntity();
+        objective.setEnt(ent);
+    }
+
     cEntity @getRandomSpawnPoint() {
         return spawnPointSet.getRandom();
     }
 
+    void captured(int team) {
+        Players @players = objective.getPlayers();
+        if (objective.getName() != "")
+            players.say(G_GetTeamName(team)
+                    + " has captured " + objective.getName() + "!");
+        players.sound(CAPTURE_SOUND.get());
+        objective.respawn(team);
+    }
+
     void thinkActive(Player @player) {
         int playerTeam = player.getClient().team;
-        if (capturable && objective.getTeam() != playerTeam) {
-            objective.setTeam(playerTeam);
-            Players @players = objective.getPlayers();
-            if (objective.getName() != "")
-                players.say(G_GetTeamName(playerTeam)
-                        + " has captured " + objective.getName() + "!");
-            players.sound(CAPTURE_SOUND.get());
-        }
+        if (capturable && objective.getTeam() != playerTeam)
+            captured(playerTeam);
     }
 }
