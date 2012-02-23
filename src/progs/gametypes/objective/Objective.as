@@ -134,7 +134,7 @@ class Objective {
 
         if (spawnable.isActive() && spawnable.isCapturable()) {
             spawnable.spawn();
-        } else if (model == 0) {
+        } else if (model != 0) {
             @ent = G_SpawnEntity("objective");
             ent.type = ET_GENERIC;
             ent.modelindex = model;
