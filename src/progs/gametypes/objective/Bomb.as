@@ -27,6 +27,14 @@ const int BOMB_DEFUSE_ARMOR = 70;
 
 const Image BOMB_ICON("bomb/carriericon");
 
+const Sound BOMB_SPAWN_SOUND("items/item_spawn");
+const Sound BOMB_ARM_SOUND("misc/timer_bip_bip");
+const Sound BOMB_SOUND("bomb/bombtimer");
+const float BOMB_SOUND_MIN_DELAY = 0.6f;
+const float BOMB_SOUND_MAX_DELAY = 1.5f;
+const float ATTN_BOMB = 0.75f;
+const int BOMB_CRITICAL_TIME = 6;
+
 const Model BOMB_MODEL("objects/misc/bomb_centered");
 cVec3 BOMB_MINS(-16, -16, -16);
 cVec3 BOMB_MAXS(16, 16, 40);
@@ -49,7 +57,8 @@ class Bomb {
     int team;
     int state;
     float progress;
-    float timer;
+    float explodeTime;
+    float soundTime;
     float notArmed;
 
     Players @players;
@@ -90,6 +99,7 @@ class Bomb {
         ent.moveType = MOVETYPE_TOSS;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
+        G_Sound(ent, CHAN_ITEM, BOMB_SPAWN_SOUND.get(), ATTN_ITEM_SPAWN);
     }
 
     void remove() {
@@ -131,11 +141,20 @@ class Bomb {
     void plantProgress() {
         progress += BOMB_SPEED * frameTime;
     }
+
+    void setSoundTime() {
+        if (explodeTime < BOMB_CRITICAL_TIME)
+            soundTime = BOMB_SOUND_MIN_DELAY;
+        else
+            soundTime = BOMB_SOUND_MAX_DELAY;
+    }
     
     void planted() {
         progress = PROGRESS_FINISHED;
         state = BS_PLANTED;
-        timer = BOMB_TIME;
+        G_Sound(ent, CHAN_ITEM, BOMB_ARM_SOUND.get(), ATTN_BOMB);
+        explodeTime = BOMB_TIME;
+        setSoundTime();
         if (objectiveSet.planted(ent))
             @minimap = G_SpawnIcon(BOMB_ICON.get(), team, origin);
     }
@@ -186,9 +205,17 @@ class Bomb {
                 player.setHUDStat(STAT_PROGRESS_OTHER, progress);
             }
         }
-        timer -= frameTime * 0.001;
-        if (timer <= 0)
+        explodeTime -= frameTime * 0.001;
+        if (explodeTime <= 0) {
             explode();
+        } else {
+            if (soundTime <= 0) {
+                G_Sound(ent, CHAN_AUTO, BOMB_SOUND.get(), ATTN_BOMB);
+                setSoundTime();
+            } else {
+                soundTime -= frameTime * 0.001;
+            }
+        }
     }
 
     void think() {

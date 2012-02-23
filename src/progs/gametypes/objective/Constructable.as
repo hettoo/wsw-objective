@@ -22,7 +22,7 @@ const float CONSTRUCT_SPEED = 0.012f;
 const float CONSTRUCT_WAIT_LIMIT = 15.0f;
 const int CONSTRUCT_SCORE = 4;
 const float CONSTRUCTING_SOUND_DELAY = 1.2f;
-const float ATTN_CONSTRUCTING = 0.5f;
+const float ATTN_CONSTRUCTING = 0.75f;
 
 const Sound CONSTRUCTING_SOUND("objective/constructing");
 const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
