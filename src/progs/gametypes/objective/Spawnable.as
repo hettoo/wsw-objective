@@ -95,7 +95,7 @@ class Spawnable : Component {
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(team)
-                    + " has captured " + objective.getName() + "!");
+                    + " has captured the " + objective.getName() + "!");
         players.sound(CAPTURE_SOUND.get());
         objective.respawn(team);
     }

@@ -258,7 +258,7 @@ class Objective {
                 if (name != "") {
                     int configStringId = CS_GENERAL
                         + player.getClient().playerNum();
-                    G_ConfigString(configStringId, "You are near " + name);
+                    G_ConfigString(configStringId, "You are near the " + name);
                     player.setHUDStat(STAT_MESSAGE_SELF, configStringId);
                 }
                 constructable.think(player);

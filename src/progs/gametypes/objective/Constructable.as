@@ -92,7 +92,7 @@ class Constructable : Component {
         Players @players = objective.getPlayers();
         if (new.getName() != "")
             players.say(G_GetTeamName(team)
-                    + " has constructed " + new.getName() + "!");
+                    + " has constructed the " + new.getName() + "!");
         players.sound(CONSTRUCTED_SOUND.get());
         objective.getObjectiveSet().goalTest();
     }
