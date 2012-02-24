@@ -80,7 +80,7 @@ class ObjectiveSet : Set {
         int suitableSpawnCount = 0;
         suitableSpawns.resize(size);
         for (int i = 0; i < size; i++) {
-            if (objectiveSet[i].isSpawn()
+            if (objectiveSet[i].isSpawn() && objectiveSet[i].isSpawned()
                     && objectiveSet[i].getTeam() == self.team)
                 suitableSpawns[suitableSpawnCount++] = i;
         }
