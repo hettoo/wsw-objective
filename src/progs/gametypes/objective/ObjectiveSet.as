@@ -69,7 +69,7 @@ class ObjectiveSet : Set {
             @objective = find(goal);
         }
         if (objective.isSpawned() ^^ inverse
-                && match.getState() == MATCH_STATE_PLAYTIME) {
+                && match.getState() <= MATCH_STATE_PLAYTIME) {
             G_GetTeam(TEAM_ASSAULT).stats.addScore(1);
             match.launchState(match.getState() + 1);
         }
