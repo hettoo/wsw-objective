@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const float DAMAGE_BONUS = 0.02f;
 const float KILL_BONUS = 1;
+const float SUICIDE_BONUS = -3;
 const float ARMOR_FRAME_BONUS = 0.002f;
 
 const int SPAWN_PROTECTION_TIME = 3;
@@ -260,7 +261,9 @@ class Player {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {
             float bonus = KILL_BONUS;
-            if (target.client.team == client.team)
+            if (@target == @ent)
+                bonus = SUICIDE_BONUS;
+            else if (target.client.team == client.team)
                 bonus *= -1;
             addScore(bonus);
         }
