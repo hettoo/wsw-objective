@@ -27,6 +27,8 @@ const Sound CAPTURE_SOUND("announcer/objective/captured");
 
 class Spawnable : Component {
     bool capturable;
+    Objective @assaultFallback;
+    Objective @defenseFallback;
 
     SpawnPointSet @spawnPointSet;
 
@@ -53,6 +55,10 @@ class Spawnable : Component {
             spawnPointSet.analyze(objective.getId());
         } else if (name == "capturable") {
             capturable = value.toInt() == 1;
+        } else if (name == "assaultFallback") {
+            @assaultFallback = objective.getObjectiveSet().find(value);
+        } else if (name == "defenseFallback") {
+            @defenseFallback = objective.getObjectiveSet().find(value);
         } else {
             return false;
         }
@@ -97,6 +103,18 @@ class Spawnable : Component {
             players.say(G_GetTeamName(team)
                     + " has captured the " + objective.getName() + "!");
         players.sound(CAPTURE_SOUND.get());
+        if (@assaultFallback != null) {
+            if (team == TEAM_ASSAULT)
+                assaultFallback.destroy();
+            else if (team == TEAM_DEFENSE)
+                assaultFallback.spawn();
+        }
+        if (@defenseFallback != null) {
+            if (team == TEAM_DEFENSE)
+                defenseFallback.destroy();
+            else if (team == TEAM_ASSAULT)
+                defenseFallback.spawn();
+        }
         objective.respawn(team);
     }
 
