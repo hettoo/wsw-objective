@@ -29,8 +29,8 @@ const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
 class Constructable : Component {
     float constructArmor;
-    cString constructing;
-    cString constructed;
+    Objective @constructing;
+    Objective @constructed;
 
     float constructProgress;
     float constructingSoundWait;
@@ -58,19 +58,19 @@ class Constructable : Component {
         else if (name == "constructArmor")
             constructArmor = value.toInt();
         else if (name == "constructing")
-            constructing = value;
+            @constructing = objective.getObjectiveSet().find(value);
         else if (name == "constructed")
-            constructed = value;
+            @constructed = objective.getObjectiveSet().find(value);
         else
             return false;
         return true;
     }
 
     void spawnGhost() {
-        if (spawnedGhost || constructing == "")
+        if (spawnedGhost || @constructing == null)
             return;
 
-        objective.getObjectiveSet().find(constructing).spawn(0);
+        constructing.spawn(0);
         spawnedGhost = true;
     }
 
@@ -78,21 +78,21 @@ class Constructable : Component {
         if (!spawnedGhost)
             return;
 
-        objective.getObjectiveSet().find(constructing).destroy();
+        constructing.destroy();
         spawnedGhost = false;
     }
 
     void spawnConstructed(Player @player) {
-        if (constructed == "")
+        if (@constructed == null)
             return;
 
-        Objective @new = objective.getObjectiveSet().find(constructed);
         int team = player.getClient().team;
-        new.spawn(team);
+        constructed.spawn(team);
         Players @players = objective.getPlayers();
-        if (new.getName() != "")
+        cString name = constructed.getName();
+        if (name != "")
             players.say(G_GetTeamName(team)
-                    + " has constructed the " + new.getName() + "!");
+                    + " has constructed the " + name + "!");
         players.sound(CONSTRUCTED_SOUND.get());
         objective.getObjectiveSet().goalTest();
     }
