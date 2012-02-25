@@ -248,9 +248,11 @@ class Player {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {
             float bonus = args.getToken(1).toFloat() * DAMAGE_BONUS;
-            if (target.client.team == client.team)
-                bonus *= -1;
-            addScore(bonus);
+            if (@target != @ent) {
+                if (target.client.team == client.team)
+                    bonus *= -1;
+                addScore(bonus);
+            }
         }
     }
 
