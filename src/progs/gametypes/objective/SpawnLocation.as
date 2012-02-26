@@ -27,7 +27,7 @@ cVec3 FLAG_MAXS(16, 16, 40);
 const Image FLAG_ICON("hud/icons/flags/iconflag");
 const Sound CAPTURE_SOUND("announcer/objective/captured");
 
-class Spawnable : Component {
+class SpawnLocation : Component {
     bool capturable;
     Objective @assaultFallback;
     Objective @defenseFallback;
@@ -36,7 +36,7 @@ class Spawnable : Component {
 
     Objective @objective;
 
-    Spawnable(Objective @objective) {
+    SpawnLocation(Objective @objective) {
         capturable = false;
 
         @this.objective = objective;

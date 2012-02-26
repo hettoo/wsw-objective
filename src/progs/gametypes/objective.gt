@@ -48,5 +48,5 @@ objective/Objective.as;
 objective/Component.as;
 objective/Constructable.as;
 objective/Destroyable.as;
-objective/Spawnable.as;
+objective/SpawnLocation.as;
 objective/SpawnPointSet.as;

@@ -40,7 +40,7 @@ class Objective {
 
     Constructable @constructable;
     Destroyable @destroyable;
-    Spawnable @spawnable;
+    SpawnLocation @spawnLocation;
 
     ObjectiveSet @objectiveSet;
     Players @players;
@@ -68,7 +68,7 @@ class Objective {
 
         @constructable = Constructable(this);
         @destroyable = Destroyable(this);
-        @spawnable = Spawnable(this);
+        @spawnLocation = SpawnLocation(this);
     }
 
     cString @getId() {
@@ -128,7 +128,7 @@ class Objective {
             radius = value.toInt();
         } else if (constructable.setAttribute(name, value)) {
         } else if (destroyable.setAttribute(name, value)) {
-        } else if (spawnable.setAttribute(name, value)) {
+        } else if (spawnLocation.setAttribute(name, value)) {
         }
     }
 
@@ -136,8 +136,8 @@ class Objective {
         if (spawned)
             return;
 
-        if (spawnable.isActive() && spawnable.isCapturable()) {
-            spawnable.spawn();
+        if (spawnLocation.isActive() && spawnLocation.isCapturable()) {
+            spawnLocation.spawn();
         } else {
             if (model != 0) {
                 @ent = G_SpawnEntity("objective");
@@ -204,7 +204,7 @@ class Objective {
     }
 
     bool isSpawn() {
-        return spawnable.isActive();
+        return spawnLocation.isActive();
     }
 
     int getTeam() {
@@ -220,7 +220,7 @@ class Objective {
     }
 
     cEntity @getRandomSpawnPoint() {
-        return spawnable.getRandomSpawnPoint();
+        return spawnLocation.getRandomSpawnPoint();
     }
 
     bool isSpawned() {
@@ -263,13 +263,13 @@ class Objective {
                 }
                 constructable.think(player);
                 destroyable.think(player);
-                spawnable.think(player);
+                spawnLocation.think(player);
             }
         }
 
         constructable.think();
         destroyable.think();
-        spawnable.think();
+        spawnLocation.think();
     }
 
     void exploded(cEntity @bomb, Player @planter) {
