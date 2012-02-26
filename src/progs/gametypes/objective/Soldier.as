@@ -24,6 +24,9 @@ const int SHIELD_ARMOR = 45;
 const int SHIELD_TIME = 10;
 const int SHIELD_RADIUS = 200;
 
+const Sound RAGE_SOUND("items/quad_pickup");
+const Sound SHIELD_SOUND("items/shell_pickup");
+
 class Soldier : Class {
     Soldier() {
         spawnArmor = 20;
@@ -51,10 +54,12 @@ class Soldier : Class {
     }
 
     void classAction1(Player @player) {
-        if (!player.takeArmor(RAGE_ARMOR))
+        if (!player.takeArmor(RAGE_ARMOR)) {
             player.centerPrint(RAGE_ARMOR + " armor is required to rage");
-        else
+        } else {
             player.giveItem(POWERUP_QUAD, RAGE_TIME);
+            G_Sound(player.getEnt(), CHAN_ITEM, RAGE_SOUND.get(), ATTN_POWERUP);
+        }
     }
 
     void classAction2(Player @player) {
@@ -71,6 +76,8 @@ class Soldier : Class {
                     if (@client != null && client.team == team
                             && G_Near(player, other, SHIELD_RADIUS))
                         other.giveItem(POWERUP_SHELL, SHIELD_TIME);
+                    G_Sound(other.getEnt(), CHAN_ITEM, SHIELD_SOUND.get(),
+                            ATTN_POWERUP);
                 }
             }
         }

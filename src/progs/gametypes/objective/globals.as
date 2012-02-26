@@ -22,6 +22,7 @@ const int TEAM_DEFENSE = TEAM_BETA;
 
 const float ATTN_ITEM_SPAWN = 4.0;
 const float ATTN_ITEM_PICKUP = 4.5;
+const float ATTN_POWERUP = 3.5;
 
 const int PROGRESS_FINISHED = 100;
 
