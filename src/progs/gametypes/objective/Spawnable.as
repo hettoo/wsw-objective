@@ -99,7 +99,8 @@ class Spawnable : Component {
         return spawnPointSet.getRandom();
     }
 
-    void captured(int team, Player @capturer) {
+    void captured(Player @capturer) {
+        int team = capturer.getClient().team;
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(team)
@@ -122,8 +123,7 @@ class Spawnable : Component {
     }
 
     void thinkActive(Player @player) {
-        int playerTeam = player.getClient().team;
-        if (capturable && objective.getTeam() != playerTeam)
-            captured(playerTeam, player);
+        if (capturable && objective.getTeam() != player.getClient().team)
+            captured(player);
     }
 }

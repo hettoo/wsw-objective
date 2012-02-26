@@ -27,7 +27,7 @@ const int DESTROY_SCORE = 4;
 const int DEFUSE_SCORE = 4;
 
 class Destroyable : Component {
-    Objective @destroyed;
+    Objective @onDestroyed;
 
     Objective @objective;
 
@@ -38,8 +38,8 @@ class Destroyable : Component {
     bool setAttribute(cString &name, cString &value) {
         if (name == "destroyable")
             active = value.toInt() == 1;
-        else if (name == "destroyed")
-            @destroyed = objective.getObjectiveSet().find(value);
+        else if (name == "onDestroyed")
+            @onDestroyed = objective.getObjectiveSet().find(value);
         else
             return false;
         return true;
@@ -53,8 +53,8 @@ class Destroyable : Component {
         players.sound(DESTROY_SOUND.get());
 
         objective.destroy();
-        if (@destroyed != null)
-            destroyed.spawn();
+        if (@onDestroyed != null)
+            onDestroyed.spawn();
         planter.addScore(DESTROY_SCORE);
     }
 

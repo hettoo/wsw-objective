@@ -24,8 +24,9 @@ class Objective {
     cEntity @ent;
     cEntity @minimap;
     bool spawned;
+    int owningTeam;
 
-    bool start;
+    bool startSpawned;
     bool solid;
     int model;
     int icon;
@@ -35,7 +36,6 @@ class Objective {
     cVec3 maxs;
     int moveType;
     int team;
-    int owningTeam;
     float radius;
 
     Constructable @constructable;
@@ -55,7 +55,7 @@ class Objective {
         origin = target.getOrigin();
         angles = target.getAngles();
         moveType = MOVETYPE_NONE;
-        start = true;
+        startSpawned = true;
         team = GS_MAX_TEAMS;
         owningTeam = team;
         radius = 125;
@@ -102,8 +102,8 @@ class Objective {
     void setAttribute(cString &name, cString &value) {
         if (name == "name") {
             this.name = value;
-        } else if (name == "start") {
-            start = value.toInt() == 1;
+        } else if (name == "startSpawned") {
+            startSpawned = value.toInt() == 1;
         } else if (name == "solid") {
             solid = value.toInt() == 1;
         } else if (name == "model") {
@@ -172,7 +172,7 @@ class Objective {
     }
 
     void initialSpawn() {
-        if (start)
+        if (startSpawned)
             spawn();
     }
 

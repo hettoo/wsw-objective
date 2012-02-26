@@ -29,8 +29,8 @@ const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
 class Constructable : Component {
     float constructArmor;
-    Objective @constructing;
-    Objective @constructed;
+    Objective @onConstructing;
+    Objective @onConstructed;
 
     float constructProgress;
     float constructingSoundWait;
@@ -57,20 +57,20 @@ class Constructable : Component {
             active = value.toInt() == 1;
         else if (name == "constructArmor")
             constructArmor = value.toInt();
-        else if (name == "constructing")
-            @constructing = objective.getObjectiveSet().find(value);
-        else if (name == "constructed")
-            @constructed = objective.getObjectiveSet().find(value);
+        else if (name == "onConstructing")
+            @onConstructing = objective.getObjectiveSet().find(value);
+        else if (name == "onConstructed")
+            @onConstructed = objective.getObjectiveSet().find(value);
         else
             return false;
         return true;
     }
 
     void spawnGhost() {
-        if (spawnedGhost || @constructing == null)
+        if (spawnedGhost || @onConstructing == null)
             return;
 
-        constructing.spawn(0);
+        onConstructing.spawn(0);
         spawnedGhost = true;
     }
 
@@ -78,18 +78,18 @@ class Constructable : Component {
         if (!spawnedGhost)
             return;
 
-        constructing.destroy();
+        onConstructing.destroy();
         spawnedGhost = false;
     }
 
     void spawnConstructed(Player @player) {
-        if (@constructed == null)
+        if (@onConstructed == null)
             return;
 
         int team = player.getClient().team;
-        constructed.spawn(team);
+        onConstructed.spawn(team);
         Players @players = objective.getPlayers();
-        cString name = constructed.getName();
+        cString name = onConstructed.getName();
         if (name != "")
             players.say(G_GetTeamName(team)
                     + " has constructed the " + name + "!");
