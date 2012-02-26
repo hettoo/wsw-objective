@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+const int CAPTURE_SCORE = 2;
+
 const Model FLAG("objects/flag/flag");
 const Model FLAG_UNCAPTURED("misc/ammobox");
 cVec3 FLAG_MINS(-16, -16, -16);
@@ -97,12 +99,13 @@ class Spawnable : Component {
         return spawnPointSet.getRandom();
     }
 
-    void captured(int team) {
+    void captured(int team, Player @capturer) {
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(team)
                     + " has captured the " + objective.getName() + "!");
         players.sound(CAPTURE_SOUND.get());
+        capturer.addScore(CAPTURE_SCORE);
         if (@assaultFallback != null) {
             if (team == TEAM_ASSAULT)
                 assaultFallback.destroy();
@@ -121,6 +124,6 @@ class Spawnable : Component {
     void thinkActive(Player @player) {
         int playerTeam = player.getClient().team;
         if (capturable && objective.getTeam() != playerTeam)
-            captured(playerTeam);
+            captured(playerTeam, player);
     }
 }
