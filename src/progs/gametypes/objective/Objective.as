@@ -167,6 +167,15 @@ class Objective {
         spawn();
     }
 
+    void lock() {
+        spawnLocation.lock();
+    }
+
+    void lock(int team) {
+        owningTeam = team;
+        lock();
+    }
+
     bool isDestroyable() {
         return destroyable.isActive();
     }
@@ -228,7 +237,7 @@ class Objective {
     }
 
     bool near(cEntity @other) {
-        return G_Near(ent, other, radius);
+        return G_Near(origin, other.getOrigin(), radius);
     }
 
     bool near(Player @player) {

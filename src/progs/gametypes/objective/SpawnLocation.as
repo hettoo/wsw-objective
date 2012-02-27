@@ -50,6 +50,12 @@ class SpawnLocation : Component {
         return capturable;
     }
 
+    void lock() {
+        applyFallbacks();
+        capturable = false;
+        objective.respawn();
+    }
+
     bool setAttribute(cString &name, cString &value) {
         if (name == "spawnLocation") {
             active = value.toInt() == 1;
@@ -99,14 +105,8 @@ class SpawnLocation : Component {
         return spawnPointSet.getRandom();
     }
 
-    void captured(Player @capturer) {
-        int team = capturer.getClient().team;
+    void applyFallbacks(int team) {
         Players @players = objective.getPlayers();
-        if (objective.getName() != "")
-            players.say(G_GetTeamName(team)
-                    + " has captured the " + objective.getName() + "!");
-        players.sound(CAPTURE_SOUND.get());
-        capturer.addScore(CAPTURE_SCORE);
         if (@assaultFallback != null) {
             if (team == TEAM_ASSAULT)
                 assaultFallback.destroy();
@@ -119,6 +119,21 @@ class SpawnLocation : Component {
             else if (team == TEAM_ASSAULT)
                 defenseFallback.spawn();
         }
+    }
+
+    void applyFallbacks() {
+        applyFallbacks(objective.getTeam());
+    }
+
+    void captured(Player @capturer) {
+        int team = capturer.getClient().team;
+        Players @players = objective.getPlayers();
+        if (objective.getName() != "")
+            players.say(G_GetTeamName(team)
+                    + " has captured the " + objective.getName() + "!");
+        players.sound(CAPTURE_SOUND.get());
+        capturer.addScore(CAPTURE_SCORE);
+        applyFallbacks(team);
         objective.respawn(team);
     }
 

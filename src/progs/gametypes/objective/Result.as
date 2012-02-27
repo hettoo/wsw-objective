@@ -17,15 +17,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+enum ResultMethod {
+    RM_SPAWN,
+    RM_DESTROY,
+    RM_LOCK
+}
+
 class Result {
-    bool destroy;
+    int method;
     Objective @objective;
 
     ObjectiveSet @objectiveSet;
 
     Result(cString &target, ObjectiveSet @objectiveSet) {
-        destroy = target.substr(0, 1) == "~";
-        @objective = objectiveSet.find(target.substr(destroy ? 1 : 0,
+        method = RM_SPAWN;
+        cString methodString = target.substr(0, 1);
+        if (methodString == "~")
+            method = RM_DESTROY;
+        else if (methodString == "*")
+            method = RM_LOCK;
+
+        @objective = objectiveSet.find(target.substr(method == RM_SPAWN ? 0 : 1,
                     target.len()));
 
         @this.objectiveSet = objectiveSet;
@@ -36,20 +48,34 @@ class Result {
     }
 
     void apply(int team) {
-        if (destroy)
-            objective.destroy();
-        else
-            objective.spawn(team);
+        switch (method) {
+            case RM_SPAWN:
+                objective.spawn(team);
+                break;
+            case RM_DESTROY:
+                objective.destroy();
+                break;
+            case RM_LOCK:
+                objective.lock(team);
+                break;
+        }
     }
 
     void apply() {
-        if (destroy)
-            objective.destroy();
-        else
-            objective.spawn();
+        switch (method) {
+            case RM_SPAWN:
+                objective.spawn();
+                break;
+            case RM_DESTROY:
+                objective.destroy();
+                break;
+            case RM_LOCK:
+                objective.lock();
+                break;
+        }
     }
 
     bool done() {
-        return destroy ^^ objective.isSpawned();
+        return method == RM_DESTROY ^^ objective.isSpawned();
     }
 }

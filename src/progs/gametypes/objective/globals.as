@@ -82,9 +82,13 @@ cString @G_GetTeamName(int team) {
         return G_GetTeam(team).getName();
 }
 
+bool G_Near(cVec3 @a, cVec3 @b, float radius) {
+    return @a != null && @b != null && a.distance(b) <= radius;
+}
+
 bool G_Near(cEntity @a, cEntity @b, float radius) {
     return @a != null && @b != null && !a.isGhosting() && !b.isGhosting()
-        && a.getOrigin().distance(b.getOrigin()) <= radius;
+        && G_Near(a.getOrigin(), b.getOrigin(), radius);
 }
 
 bool G_Near(Player @a, Player @b, float radius) {

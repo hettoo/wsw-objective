@@ -54,7 +54,7 @@ class Destroyable : Component {
 
         objective.destroy();
         if (@onDestroyed != null)
-            onDestroyed.apply();
+            onDestroyed.apply(planter.getClient().team);
         planter.addScore(DESTROY_SCORE);
     }
 
