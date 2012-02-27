@@ -58,6 +58,15 @@ class ResultSet : Set {
         return empty;
     }
 
+    cString @getName() {
+        return resultSet[0].getName();
+    }
+
+    void apply(int team) {
+        for (int i = 0; i < size; i++)
+            resultSet[i].apply(team);
+    }
+
     void apply() {
         for (int i = 0; i < size; i++)
             resultSet[i].apply();

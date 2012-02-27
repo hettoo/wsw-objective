@@ -29,8 +29,8 @@ const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
 class Constructable : Component {
     float constructArmor;
-    Objective @onConstructing;
-    Objective @onConstructed;
+    Objective @ghost;
+    ResultSet @onConstructed;
 
     float constructProgress;
     float constructingSoundWait;
@@ -57,20 +57,20 @@ class Constructable : Component {
             active = value.toInt() == 1;
         else if (name == "constructArmor")
             constructArmor = value.toInt();
-        else if (name == "onConstructing")
-            @onConstructing = objective.getObjectiveSet().find(value);
+        else if (name == "ghost")
+            @ghost = objective.getObjectiveSet().find(value);
         else if (name == "onConstructed")
-            @onConstructed = objective.getObjectiveSet().find(value);
+            @onConstructed = ResultSet(value, objective.getObjectiveSet());
         else
             return false;
         return true;
     }
 
     void spawnGhost() {
-        if (spawnedGhost || @onConstructing == null)
+        if (spawnedGhost || @ghost == null)
             return;
 
-        onConstructing.spawn(0);
+        ghost.spawn(0);
         spawnedGhost = true;
     }
 
@@ -78,7 +78,7 @@ class Constructable : Component {
         if (!spawnedGhost)
             return;
 
-        onConstructing.destroy();
+        ghost.destroy();
         spawnedGhost = false;
     }
 
@@ -87,7 +87,7 @@ class Constructable : Component {
             return;
 
         int team = player.getClient().team;
-        onConstructed.spawn(team);
+        onConstructed.apply(team);
         Players @players = objective.getPlayers();
         cString name = onConstructed.getName();
         if (name != "")

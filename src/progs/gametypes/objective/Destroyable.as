@@ -27,7 +27,7 @@ const int DESTROY_SCORE = 4;
 const int DEFUSE_SCORE = 4;
 
 class Destroyable : Component {
-    Objective @onDestroyed;
+    ResultSet @onDestroyed;
 
     Objective @objective;
 
@@ -39,7 +39,7 @@ class Destroyable : Component {
         if (name == "destroyable")
             active = value.toInt() == 1;
         else if (name == "onDestroyed")
-            @onDestroyed = objective.getObjectiveSet().find(value);
+            @onDestroyed = ResultSet(value, objective.getObjectiveSet());
         else
             return false;
         return true;
@@ -54,7 +54,7 @@ class Destroyable : Component {
 
         objective.destroy();
         if (@onDestroyed != null)
-            onDestroyed.spawn();
+            onDestroyed.apply();
         planter.addScore(DESTROY_SCORE);
     }
 

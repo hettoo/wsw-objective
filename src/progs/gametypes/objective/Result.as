@@ -25,9 +25,21 @@ class Result {
 
     Result(cString &target, ObjectiveSet @objectiveSet) {
         destroy = target.substr(0, 1) == "~";
-        @objective = objectiveSet.find(target.substr(1, target.len()));
+        @objective = objectiveSet.find(target.substr(destroy ? 1 : 0,
+                    target.len()));
 
         @this.objectiveSet = objectiveSet;
+    }
+
+    cString @getName() {
+        return objective.getName();
+    }
+
+    void apply(int team) {
+        if (destroy)
+            objective.destroy();
+        else
+            objective.spawn(team);
     }
 
     void apply() {
