@@ -22,7 +22,7 @@ const cString OBJECTIVE_NAME_PREFIX = "!";
 class ObjectiveSet : Set {
     Objective@[] objectiveSet;
 
-    cString goal;
+    ResultSet @goal;
 
     Players @players;
 
@@ -57,19 +57,11 @@ class ObjectiveSet : Set {
     }
 
     void goalTest() {
-        if (goal == "")
+        if (goal.isEmpty())
             return;
 
         Objective @objective;
-        bool inverse = false;
-        if (goal.substr(0, 1) == "~") {
-            @objective = find(goal.substr(1, goal.len()));
-            inverse = true;
-        } else {
-            @objective = find(goal);
-        }
-        if (objective.isSpawned() ^^ inverse
-                && match.getState() <= MATCH_STATE_PLAYTIME) {
+        if (match.getState() <= MATCH_STATE_PLAYTIME && goal.done()) {
             G_GetTeam(TEAM_ASSAULT).stats.addScore(1);
             match.launchState(match.getState() + 1);
         }
@@ -98,7 +90,7 @@ class ObjectiveSet : Set {
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
                     + S_COLOR_ORANGE + ")");
         else if (fieldname == "goal")
-            goal = value;
+            @goal = ResultSet(value, this);
     }
 
     void parse(cString &filename) {
