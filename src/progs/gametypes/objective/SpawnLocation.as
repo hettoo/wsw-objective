@@ -29,8 +29,8 @@ const Sound CAPTURE_SOUND("announcer/objective/captured");
 
 class SpawnLocation : Component {
     bool capturable;
-    Objective @assaultFallback;
-    Objective @defenseFallback;
+    Objective @alphaFallback;
+    Objective @betaFallback;
 
     SpawnPointSet @spawnPointSet;
 
@@ -63,10 +63,10 @@ class SpawnLocation : Component {
             spawnPointSet.analyze(objective.getId());
         } else if (name == "capturable") {
             capturable = value.toInt() == 1;
-        } else if (name == "assaultFallback") {
-            @assaultFallback = objective.getObjectiveSet().find(value);
-        } else if (name == "defenseFallback") {
-            @defenseFallback = objective.getObjectiveSet().find(value);
+        } else if (name == "alphaFallback") {
+            @alphaFallback = objective.getObjectiveSet().find(value);
+        } else if (name == "betaFallback") {
+            @betaFallback = objective.getObjectiveSet().find(value);
         } else {
             return false;
         }
@@ -78,10 +78,10 @@ class SpawnLocation : Component {
         ent.type = ET_GENERIC;
         ent.team = objective.getTeam();
         switch (ent.team) {
-            case TEAM_DEFENSE:
+            case TEAM_ALPHA:
                 ent.modelindex = FLAG.get();
                 break;
-            case TEAM_ASSAULT:
+            case TEAM_BETA:
                 ent.modelindex = FLAG.get();
                 break;
             default:
@@ -107,17 +107,17 @@ class SpawnLocation : Component {
 
     void applyFallbacks(int team) {
         Players @players = objective.getPlayers();
-        if (@assaultFallback != null) {
-            if (team == TEAM_ASSAULT)
-                assaultFallback.destroy();
-            else if (team == TEAM_DEFENSE)
-                assaultFallback.spawn();
+        if (@alphaFallback != null) {
+            if (team == TEAM_ALPHA)
+                alphaFallback.destroy();
+            else if (team == TEAM_BETA)
+                alphaFallback.spawn();
         }
-        if (@defenseFallback != null) {
-            if (team == TEAM_DEFENSE)
-                defenseFallback.destroy();
-            else if (team == TEAM_ASSAULT)
-                defenseFallback.spawn();
+        if (@betaFallback != null) {
+            if (team == TEAM_ALPHA)
+                betaFallback.spawn();
+            else if (team == TEAM_BETA)
+                betaFallback.destroy();
         }
     }
 

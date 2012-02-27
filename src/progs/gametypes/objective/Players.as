@@ -100,9 +100,9 @@ class Players {
     }
 
     int otherTeam(int team) {
-        if (team == TEAM_ASSAULT)
-            return TEAM_DEFENSE;
-        return TEAM_ASSAULT;
+        if (team == TEAM_ALPHA)
+            return TEAM_BETA;
+        return TEAM_ALPHA;
     }
 
     void say(cString &message) {

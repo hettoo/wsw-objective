@@ -91,7 +91,7 @@ class Core {
         if (match.scoreLimitHit() || match.timeLimitHit()
                 || match.suddenDeathFinished()) {
             if (match.getState() == MATCH_STATE_PLAYTIME)
-                G_GetTeam(TEAM_DEFENSE).stats.addScore(1);
+                G_GetTeam(TEAM_BETA).stats.addScore(1);
             match.launchState(match.getState() + 1);
         }
     }

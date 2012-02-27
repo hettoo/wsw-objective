@@ -68,8 +68,8 @@ class Scoreboard {
 
     cString @createMessage(int maxLen) {
         cString message = "";
-        message += scoreboardTeam(TEAM_ASSAULT, maxLen - message.len());
-        message += scoreboardTeam(TEAM_DEFENSE, maxLen - message.len());
+        message += scoreboardTeam(TEAM_ALPHA, maxLen - message.len());
+        message += scoreboardTeam(TEAM_BETA, maxLen - message.len());
         return message;
     }
 }

@@ -119,10 +119,10 @@ class Objective {
             maxs = cVec3(value.getToken(0).toFloat(),
                     value.getToken(1).toFloat(), value.getToken(2).toFloat());
         } else if (name == "team") {
-            if (value.tolower() == "assault")
-                team = TEAM_ASSAULT;
-            else if (value.tolower() == "defense")
-                team = TEAM_DEFENSE;
+            if (value.tolower() == "alpha")
+                team = TEAM_ALPHA;
+            else if (value.tolower() == "beta")
+                team = TEAM_BETA;
             owningTeam = team;
         } else if (name == "radius") {
             radius = value.toInt();

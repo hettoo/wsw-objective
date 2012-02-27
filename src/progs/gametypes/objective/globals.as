@@ -17,9 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int TEAM_ASSAULT = TEAM_ALPHA;
-const int TEAM_DEFENSE = TEAM_BETA;
-
 const float ATTN_ITEM_SPAWN = 4.0;
 const float ATTN_ITEM_PICKUP = 4.5;
 const float ATTN_POWERUP = 3.5;
@@ -74,12 +71,7 @@ bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs) {
 }
 
 cString @G_GetTeamName(int team) {
-    if (team == TEAM_ASSAULT)
-        return "ASSAULT";
-    else if (team == TEAM_DEFENSE)
-        return "DEFENSE";
-    else
-        return G_GetTeam(team).getName();
+    return G_GetTeam(team).getName();
 }
 
 bool G_Near(cVec3 @a, cVec3 @b, float radius) {

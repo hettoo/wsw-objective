@@ -62,7 +62,7 @@ class ObjectiveSet : Set {
 
         Objective @objective;
         if (match.getState() <= MATCH_STATE_PLAYTIME && goal.done()) {
-            G_GetTeam(TEAM_ASSAULT).stats.addScore(1);
+            G_GetTeam(TEAM_ALPHA).stats.addScore(1);
             match.launchState(match.getState() + 1);
         }
     }

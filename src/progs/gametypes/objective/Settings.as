@@ -21,8 +21,8 @@ const cString TITLE = "Objective";
 const cString VERSION = "0.1-dev";
 const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 
-const int DEFAULT_ASSAULT_RESPAWN_TIME = 12;
-const int DEFAULT_DEFENSE_RESPAWN_TIME = 18;
+const int DEFAULT_ALPHA_RESPAWN_TIME = 12;
+const int DEFAULT_BETA_RESPAWN_TIME = 18;
 
 class Settings {
     cString configFile;
@@ -173,8 +173,8 @@ class Settings {
     void setupPlaytime() {
         gametype.pickableItemsMask = gametype.spawnableItemsMask;
         gametype.dropableItemsMask = gametype.spawnableItemsMask;
-        setWaveSpawn(TEAM_ASSAULT, DEFAULT_ASSAULT_RESPAWN_TIME);
-        setWaveSpawn(TEAM_DEFENSE, DEFAULT_DEFENSE_RESPAWN_TIME);
+        setWaveSpawn(TEAM_ALPHA, DEFAULT_ALPHA_RESPAWN_TIME);
+        setWaveSpawn(TEAM_BETA, DEFAULT_BETA_RESPAWN_TIME);
         GENERIC_SetUpMatch();
     }
 
