@@ -157,9 +157,6 @@ class Objective {
         if (spawnLocation.isActive() && spawnLocation.isCapturable()) {
             spawnLocation.spawn();
         } else {
-            if (@origin == null)
-                @origin = this.origin;
-
             if (model != 0) {
                 @ent = G_SpawnEntity("objective");
                 ent.type = ET_GENERIC;
@@ -184,7 +181,7 @@ class Objective {
     }
 
     void spawn() {
-        spawn(null);
+        spawn(origin);
     }
 
     void spawn(int team) {
@@ -266,7 +263,8 @@ class Objective {
     }
 
     bool near(cEntity @other) {
-        return G_Near(ent, other, radius);
+        return G_Near(@ent == null ? origin : ent.getOrigin(),
+                other.getOrigin(), radius);
     }
 
     bool near(Player @player) {
