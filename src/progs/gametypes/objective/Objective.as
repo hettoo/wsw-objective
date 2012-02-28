@@ -237,6 +237,10 @@ class Objective {
         respawn(owningTeam);
     }
 
+    bool isSecured() {
+        return stealable.isActive() && stealable.isSecured();
+    }
+
     bool isSpawn() {
         return spawnLocation.isActive();
     }

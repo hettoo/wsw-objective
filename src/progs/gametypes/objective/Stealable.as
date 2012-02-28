@@ -55,6 +55,10 @@ class Stealable : Component {
         return true;
     }
 
+    bool isSecured() {
+        return state == SS_SECURED;
+    }
+
     void stolen(Player @thief) {
         Players @players = objective.getPlayers();
         if (objective.getName() != "")
@@ -94,6 +98,9 @@ class Stealable : Component {
 
         state = SS_SECURED;
         objective.destroy();
+
+        objective.getObjectiveSet().goalTest();
+
         return true;
     }
 

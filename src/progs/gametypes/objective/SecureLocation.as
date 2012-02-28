@@ -18,7 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class SecureLocation : Component {
+    bool occupied;
+
     SecureLocation(Objective @objective) {
+        occupied = false;
         @this.objective = objective;
     }
 
@@ -32,13 +35,17 @@ class SecureLocation : Component {
     }
 
     void thinkActive(Player @player) {
+        if (occupied)
+            return;
+
         Stealable @carry = player.getCarry();
-        if (@carry != null) {
-            int newModel = carry.getObjective().getModel();
-            if (player.secureCarry(objective)) {
-                objective.setModel(newModel);
-                objective.respawn();
-            }
+        if (@carry == null)
+            return;
+
+        int newModel = carry.getObjective().getModel();
+        if (player.secureCarry(objective)) {
+            objective.setModel(newModel);
+            objective.respawn();
         }
     }
 }
