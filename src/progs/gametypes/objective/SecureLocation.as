@@ -37,7 +37,7 @@ class SecureLocation : Component {
             int newModel = carry.getObjective().getModel();
             if (player.secureCarry(objective)) {
                 objective.setModel(newModel);
-                //objective.respawn();
+                objective.respawn();
             }
         }
     }
