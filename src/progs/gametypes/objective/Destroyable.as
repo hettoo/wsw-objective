@@ -29,8 +29,6 @@ const int DEFUSE_SCORE = 4;
 class Destroyable : Component {
     ResultSet @onDestroyed;
 
-    Objective @objective;
-
     Destroyable(Objective @objective) {
         @this.objective = objective;
     }

@@ -32,6 +32,7 @@ class Player {
     cEntity @ent;
 
     float score;
+    Stealable @carry;
 
     Class @playerClass;
     int currentClass;
@@ -67,6 +68,23 @@ class Player {
 
     cEntity @getEnt() {
         return ent;
+    }
+
+    Stealable @getCarry() {
+        return carry;
+    }
+
+    void setCarry(Stealable @carry) {
+        @this.carry = carry;
+    }
+
+    bool secureCarry(Objective @target) {
+        if (@carry == null)
+            return false;
+
+        carry.secured(this, target);
+        @carry = null;
+        return true;
     }
 
     Players @getPlayers() {
@@ -213,6 +231,8 @@ class Player {
 
         setHUDStat(STAT_PROGRESS_SELF, 0);
         setHUDStat(STAT_PROGRESS_OTHER, 0);
+        setHUDStat(STAT_IMAGE_SELF, @carry == null
+                ? 0 : carry.getObjective().getIcon());
         setHUDStat(STAT_IMAGE_OTHER, 0);
         setHUDStat(STAT_MESSAGE_SELF, 0);
 
@@ -257,15 +277,19 @@ class Player {
         }
     }
 
-    void madeKill(cString &args) {
-        cEntity @target = G_GetEntity(args.getToken(0).toInt());
-        if (@target != null && @target.client != null) {
-            float bonus = KILL_BONUS;
-            if (@target == @ent)
-                bonus = SUICIDE_BONUS;
-            else if (target.client.team == client.team)
-                bonus *= -1;
-            addScore(bonus);
+    void killed() {
+        if (@carry != null) {
+            carry.dropped(this);
+            @carry = null;
         }
+    }
+
+    void madeKill(bool suicide, bool teamKill) {
+        float bonus = KILL_BONUS;
+        if (suicide)
+            bonus = SUICIDE_BONUS;
+        else if (teamKill)
+            bonus *= -1;
+        addScore(bonus);
     }
 }

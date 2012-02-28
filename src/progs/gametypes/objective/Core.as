@@ -74,17 +74,17 @@ class Core {
     }
 
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
-        Player @player = world.getPlayers().get(client);
-        if (scoreEvent == "userinfochanged") {
-            world.initClient(client);
-        } else if (scoreEvent == "disconnect") {
-            world.removeClient(client);
-        } else if (@player != null) {
-            if (scoreEvent == "dmg")
-                player.didDamage(args);
-            else if (scoreEvent == "kill")
-                player.madeKill(args);
-        }
+        Players @players = world.getPlayers();
+        Player @player = players.get(client);
+
+        if (scoreEvent == "userinfochanged")
+            players.initClient(client);
+        else if (scoreEvent == "disconnect")
+            players.removeClient(client);
+        else if (scoreEvent == "dmg" && @player != null)
+            player.didDamage(args);
+        else if (scoreEvent == "kill")
+            players.madeKill(player, args);
     }
 
     void checkMatchState() {

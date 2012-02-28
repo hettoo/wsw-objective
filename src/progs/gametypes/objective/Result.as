@@ -47,6 +47,10 @@ class Result {
         return objective.getName();
     }
 
+    Objective @getObjective() {
+        return objective;
+    }
+
     void apply(int team) {
         switch (method) {
             case RM_SPAWN:

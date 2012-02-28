@@ -41,6 +41,8 @@ class Objective {
     Constructable @constructable;
     Destroyable @destroyable;
     SpawnLocation @spawnLocation;
+    Stealable @stealable;
+    SecureLocation @secureLocation;
 
     ObjectiveSet @objectiveSet;
     Players @players;
@@ -69,6 +71,8 @@ class Objective {
         @constructable = Constructable(this);
         @destroyable = Destroyable(this);
         @spawnLocation = SpawnLocation(this);
+        @stealable = Stealable(this);
+        @secureLocation = SecureLocation(this);
     }
 
     cString @getId() {
@@ -83,8 +87,20 @@ class Objective {
         return origin;
     }
 
+    int getModel() {
+        return model;
+    }
+
+    void setModel(int model) {
+        this.model = model;
+    }
+
     void setEnt(cEntity @ent) {
         @this.ent = ent;
+    }
+
+    int getIcon() {
+        return icon;
     }
 
     void setIcon(cEntity @minimap) {
@@ -129,16 +145,21 @@ class Objective {
         } else if (constructable.setAttribute(name, value)) {
         } else if (destroyable.setAttribute(name, value)) {
         } else if (spawnLocation.setAttribute(name, value)) {
+        } else if (stealable.setAttribute(name, value)) {
+        } else if (secureLocation.setAttribute(name, value)) {
         }
     }
 
-    void spawn() {
+    void spawn(cVec3 @origin) {
         if (spawned)
             return;
 
         if (spawnLocation.isActive() && spawnLocation.isCapturable()) {
             spawnLocation.spawn();
         } else {
+            if (@origin == null)
+                @origin = this.origin;
+
             if (model != 0) {
                 @ent = G_SpawnEntity("objective");
                 ent.type = ET_GENERIC;
@@ -160,6 +181,10 @@ class Objective {
         }
 
         spawned = true;
+    }
+
+    void spawn() {
+        spawn(null);
     }
 
     void spawn(int team) {
@@ -237,7 +262,7 @@ class Objective {
     }
 
     bool near(cEntity @other) {
-        return G_Near(origin, other.getOrigin(), radius);
+        return G_Near(ent, other, radius);
     }
 
     bool near(Player @player) {
@@ -273,12 +298,16 @@ class Objective {
                 constructable.think(player);
                 destroyable.think(player);
                 spawnLocation.think(player);
+                stealable.think(player);
+                secureLocation.think(player);
             }
         }
 
         constructable.think();
         destroyable.think();
         spawnLocation.think();
+        stealable.think();
+        secureLocation.think();
     }
 
     void exploded(cEntity @bomb, Player @planter) {

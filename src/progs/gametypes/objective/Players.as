@@ -92,6 +92,16 @@ class Players {
         get(client).spawn();
     }
 
+    void madeKill(Player @player, cString &args) {
+        cEntity @target = G_GetEntity(args.getToken(0).toInt());
+        if (@target != null && @target.client != null) {
+            if (@player != null)
+                player.madeKill(@target == @player.getEnt(),
+                        target.client.team == player.getClient().team);
+            get(target.client).killed();
+        }
+    }
+
     void think() {
         for (int i = 0; i < size; i++) {
             if (@players[i] != null)

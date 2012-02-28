@@ -17,36 +17,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Component {
-    bool active;
-
-    Objective @objective;
-
-    Component() {
-        active = false;
+class SecureLocation : Component {
+    SecureLocation(Objective @objective) {
+        @this.objective = objective;
     }
 
-    bool isActive() {
-        return active;
-    }
-
-    Objective @getObjective() {
-        return objective;
-    }
-
-    void thinkActive() {
-    }
-
-    void think() {
-        if (active)
-            thinkActive();
+    bool setAttribute(cString &name, cString &value) {
+        if (name == "secureLocation") {
+            active = value.toInt() == 1;
+        } else {
+            return false;
+        }
+        return true;
     }
 
     void thinkActive(Player @player) {
-    }
-
-    void think(Player @player) {
-        if (active)
-            thinkActive(player);
+        Stealable @carry = player.getCarry();
+        if (@carry != null) {
+            int newModel = carry.getObjective().getModel();
+            if (player.secureCarry(objective)) {
+                objective.setModel(newModel);
+                //objective.respawn();
+            }
+        }
     }
 }

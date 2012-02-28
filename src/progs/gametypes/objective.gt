@@ -50,5 +50,7 @@ objective/Constructable.as;
 objective/Destroyable.as;
 objective/SpawnLocation.as;
 objective/SpawnPointSet.as;
+objective/Stealable.as;
+objective/SecureLocation.as;
 objective/ResultSet.as;
 objective/Result.as;

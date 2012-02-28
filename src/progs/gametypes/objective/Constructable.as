@@ -38,8 +38,6 @@ class Constructable : Component {
     float notConstructed;
     bool spawnedGhost;
 
-    Objective @objective;
-
     Constructable(Objective @objective) {
         constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 

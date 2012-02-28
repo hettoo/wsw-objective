@@ -34,8 +34,6 @@ class SpawnLocation : Component {
 
     SpawnPointSet @spawnPointSet;
 
-    Objective @objective;
-
     SpawnLocation(Objective @objective) {
         capturable = false;
 

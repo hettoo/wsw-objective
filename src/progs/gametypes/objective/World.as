@@ -78,14 +78,6 @@ class World {
         transporterSet.think();
     }
 
-    void initClient(cClient @client) {
-        players.initClient(client);
-    }
-
-    void removeClient(cClient @client) {
-        players.removeClient(client);
-    }
-
     void newPlayer(cClient @client) {
         players.newPlayer(client);
     }

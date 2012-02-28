@@ -58,6 +58,14 @@ class ResultSet : Set {
         return empty;
     }
 
+    bool contains(Objective @objective) {
+        for (int i = 0; i < size; i++) {
+            if (@resultSet[i].getObjective() == @objective)
+                return true;
+        }
+        return false;
+    }
+
     cString @getName() {
         return resultSet[0].getName();
     }
