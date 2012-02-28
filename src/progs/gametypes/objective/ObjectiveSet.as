@@ -121,6 +121,7 @@ class ObjectiveSet : Set {
     void initialSpawn() {
         for (int i = 0; i < size; i++)
             objectiveSet[i].initialSpawn();
+        goalTest();
     }
 
     void think() {
