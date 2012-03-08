@@ -38,17 +38,11 @@ class Player {
     int currentClass;
     int nextClass;
 
-    Players @players;
-    Classes @classes;
-
-    Player(Players @players) {
+    Player() {
         score = 0;
 
         currentClass = CLASS_SOLDIER;
         nextClass = CLASSES;
-
-        @this.players = players;
-        @this.classes = players.getClasses();
 
         loadClass();
     }
@@ -85,10 +79,6 @@ class Player {
         carry.secured(this, target);
         @carry = null;
         return true;
-    }
-
-    Players @getPlayers() {
-        return players;
     }
 
     int getClassId() {

@@ -28,9 +28,7 @@ class Result {
     int method;
     Objective @objective;
 
-    ObjectiveSet @objectiveSet;
-
-    Result(cString &target, ObjectiveSet @objectiveSet) {
+    Result(cString &target) {
         method = RM_SPAWN;
         cString methodString = target.substr(0, 1);
         if (methodString == "~")
@@ -42,8 +40,6 @@ class Result {
 
         @objective = objectiveSet.find(target.substr(method == RM_SPAWN ? 0 : 1,
                     target.len()));
-
-        @this.objectiveSet = objectiveSet;
     }
 
     cString @getName() {

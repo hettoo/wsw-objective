@@ -55,8 +55,7 @@ class Engineer : Class {
             player.centerPrint(BOMB_ARMOR
                     + " armor is required to throw a bomb");
         } else {
-            player.getPlayers().getWorld().getBombSet().add(
-                    origin, angles, player);
+            bombSet.add(origin, angles, player);
         }
     }
 

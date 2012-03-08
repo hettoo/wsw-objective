@@ -20,17 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const Image NO_ICON("hud/icons/vsay/no");
 const Image YES_ICON("hud/icons/vsay/yes");
 
+Scoreboard scoreboard;
+
 class Scoreboard {
-    World @world;
-
-    void register(World @world) {
-        @this.world = world;
-    }
-
     cString @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
         cEntity @ent = team.ent(entId);
         cClient @client = ent.client;
-        Player @player = world.getPlayers().get(client.playerNum());
+        Player @player = players.get(client);
         int readyIcon = NO_ICON.get();
 
         if (client.isReady())

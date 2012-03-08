@@ -62,9 +62,9 @@ class SpawnLocation : Component {
         } else if (name == "capturable") {
             capturable = value.toInt() == 1;
         } else if (name == "alphaFallback") {
-            @alphaFallback = objective.getObjectiveSet().find(value);
+            @alphaFallback = objectiveSet.find(value);
         } else if (name == "betaFallback") {
-            @betaFallback = objective.getObjectiveSet().find(value);
+            @betaFallback = objectiveSet.find(value);
         } else {
             return false;
         }
@@ -104,7 +104,6 @@ class SpawnLocation : Component {
     }
 
     void applyFallbacks(int team) {
-        Players @players = objective.getPlayers();
         if (@alphaFallback != null) {
             if (team == TEAM_ALPHA)
                 alphaFallback.destroy();
@@ -125,7 +124,6 @@ class SpawnLocation : Component {
 
     void captured(Player @capturer) {
         int team = capturer.getClient().team;
-        Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(team)
                     + " has captured the " + objective.getName() + "!");

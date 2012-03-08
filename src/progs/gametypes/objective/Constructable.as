@@ -56,9 +56,9 @@ class Constructable : Component {
         else if (name == "constructArmor")
             constructArmor = value.toInt();
         else if (name == "ghost")
-            @ghost = objective.getObjectiveSet().find(value);
+            @ghost = objectiveSet.find(value);
         else if (name == "onConstructed")
-            @onConstructed = ResultSet(value, objective.getObjectiveSet());
+            @onConstructed = ResultSet(value);
         else
             return false;
         return true;
@@ -86,13 +86,12 @@ class Constructable : Component {
 
         int team = player.getClient().team;
         onConstructed.apply(team);
-        Players @players = objective.getPlayers();
         cString name = onConstructed.getName();
         if (name != "")
             players.say(G_GetTeamName(team)
                     + " has constructed the " + name + "!");
         players.sound(CONSTRUCTED_SOUND.get());
-        objective.getObjectiveSet().goalTest();
+        objectiveSet.goalTest();
     }
 
     void constructed(Player @player) {
@@ -131,8 +130,7 @@ class Constructable : Component {
                 notConstructed = 0;
             }
             player.setHUDStat(STAT_IMAGE_OTHER,
-                    objective.getPlayers().getClasses().getIcon(
-                        CLASS_ENGINEER));
+                    classes.getIcon(CLASS_ENGINEER));
         }
     }
 

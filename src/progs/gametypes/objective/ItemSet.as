@@ -33,6 +33,8 @@ enum Items {
     ITEM_AMMOPACK
 }
 
+ItemSet itemSet;
+
 class ItemSet : Set {
     Item@[] itemSet;
 
@@ -61,14 +63,14 @@ class ItemSet : Set {
 
     void addHealthpack(cVec3 @origin, cVec3 @angles, Player @owner) {
         int id = getNextId();
-        @itemSet[id] = Item(origin, angles, owner, id, this, players,
+        @itemSet[id] = Item(origin, angles, owner, id,
                 HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
     void addAmmopack(cVec3 @origin, cVec3 @angles, Player @owner) {
         int id = getNextId();
-        @itemSet[id] = Item(origin, angles, owner, id, this, players,
+        @itemSet[id] = Item(origin, angles, owner, id,
                 AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),
                 AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
     }

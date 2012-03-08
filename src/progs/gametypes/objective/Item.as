@@ -32,20 +32,13 @@ class Item {
 
     float removeTime;
 
-    ItemSet @itemSet;
-    Players @players;
-
-    Item(cVec3 @origin, cVec3 @angles, Player @owner, int id, ItemSet @itemSet,
-            Players @players, int model, int sound, cVec3 @mins, cVec3 @maxs,
-            int type) {
+    Item(cVec3 @origin, cVec3 @angles, Player @owner, int id,
+            int model, int sound, cVec3 @mins, cVec3 @maxs, int type) {
         this.id = id;
         this.type = type;
         @this.owner = owner;
 
         spawn(origin, angles, model, sound, mins, maxs);
-
-        @this.itemSet = itemSet;
-        @this.players = players;
     }
 
     void spawn(cVec3 @origin, cVec3 @angles, int model, int sound,

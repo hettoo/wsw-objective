@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const cString OBJECTIVE_NAME_PREFIX = "!";
 
+ObjectiveSet objectiveSet;
+
 class ObjectiveSet : Set {
     Objective@[] objectiveSet;
 
@@ -26,17 +28,13 @@ class ObjectiveSet : Set {
 
     Players @players;
 
-    void register(Players @players) {
-        @this.players = players;
-    }
-
     void resize() {
         objectiveSet.resize(capacity);
     }
 
     void add(cEntity @ent) {
         makeRoom();
-        @objectiveSet[size++] = Objective(ent, this, players);
+        @objectiveSet[size++] = Objective(ent);
     }
 
     void analyze() {
@@ -90,7 +88,7 @@ class ObjectiveSet : Set {
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
                     + S_COLOR_ORANGE + ")");
         else if (fieldname == "goal")
-            @goal = ResultSet(value, this);
+            @goal = ResultSet(value);
     }
 
     void parse(cString &filename) {

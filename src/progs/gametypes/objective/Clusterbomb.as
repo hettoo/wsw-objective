@@ -41,17 +41,12 @@ class Clusterbomb {
 
     float timer;
 
-    ClusterbombSet @clusterbombSet;
-
-    Clusterbomb(cVec3 @origin, cVec3 @angles, Player @owner, int id,
-            ClusterbombSet @clusterbombSet) {
+    Clusterbomb(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
         this.id = id;
 
         @this.owner = owner;
 
         spawn(origin, angles);
-
-        @this.clusterbombSet = clusterbombSet;
     }
 
     void spawn(cVec3 @origin, cVec3 @angles) {

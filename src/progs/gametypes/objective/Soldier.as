@@ -68,7 +68,6 @@ class Soldier : Class {
                     + " armor is required to get a shield");
         } else {
             int team = player.getClient().team;
-            Players @players = player.getPlayers();
             for (int i = 0; i < players.getSize(); i++) {
                 Player @other = players.get(i);
                 if (@other != null) {

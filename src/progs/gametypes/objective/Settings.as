@@ -24,6 +24,8 @@ const cString AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
 const int DEFAULT_ALPHA_RESPAWN_TIME = 12;
 const int DEFAULT_BETA_RESPAWN_TIME = 18;
 
+Settings settings;
+
 class Settings {
     cString configFile;
 

@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+ClusterbombSet clusterbombSet;
+
 class ClusterbombSet : Set {
     Clusterbomb@[] clusterbombSet;
 
@@ -34,7 +36,7 @@ class ClusterbombSet : Set {
             makeRoom();
             id = size++;
         }
-        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id, this);
+        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id);
     }
 
     void remove(int n) {

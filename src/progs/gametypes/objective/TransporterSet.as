@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+TransporterSet transporterSet;
+
 class TransporterSet : Set {
     Transporter@[] transporterSet;
 
@@ -34,7 +36,7 @@ class TransporterSet : Set {
             makeRoom();
             id = size++;
         }
-        @transporterSet[id] = Transporter(origin, angles, owner, id, this);
+        @transporterSet[id] = Transporter(origin, angles, owner, id);
         return transporterSet[id];
     }
 

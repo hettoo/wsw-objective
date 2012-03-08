@@ -56,8 +56,7 @@ class FieldOps : Class {
             player.centerPrint(AMMOPACK_ARMOR
                     + " armor is required to throw an ammopack");
         else
-            player.getPlayers().getWorld().getItemSet().addAmmopack(
-                    origin, angles, player);
+            itemSet.addAmmopack(origin, angles, player);
     }
 
     void classAction2(Player @player) {
@@ -70,7 +69,6 @@ class FieldOps : Class {
             player.centerPrint(CLUSTERBOMB_ARMOR
                     + " armor is required to throw a clusterbomb");
         else
-            player.getPlayers().getWorld().getClusterbombSet().add(
-                    origin, angles, player);
+            clusterbombSet.add(origin, angles, player);
     }
 }

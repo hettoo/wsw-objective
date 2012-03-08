@@ -61,12 +61,7 @@ class Bomb {
     float soundTime;
     float notArmed;
 
-    Players @players;
-    BombSet @bombSet;
-    ObjectiveSet @objectiveSet;
-
-    Bomb(cVec3 @origin, cVec3 @angles, Player @owner, int id, Players @players,
-            BombSet @bombSet, ObjectiveSet @objectiveSet) {
+    Bomb(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
         this.id = id;
 
         @this.origin = origin;
@@ -77,10 +72,6 @@ class Bomb {
         state = BS_PLACED;
         progress = 0;
         notArmed = 0;
-
-        @this.bombSet = bombSet;
-        @this.players = players;
-        @this.objectiveSet = objectiveSet;
     }
 
     void spawn() {

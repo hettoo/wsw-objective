@@ -17,16 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+BombSet bombSet;
+
 class BombSet : Set {
     Bomb@[] bombSet;
-
-    Players @players;
-    ObjectiveSet @objectiveSet;
-
-    void register(Players @players, ObjectiveSet @objectiveSet) {
-        @this.players = players;
-        @this.objectiveSet = objectiveSet;
-    }
 
     void resize() {
         bombSet.resize(capacity);
@@ -42,8 +36,7 @@ class BombSet : Set {
             makeRoom();
             id = size++;
         }
-        Bomb @new = Bomb(origin, angles, owner, id, players,
-                this, objectiveSet);
+        Bomb @new = Bomb(origin, angles, owner, id);
         new.spawn();
         @bombSet[id] = new;
     }

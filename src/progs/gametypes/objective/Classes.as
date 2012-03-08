@@ -26,6 +26,8 @@ enum ClassId {
     CLASSES
 }
 
+Classes classes;
+
 class Classes {
     Class@[] classes;
 

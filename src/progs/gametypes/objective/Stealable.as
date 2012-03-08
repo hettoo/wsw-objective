@@ -49,7 +49,7 @@ class Stealable : Component {
         if (name == "stealable")
             active = value.toInt() == 1;
         else if (name == "targets")
-            @targets = ResultSet(value, objective.getObjectiveSet());
+            @targets = ResultSet(value);
         else
             return false;
         return true;
@@ -60,7 +60,6 @@ class Stealable : Component {
     }
 
     void stolen(Player @thief) {
-        Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(thief.getClient().team)
                     + " has stolen the " + objective.getName() + "!");
@@ -72,7 +71,6 @@ class Stealable : Component {
     }
 
     void dropped(Player @dropper) {
-        Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(dropper.getClient().team)
                     + " has dropped the " + objective.getName() + "!");
@@ -87,7 +85,6 @@ class Stealable : Component {
         if (!targets.contains(target))
             return false;
 
-        Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(securer.getClient().team)
                     + " has secured the " + objective.getName()
@@ -99,13 +96,12 @@ class Stealable : Component {
         state = SS_SECURED;
         objective.destroy();
 
-        objective.getObjectiveSet().goalTest();
+        objectiveSet.goalTest();
 
         return true;
     }
 
     void returned(Player @returner) {
-        Players @players = objective.getPlayers();
         if (objective.getName() != "")
             players.say(G_GetTeamName(objective.getTeam())
                     + " has returned the " + objective.getName() + "!");

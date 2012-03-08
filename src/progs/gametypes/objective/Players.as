@@ -17,19 +17,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+Players players;
+
 class Players {
     Player@[] players;
     int size;
 
-    Classes classes;
-    World @world;
-
     Players() {
         players.resize(maxClients);
-    }
-
-    void register(World @world) {
-        @this.world = world;
     }
 
     Player @get(int id) {
@@ -46,10 +41,6 @@ class Players {
         return classes;
     }
 
-    World @getWorld() {
-        return world;
-    }
-
     int getSize() {
         return size;
     }
@@ -58,7 +49,7 @@ class Players {
         int id = client.playerNum();
         Player @player = get(id);
         if (@player == null) {
-            @players[id] = Player(this);
+            @players[id] = Player();
             if (id >= size)
                 size = id + 1;
             @player = players[id];

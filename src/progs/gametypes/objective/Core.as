@@ -18,16 +18,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Core {
-    Settings settings;
-    Scoreboard scoreboard;
-    World world;
-
     void spawnGametype() {
-        world.spawn();
+        objectiveSet.analyze();
+        objectiveSet.parse("mapscripts/" + cVar("mapname", "", 0).getString()
+                + ".cfg");
+        objectiveSet.initialSpawn();
     }
 
     void initGametype() {
-        scoreboard.register(world);
         settings.set();
     }
 
@@ -36,23 +34,23 @@ class Core {
             GENERIC_CheatVarResponse(client, cmd, args, argc);
             return true;
         } else if (cmd == "class") {
-            world.getPlayers().get(client).setClass(args);
+            players.get(client).setClass(args);
             return true;
         } else if (cmd == "gamemenu") {
-            world.getPlayers().get(client).showGameMenu();
+            players.get(client).showGameMenu();
             return true;
         } else if (cmd == "classaction1") {
-            world.getPlayers().get(client).classAction1();
+            players.get(client).classAction1();
             return true;
         } else if (cmd == "classaction2") {
-            world.getPlayers().get(client).classAction2();
+            players.get(client).classAction2();
             return true;
         }
         return false;
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        cEntity @spawn = world.selectSpawnPoint(self);
+        cEntity @spawn = objectiveSet.randomSpawnPoint(self);
         if (@spawn == null)
             @spawn = GENERIC_SelectBestRandomSpawnPoint(null,
                     "info_player_deathmatch");
@@ -61,12 +59,12 @@ class Core {
 
     void playerRespawn(cEntity @ent, int oldTeam, int newTeam) {
         if (oldTeam == TEAM_SPECTATOR && newTeam != TEAM_SPECTATOR)
-            world.newPlayer(ent.client);
+            players.newPlayer(ent.client);
         else if (oldTeam != TEAM_SPECTATOR && newTeam == TEAM_SPECTATOR)
-            world.newSpectator(ent.client);
+            players.newSpectator(ent.client);
 
         if (newTeam != TEAM_SPECTATOR)
-            world.respawnPlayer(ent.client);
+            players.respawnPlayer(ent.client);
     }
 
     bool updateBotStatus(cEntity @self) {
@@ -74,7 +72,6 @@ class Core {
     }
 
     void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
-        Players @players = world.getPlayers();
         Player @player = players.get(client);
 
         if (scoreEvent == "userinfochanged")
@@ -101,7 +98,13 @@ class Core {
 
         GENERIC_Think();
 
-        world.think();
+        players.think();
+        objectiveSet.think();
+        itemSet.think();
+        bombSet.think();
+        clusterbombSet.think();
+        artillerySet.think();
+        transporterSet.think();
     }
 
     void matchStateStarted() {
@@ -113,7 +116,7 @@ class Core {
                 settings.setupCountdown();
                 break;
             case MATCH_STATE_PLAYTIME:
-                world.getPlayers().reset();
+                players.reset();
                 settings.setupPlaytime();
                 break;
             case MATCH_STATE_POSTMATCH:

@@ -32,17 +32,12 @@ class Artillery {
     int rocketsFired;
     float wait;
 
-    ArtillerySet @artillerySet;
-
-    Artillery(cVec3 @origin, Player @owner, int id,
-            ArtillerySet @artillerySet) {
+    Artillery(cVec3 @origin, Player @owner, int id) {
         this.id = id;
 
         @this.origin = origin;
         this.origin.z += ARTILLERY_HEIGHT;
         @this.owner = owner;
-
-        @this.artillerySet = artillerySet;
 
         rocketsFired = 0;
         setNextLaunch();

@@ -20,12 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ResultSet : Set {
     bool empty;
     Result@[] resultSet;
-    ObjectiveSet @objectiveSet;
 
-    ResultSet(cString &targets, ObjectiveSet @objectiveSet) {
+    ResultSet(cString &targets) {
         empty = true;
-
-        @this.objectiveSet = objectiveSet;
 
         analyze(targets);
     }
@@ -50,7 +47,7 @@ class ResultSet : Set {
 
     void add(cString &target) {
         makeRoom();
-        @resultSet[size++] = Result(target, objectiveSet);
+        @resultSet[size++] = Result(target);
         empty = false;
     }
 

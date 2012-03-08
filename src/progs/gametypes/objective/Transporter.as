@@ -32,13 +32,8 @@ class Transporter {
 
     float removeTime;
 
-    TransporterSet @transporterSet;
-
-    Transporter(cVec3 @origin, cVec3 @angles, Player @owner, int id,
-            TransporterSet @transporterSet) {
+    Transporter(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
         this.id = id;
-
-        @this.transporterSet = transporterSet;
 
         @this.owner = owner;
         spawn(origin, angles);
