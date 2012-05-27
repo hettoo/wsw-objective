@@ -227,7 +227,8 @@ class Player {
         setHUDStat(STAT_MESSAGE_SELF, 0);
 
         GENERIC_ChargeGunblade(client);
-        playerClass.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
+        if (ent.health > 0)
+            playerClass.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
     }
 
     void classAction1() {
