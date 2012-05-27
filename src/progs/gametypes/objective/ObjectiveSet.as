@@ -55,7 +55,7 @@ class ObjectiveSet : Set {
     }
 
     void goalTest() {
-        if (goal.isEmpty())
+        if (@goal == null || goal.isEmpty())
             return;
 
         Objective @objective;
