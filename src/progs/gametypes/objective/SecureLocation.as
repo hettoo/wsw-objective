@@ -46,6 +46,7 @@ class SecureLocation : Component {
         if (player.secureCarry(objective)) {
             objective.setModel(newModel);
             objective.respawn();
+            occupied = true;
         }
     }
 }
