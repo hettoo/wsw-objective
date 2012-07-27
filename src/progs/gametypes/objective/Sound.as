@@ -21,7 +21,7 @@ class Sound {
     int sound;
 
     Sound(cString &sound) {
-        this.sound = G_SoundIndex("sounds/" + sound);
+        this.sound = G_SoundIndex("sounds/" + sound, true);
     }
 
     int get() const {

@@ -19,7 +19,7 @@ CFG = $(NAME).cfg
 VERSION = $(shell grep VERSION $(SETTINGS_FILE) \
 		  | head -n1 | sed 's/.*"\(.*\)".*/\1/')
 VERSION_WORD = $(subst .,_,$(VERSION))
-PK3 = $(NAME)-$(VERSION_WORD)-pure.pk3
+PK3 = $(NAME)-$(VERSION_WORD).pk3
 
 all: dist
 
