@@ -1,6 +1,4 @@
-# You may want to edit these, either here or from the commandline using
-# VARIABLE=value
-WSW_DIR = ~/.warsow-0.6
+WSW_DIR = ~/.warsow-0.7
 EXECUTABLE = wsw-server
 MOD = promod
 
