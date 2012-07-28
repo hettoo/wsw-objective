@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Image {
     int image;
 
-    Image(cString &image) {
+    Image(String &image) {
         this.image = G_ImageIndex("gfx/" + image);
     }
 

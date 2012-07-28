@@ -53,11 +53,11 @@ class Class {
                 + getSimpleName());
     }
 
-    cString @getSimpleName() {
+    String @getSimpleName() {
         return G_ReplaceSpaces(getName().tolower());
     }
 
-    cString @getName() {
+    String @getName() {
         return WTF;
     }
 

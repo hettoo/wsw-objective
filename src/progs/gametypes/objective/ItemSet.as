@@ -18,12 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const Model AMMOPACK_MODEL("items/ammo/ammobox/ammobox");
-cVec3 AMMOPACK_MINS(-11, -11, -11);
-cVec3 AMMOPACK_MAXS(11, 11, 11);
+Vec3 AMMOPACK_MINS(-11, -11, -11);
+Vec3 AMMOPACK_MAXS(11, 11, 11);
 
 const Model HEALTHPACK_MODEL("items/health/small/small_health");
-cVec3 HEALTHPACK_MINS(-11, -11, -11);
-cVec3 HEALTHPACK_MAXS(11, 11, 11);
+Vec3 HEALTHPACK_MINS(-11, -11, -11);
+Vec3 HEALTHPACK_MAXS(11, 11, 11);
 
 const Sound HEALTHPACK_SOUND("items/item_spawn");
 const Sound AMMOPACK_SOUND("items/item_spawn");
@@ -61,14 +61,14 @@ class ItemSet : Set {
         return id;
     }
 
-    void addHealthpack(cVec3 @origin, cVec3 @angles, Player @owner) {
+    void addHealthpack(Vec3 @origin, Vec3 @angles, Player @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id,
                 HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
                 HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
     }
 
-    void addAmmopack(cVec3 @origin, cVec3 @angles, Player @owner) {
+    void addAmmopack(Vec3 @origin, Vec3 @angles, Player @owner) {
         int id = getNextId();
         @itemSet[id] = Item(origin, angles, owner, id,
                 AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),

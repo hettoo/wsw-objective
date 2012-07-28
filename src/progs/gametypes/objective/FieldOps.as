@@ -42,12 +42,12 @@ class FieldOps : Class {
         secondaryWeakMaxAmmo = 25;
     }
 
-    cString @getName() {
+    String @getName() {
         return "Field Ops";
     }
 
     void classAction1(Player @player) {
-        cVec3 origin, angles;
+        Vec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
                     AMMOPACK_MINS, AMMOPACK_MAXS))
@@ -60,7 +60,7 @@ class FieldOps : Class {
     }
 
     void classAction2(Player @player) {
-        cVec3 origin, angles;
+        Vec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
                     CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS))

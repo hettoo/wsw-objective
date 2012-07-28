@@ -45,7 +45,7 @@ class Stealable : Component {
         @this.objective = objective;
     }
 
-    bool setAttribute(cString &name, cString &value) {
+    bool setAttribute(String &name, String &value) {
         if (name == "stealable")
             active = value.toInt() == 1;
         else if (name == "targets")

@@ -83,7 +83,7 @@ class Players {
         get(client).spawn();
     }
 
-    void madeKill(Player @player, cString &args) {
+    void madeKill(Player @player, String &args) {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {
             if (@player != null)
@@ -106,7 +106,7 @@ class Players {
         return TEAM_ALPHA;
     }
 
-    void say(cString &message) {
+    void say(String &message) {
         G_PrintMsg(null, message + "\n");
     }
 
@@ -114,11 +114,11 @@ class Players {
         G_GlobalSound(CHAN_VOICE, sound);
     }
 
-    int soundIndex(cString sound) {
+    int soundIndex(String sound) {
         return Sound(sound).get();
     }
 
-    void sound(cString &sound) {
+    void sound(String &sound) {
         sound(soundIndex(sound));
     }
 

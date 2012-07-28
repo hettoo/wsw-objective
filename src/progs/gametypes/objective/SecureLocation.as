@@ -25,7 +25,7 @@ class SecureLocation : Component {
         @this.objective = objective;
     }
 
-    bool setAttribute(cString &name, cString &value) {
+    bool setAttribute(String &name, String &value) {
         if (name == "secureLocation") {
             active = value.toInt() == 1;
         } else {

@@ -28,9 +28,9 @@ class Result {
     int method;
     Objective @objective;
 
-    Result(cString &target) {
+    Result(String &target) {
         method = RM_SPAWN;
-        cString methodString = target.substr(0, 1);
+        String methodString = target.substr(0, 1);
         if (methodString == "~")
             method = RM_DESTROY;
         else if (methodString == "@")
@@ -42,7 +42,7 @@ class Result {
                     target.len()));
     }
 
-    cString @getName() {
+    String @getName() {
         return objective.getName();
     }
 

@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const cString OBJECTIVE_NAME_PREFIX = "!";
+const String OBJECTIVE_NAME_PREFIX = "!";
 
 ObjectiveSet objectiveSet;
 
@@ -40,13 +40,13 @@ class ObjectiveSet : Set {
     void analyze() {
         for (int i = 0; @G_GetEntity(i) != null; i++) {
             cEntity @ent = G_GetEntity(i);
-            cString targetname = ent.getTargetnameString();
+            String targetname = ent.getTargetnameString();
             if (targetname.substr(0, 1) == OBJECTIVE_NAME_PREFIX)
                 add(ent);
         }
     }
 
-    Objective @find(cString &id) {
+    Objective @find(String &id) {
         for (int i = 0; i < size; i++) {
             if (objectiveSet[i].getId() == id)
                 return @objectiveSet[i];
@@ -82,7 +82,7 @@ class ObjectiveSet : Set {
         return objectiveSet[spawnLocation].getRandomSpawnPoint();
     }
 
-    void setAttribute(cString &fieldname, cString &value) {
+    void setAttribute(String &fieldname, String &value) {
         if (fieldname == "author")
             gametype.setAuthor(AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
@@ -91,14 +91,14 @@ class ObjectiveSet : Set {
             @goal = ResultSet(value);
     }
 
-    void parse(cString &filename) {
-        cString file = G_LoadFile(filename);
+    void parse(String &filename) {
+        String file = G_LoadFile(filename);
         Objective @objective;
-        cString fieldname;
+        String fieldname;
         bool stop = false;
         int i = 0;
         do {
-            cString token = file.getToken(i);
+            String token = file.getToken(i);
             if (token.substr(0, 1) == OBJECTIVE_NAME_PREFIX) {
                 @objective = find(token.substr(1, token.len()));
             } else if (fieldname == "") {

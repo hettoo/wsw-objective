@@ -49,7 +49,7 @@ class Soldier : Class {
         secondaryWeakMaxAmmo = 15;
     }
 
-    cString @getName() {
+    String @getName() {
         return "Soldier";
     }
 

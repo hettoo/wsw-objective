@@ -27,7 +27,7 @@ void GT_InitGametype() {
     objective.initGametype();
 }
 
-bool GT_Command(cClient @client, cString &cmd, cString &args, int argc) {
+bool GT_Command(cClient @client, String &cmd, String &args, int argc) {
     return objective.command(client, cmd, args, argc);
 }
 
@@ -43,7 +43,7 @@ bool GT_UpdateBotStatus(cEntity @self) {
     return objective.updateBotStatus(self);
 }
 
-void GT_scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
+void GT_scoreEvent(cClient @client, String &scoreEvent, String &args) {
     objective.scoreEvent(client, scoreEvent, args);
 }
 
@@ -59,7 +59,7 @@ bool GT_MatchStateFinished(int newMatchState) {
     return objective.matchStateFinished(newMatchState);
 }
 
-cString @GT_ScoreboardMessage(int maxlen) {
+String @GT_ScoreboardMessage(int maxlen) {
     return objective.scoreboardMessage(maxlen);
 }
 

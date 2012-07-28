@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Sound {
     int sound;
 
-    Sound(cString &sound) {
+    Sound(String &sound) {
         this.sound = G_SoundIndex("sounds/" + sound, true);
     }
 

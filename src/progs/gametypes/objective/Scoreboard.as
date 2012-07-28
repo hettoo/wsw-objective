@@ -23,7 +23,7 @@ const Image YES_ICON("hud/icons/vsay/yes");
 Scoreboard scoreboard;
 
 class Scoreboard {
-    cString @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
+    String @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
         cEntity @ent = team.ent(entId);
         cClient @client = ent.client;
         Player @player = players.get(client);
@@ -36,7 +36,7 @@ class Scoreboard {
                 && (match.getState() == MATCH_STATE_PLAYTIME))
             ? -(ent.playerNum() + 1) : ent.playerNum();
 
-        cString entry = "&p " + playerId + " " + client.getClanName() + " "
+        String entry = "&p " + playerId + " " + client.getClanName() + " "
             + client.stats.score + " " + client.ping + " "
             + player.getClassIcon() + " " + readyIcon + " ";
 
@@ -45,11 +45,11 @@ class Scoreboard {
         return "";
     }
 
-    cString @scoreboardTeam(int teamId, int maxLen) {
+    String @scoreboardTeam(int teamId, int maxLen) {
             cTeam @team = G_GetTeam(teamId);
 
-            cString message = "";
-            cString entry = "&t " + teamId + " " + team.stats.score + " "
+            String message = "";
+            String entry = "&t " + teamId + " " + team.stats.score + " "
                 + team.ping + " ";
 
             if (entry.len() <= maxLen) {
@@ -62,8 +62,8 @@ class Scoreboard {
             return message;
     }
 
-    cString @createMessage(int maxLen) {
-        cString message = "";
+    String @createMessage(int maxLen) {
+        String message = "";
         message += scoreboardTeam(TEAM_ALPHA, maxLen - message.len());
         message += scoreboardTeam(TEAM_BETA, maxLen - message.len());
         return message;

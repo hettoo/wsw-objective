@@ -23,13 +23,13 @@ const float ATTN_POWERUP = 3.5;
 
 const int PROGRESS_FINISHED = 100;
 
-cString WTF = "???";
+String WTF = "???";
 const int UNKNOWN = -1;
 
-cString @G_ReplaceSpaces(cString &string, cString replacement) {
-    cString result;
+String @G_ReplaceSpaces(String &string, String replacement) {
+    String result;
     for (int i = 0; i < string.len(); i++) {
-        cString character = string.substr(i, 1);
+        String character = string.substr(i, 1);
         if (character == " ")
             result += replacement;
         else
@@ -38,43 +38,43 @@ cString @G_ReplaceSpaces(cString &string, cString replacement) {
     return result;
 }
 
-cString @G_ReplaceSpaces(cString &string) {
+String @G_ReplaceSpaces(String &string) {
     return G_ReplaceSpaces(string, "_");
 }
 
-void G_InitThrow(cEntity @ent, cVec3 @origin, cVec3 @angles) {
+void G_InitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles) {
     origin = ent.getOrigin();
     origin.z += ent.viewHeight;
 
-    angles = ent.getAngles() + cVec3(-10, 0, 0);
+    angles = ent.getAngles() + Vec3(-10, 0, 0);
     if (angles.x < -90)
         angles.x = -90;
 
-    cVec3 dir;
+    Vec3 dir;
     angles.angleVectors(dir, null, null);
     origin += dir * 24;
 }
 
-bool G_CheckInitThrow(cEntity @ent, cVec3 @origin, cVec3 @angles,
-        cVec3 @mins, cVec3 @maxs) {
+bool G_CheckInitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles,
+        Vec3 @mins, Vec3 @maxs) {
     G_InitThrow(ent, origin, angles);
     return G_CanSpawn(origin, mins, maxs, ent.entNum());
 }
 
-bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs, int ignore) {
+bool G_CanSpawn(Vec3 @origin, Vec3 @mins, Vec3 @maxs, int ignore) {
     return !cTrace().doTrace(origin, mins , maxs, origin, ignore,
             MASK_PLAYERSOLID);
 }
 
-bool G_CanSpawn(cVec3 @origin, cVec3 @mins, cVec3 @maxs) {
+bool G_CanSpawn(Vec3 @origin, Vec3 @mins, Vec3 @maxs) {
     return G_CanSpawn(origin, mins, maxs, -1);
 }
 
-cString @G_GetTeamName(int team) {
+String @G_GetTeamName(int team) {
     return G_GetTeam(team).getName();
 }
 
-bool G_Near(cVec3 @a, cVec3 @b, float radius) {
+bool G_Near(Vec3 @a, Vec3 @b, float radius) {
     return @a != null && @b != null && a.distance(b) <= radius;
 }
 
@@ -87,7 +87,7 @@ bool G_Near(Player @a, Player @b, float radius) {
     return @a != null && @b != null && G_Near(a.getEnt(), b.getEnt(), radius);
 }
 
-cEntity @G_SpawnIcon(int image, int team, cVec3 @origin) {
+cEntity @G_SpawnIcon(int image, int team, Vec3 @origin) {
     cEntity @minimap = @G_SpawnEntity("minimap_icon");
     minimap.type = ET_MINIMAP_ICON;
     minimap.modelindex = image;

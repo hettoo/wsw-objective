@@ -37,10 +37,10 @@ class SpawnPointSet : Set {
         @points[size++] = ent;
     }
 
-    void analyze(cString &name) {
+    void analyze(String &name) {
         for (int i = 0; @G_GetEntity(i) != null; i++) {
             cEntity @ent = G_GetEntity(i);
-            cString target = ent.getTargetString();
+            String target = ent.getTargetString();
             if (target.substr(0, 1) == OBJECTIVE_NAME_PREFIX
                     && target.substr(1, target.len()) == name) {
                 add(ent);

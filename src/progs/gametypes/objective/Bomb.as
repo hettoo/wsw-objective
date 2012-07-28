@@ -36,8 +36,8 @@ const float ATTN_BOMB = 0.75f;
 const int BOMB_CRITICAL_TIME = 6;
 
 const Model BOMB_MODEL("objects/misc/bomb_centered");
-cVec3 BOMB_MINS(-16, -16, -16);
-cVec3 BOMB_MAXS(16, 16, 40);
+Vec3 BOMB_MINS(-16, -16, -16);
+Vec3 BOMB_MAXS(16, 16, 40);
 
 enum BombState {
     BS_PLACED,
@@ -50,8 +50,8 @@ class Bomb {
     cEntity @ent;
     cEntity @minimap;
 
-    cVec3 @origin;
-    cVec3 @angles;
+    Vec3 @origin;
+    Vec3 @angles;
     Player @owner;
 
     int team;
@@ -61,7 +61,7 @@ class Bomb {
     float soundTime;
     float notArmed;
 
-    Bomb(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
+    Bomb(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
         this.id = id;
 
         @this.origin = origin;
@@ -81,7 +81,7 @@ class Bomb {
         ent.setOrigin(origin);
         ent.setAngles(angles);
         @ent.owner = owner.getEnt();
-        cVec3 dir;
+        Vec3 dir;
         angles.angleVectors(dir, null, null);
         ent.setVelocity(ent.owner.getVelocity() + dir * BOMB_THROW_SPEED);
         ent.team = team;

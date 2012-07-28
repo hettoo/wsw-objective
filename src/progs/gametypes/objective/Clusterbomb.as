@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const Model CLUSTERBOMB_MODEL("items/ammo/pack/pack");
-cVec3 CLUSTERBOMB_MINS(-11, -11, -11);
-cVec3 CLUSTERBOMB_MAXS(11, 11, 11);
+Vec3 CLUSTERBOMB_MINS(-11, -11, -11);
+Vec3 CLUSTERBOMB_MAXS(11, 11, 11);
 
 const int CLUSTERBOMB_THROW_SPEED = 1000;
 const int CLUSTERBOMB_EFFECT_RADIUS = 360;
@@ -41,7 +41,7 @@ class Clusterbomb {
 
     float timer;
 
-    Clusterbomb(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
+    Clusterbomb(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
         this.id = id;
 
         @this.owner = owner;
@@ -49,14 +49,14 @@ class Clusterbomb {
         spawn(origin, angles);
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles) {
+    void spawn(Vec3 @origin, Vec3 @angles) {
         @ent = G_SpawnEntity("clusterbomb");
         ent.type = ET_GENERIC;
         ent.modelindex = CLUSTERBOMB_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
         @ent.owner = owner.getEnt();
-        cVec3 dir;
+        Vec3 dir;
         angles.angleVectors(dir, null, null);
         ent.setVelocity(ent.owner.getVelocity() + dir * CLUSTERBOMB_THROW_SPEED);
         ent.setSize(CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS);
@@ -76,7 +76,7 @@ class Clusterbomb {
 
     void releaseAmmo() {
         for (int i = 0; i < CB_NADES; i++) {
-            cVec3 dir = cVec3(random() * 2 - 1, random() * 2 - 1, random());
+            Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
             dir.toAngles(dir);
             cEntity @nade = G_FireGrenade(ent.getOrigin(), dir,
                     CB_NADE_SPEED / random(),
@@ -86,7 +86,7 @@ class Clusterbomb {
                 nade.nextThink = levelTime + CB_NADE_TIME * 1000;
         }
         for (int i = 0; i < CB_ROCKETS; i++) {
-            cVec3 dir = cVec3(random() * 2 - 1, random() * 2 - 1, random());
+            Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
             dir.toAngles(dir);
             G_FireRocket(ent.getOrigin(), dir,
                     CB_ROCKET_SPEED / random(),

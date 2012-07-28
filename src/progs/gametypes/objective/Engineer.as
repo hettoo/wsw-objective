@@ -41,12 +41,12 @@ class Engineer : Class {
         secondaryWeakMaxAmmo = 100;
     }
 
-    cString @getName() {
+    String @getName() {
         return "Engineer";
     }
 
     void classAction1(Player @player) {
-        cVec3 origin, angles;
+        Vec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
                     BOMB_MINS, BOMB_MAXS)) {

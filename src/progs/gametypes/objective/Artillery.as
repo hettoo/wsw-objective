@@ -27,12 +27,12 @@ const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 class Artillery {
     int id;
 
-    cVec3 @origin;
+    Vec3 @origin;
     Player @owner;
     int rocketsFired;
     float wait;
 
-    Artillery(cVec3 @origin, Player @owner, int id) {
+    Artillery(Vec3 @origin, Player @owner, int id) {
         this.id = id;
 
         @this.origin = origin;
@@ -48,8 +48,8 @@ class Artillery {
     }
 
     void launch() {
-        cVec3 thisOrigin = origin;
-        cVec3 angles(2 * brandom(0, ARTILLERY_MAX_DIVERGENCY)
+        Vec3 thisOrigin = origin;
+        Vec3 angles(2 * brandom(0, ARTILLERY_MAX_DIVERGENCY)
                 - ARTILLERY_MAX_DIVERGENCY + 90,
                 4 * (2 * brandom(0, ARTILLERY_MAX_DIVERGENCY)
                 - ARTILLERY_MAX_DIVERGENCY), 0);

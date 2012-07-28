@@ -21,8 +21,8 @@ const int CAPTURE_SCORE = 2;
 
 const Model FLAG("objects/flag/flag");
 const Model FLAG_UNCAPTURED("misc/ammobox");
-cVec3 FLAG_MINS(-16, -16, -16);
-cVec3 FLAG_MAXS(16, 16, 40);
+Vec3 FLAG_MINS(-16, -16, -16);
+Vec3 FLAG_MAXS(16, 16, 40);
 
 const Image FLAG_ICON("hud/icons/flags/iconflag");
 const Sound CAPTURE_SOUND("announcer/objective/captured");
@@ -54,7 +54,7 @@ class SpawnLocation : Component {
         objective.respawn();
     }
 
-    bool setAttribute(cString &name, cString &value) {
+    bool setAttribute(String &name, String &value) {
         if (name == "spawnLocation") {
             active = value.toInt() == 1;
             @spawnPointSet = SpawnPointSet();
@@ -86,9 +86,9 @@ class SpawnLocation : Component {
                 ent.modelindex = FLAG_UNCAPTURED.get();
                 break;
         }
-        cVec3 @origin = objective.getOrigin();
+        Vec3 @origin = objective.getOrigin();
         ent.setOrigin(origin);
-        ent.setAngles(cVec3(-90, 0, 0));
+        ent.setAngles(Vec3(-90, 0, 0));
         ent.setSize(FLAG_MINS, FLAG_MAXS);
         ent.solid = SOLID_YES;
         ent.clipMask = MASK_PLAYERSOLID;

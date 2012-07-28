@@ -105,7 +105,7 @@ class Player {
         client.armor = armor;
     }
 
-    cString @getClassName() {
+    String @getClassName() {
         return playerClass.getName();
     }
 
@@ -113,7 +113,7 @@ class Player {
         return client.team;
     }
 
-    void centerPrint(cString &msg) {
+    void centerPrint(String &msg) {
         G_CenterPrintMsg(ent, msg);
     }
 
@@ -125,7 +125,7 @@ class Player {
         }
     }
 
-    void setClass(cString &newClass) {
+    void setClass(String &newClass) {
         setClass(classes.find(newClass));
     }
 
@@ -256,7 +256,7 @@ class Player {
         this.score = score;
     }
 
-    void didDamage(cString &args) {
+    void didDamage(String &args) {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {
             float bonus = args.getToken(1).toFloat() * DAMAGE_BONUS;

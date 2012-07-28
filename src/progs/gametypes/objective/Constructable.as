@@ -50,7 +50,7 @@ class Constructable : Component {
         @this.objective = objective;
     }
 
-    bool setAttribute(cString &name, cString &value) {
+    bool setAttribute(String &name, String &value) {
         if (name == "constructable")
             active = value.toInt() == 1;
         else if (name == "constructArmor")
@@ -86,7 +86,7 @@ class Constructable : Component {
 
         int team = player.getClient().team;
         onConstructed.apply(team);
-        cString name = onConstructed.getName();
+        String name = onConstructed.getName();
         if (name != "")
             players.say(G_GetTeamName(team)
                     + " has constructed the " + name + "!");

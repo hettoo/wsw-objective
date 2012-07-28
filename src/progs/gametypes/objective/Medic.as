@@ -44,12 +44,12 @@ class Medic : Class {
         secondaryWeakMaxAmmo = 90;
     }
 
-    cString @getName() {
+    String @getName() {
         return "Medic";
     }
 
     void classAction1(Player @player) {
-        cVec3 origin, angles;
+        Vec3 origin, angles;
         cEntity @ent = player.getEnt();
         if (!G_CheckInitThrow(player.getEnt(), origin, angles,
                     HEALTHPACK_MINS, HEALTHPACK_MAXS))

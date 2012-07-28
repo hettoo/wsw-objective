@@ -18,9 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Objective {
-    cString id;
+    String id;
 
-    cString name;
+    String name;
     cEntity @ent;
     cEntity @minimap;
     bool spawned;
@@ -30,10 +30,10 @@ class Objective {
     bool solid;
     int model;
     int icon;
-    cVec3 origin;
-    cVec3 angles;
-    cVec3 mins;
-    cVec3 maxs;
+    Vec3 origin;
+    Vec3 angles;
+    Vec3 mins;
+    Vec3 maxs;
     int moveType;
     int team;
     float radius;
@@ -69,15 +69,15 @@ class Objective {
         @secureLocation = SecureLocation(this);
     }
 
-    cString @getId() {
+    String @getId() {
         return id;
     }
 
-    cString @getName() {
+    String @getName() {
         return name;
     }
 
-    cVec3 @getOrigin() {
+    Vec3 @getOrigin() {
         return origin;
     }
 
@@ -101,7 +101,7 @@ class Objective {
         @this.minimap = minimap;
     }
 
-    void setAttribute(cString &name, cString &value) {
+    void setAttribute(String &name, String &value) {
         if (name == "name") {
             this.name = value;
         } else if (name == "startSpawned") {
@@ -115,10 +115,10 @@ class Objective {
         } else if (name == "moveType") {
             moveType = value.toInt();
         } else if (name == "mins") {
-            mins = cVec3(value.getToken(0).toFloat(),
+            mins = Vec3(value.getToken(0).toFloat(),
                     value.getToken(1).toFloat(), value.getToken(2).toFloat());
         } else if (name == "maxs") {
-            maxs = cVec3(value.getToken(0).toFloat(),
+            maxs = Vec3(value.getToken(0).toFloat(),
                     value.getToken(1).toFloat(), value.getToken(2).toFloat());
         } else if (name == "team") {
             if (value.tolower() == "alpha")
@@ -136,7 +136,7 @@ class Objective {
         }
     }
 
-    void spawn(cVec3 @origin) {
+    void spawn(Vec3 @origin) {
         if (spawned)
             return;
 

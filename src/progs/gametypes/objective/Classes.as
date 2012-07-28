@@ -48,7 +48,7 @@ class Classes {
         return classes[classId].getIcon();
     }
 
-    int find(cString &newClass) {
+    int find(String &newClass) {
         for (int i = 0; i < CLASSES; i++) {
             if (classes[i].getName() == newClass)
                 return i;
@@ -56,8 +56,8 @@ class Classes {
         return UNKNOWN;
     }
 
-    cString @createMenu() {
-        cString menu = "mecu \"Select Class\"";
+    String @createMenu() {
+        String menu = "mecu \"Select Class\"";
         for (int i = 0; i < CLASSES; i++)
             menu += " \"" + classes[i].getName() + "\" "
                 + " \"class " + classes[i].getName() + "\"";

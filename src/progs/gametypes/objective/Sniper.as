@@ -46,28 +46,28 @@ class Sniper : Class {
         secondaryWeakMaxAmmo = 20;
     }
 
-    cString @getName() {
+    String @getName() {
         return "Sniper";
     }
 
     void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
 
-        cVec3 start = ent.getOrigin();
+        Vec3 start = ent.getOrigin();
         start.z += ent.viewHeight;
 
-        cVec3 end = start;
-        cVec3 angles = ent.getAngles();
-        cVec3 dir;
+        Vec3 end = start;
+        Vec3 angles = ent.getAngles();
+        Vec3 dir;
         angles.angleVectors(dir, null, null);
         end += dir * MAX_ARTILLERY_DISTANCE;
 
         cTrace view;
-        if (view.doTrace(start, cVec3(), cVec3(), end, ent.entNum(),
+        if (view.doTrace(start, Vec3(), Vec3(), end, ent.entNum(),
                     MASK_SOLID)) {
             cTrace up;
-            if (up.doTrace(view.getEndPos(), cVec3(), cVec3(),
-                        view.getEndPos() + cVec3(0, 0, ARTILLERY_HEIGHT), 0,
+            if (up.doTrace(view.getEndPos(), Vec3(), Vec3(),
+                        view.getEndPos() + Vec3(0, 0, ARTILLERY_HEIGHT), 0,
                         MASK_SOLID))
                 player.centerPrint("Can't spawn artillery there");
             else if (!player.takeArmor(ARTILLERY_ARMOR)) {
@@ -86,7 +86,7 @@ class Sniper : Class {
             transporter.teleport();
             @transporter = null;
         } else {
-            cVec3 origin, angles;
+            Vec3 origin, angles;
             cEntity @ent = player.getEnt();
             if (!G_CheckInitThrow(player.getEnt(), origin, angles,
                         TRANSPORTER_MINS, TRANSPORTER_MAXS)) {

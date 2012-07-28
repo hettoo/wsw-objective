@@ -21,16 +21,16 @@ class ResultSet : Set {
     bool empty;
     Result@[] resultSet;
 
-    ResultSet(cString &targets) {
+    ResultSet(String &targets) {
         empty = true;
 
         analyze(targets);
     }
 
-    void analyze(cString &targets) {
-        cString target;
+    void analyze(String &targets) {
+        String target;
         for (int i = 0; i < targets.len(); i++) {
-            cString current = targets.substr(i, 1);
+            String current = targets.substr(i, 1);
             if (current == ",") {
                 add(target);
                 target = "";
@@ -45,7 +45,7 @@ class ResultSet : Set {
         resultSet.resize(capacity);
     }
 
-    void add(cString &target) {
+    void add(String &target) {
         makeRoom();
         @resultSet[size++] = Result(target);
         empty = false;
@@ -63,7 +63,7 @@ class ResultSet : Set {
         return false;
     }
 
-    cString @getName() {
+    String @getName() {
         return resultSet[0].getName();
     }
 

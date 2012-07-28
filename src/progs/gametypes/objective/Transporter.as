@@ -21,8 +21,8 @@ const int TRANSPORTER_THROW_SPEED = 1100;
 const float TRANSPORTER_WAIT_LIMIT = 16.0;
 
 const Model TRANSPORTER_MODEL("objects/projectile/plasmagun/proj_plasmagun");
-cVec3 TRANSPORTER_MINS(-24, -24, -24);
-cVec3 TRANSPORTER_MAXS(24, 24, 40);
+Vec3 TRANSPORTER_MINS(-24, -24, -24);
+Vec3 TRANSPORTER_MAXS(24, 24, 40);
 
 class Transporter {
     int id;
@@ -32,21 +32,21 @@ class Transporter {
 
     float removeTime;
 
-    Transporter(cVec3 @origin, cVec3 @angles, Player @owner, int id) {
+    Transporter(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
         this.id = id;
 
         @this.owner = owner;
         spawn(origin, angles);
     }
 
-    void spawn(cVec3 @origin, cVec3 @angles) {
+    void spawn(Vec3 @origin, Vec3 @angles) {
         @ent = G_SpawnEntity("transporter");
         ent.type = ET_GENERIC;
         ent.modelindex = TRANSPORTER_MODEL.get();
         ent.setOrigin(origin);
         ent.setAngles(angles);
         @ent.owner = owner.getEnt();
-        cVec3 dir;
+        Vec3 dir;
         angles.angleVectors(dir, null, null);
         ent.setVelocity(ent.owner.getVelocity()
                 + dir * TRANSPORTER_THROW_SPEED);

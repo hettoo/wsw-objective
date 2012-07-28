@@ -29,7 +29,7 @@ class Core {
         settings.set();
     }
 
-    bool command(cClient @client, cString &cmd, cString &args, int argc) {
+    bool command(cClient @client, String &cmd, String &args, int argc) {
         if (cmd == "cvarinfo") {
             GENERIC_CheatVarResponse(client, cmd, args, argc);
             return true;
@@ -71,7 +71,7 @@ class Core {
         return GENERIC_UpdateBotStatus(self);
     }
 
-    void scoreEvent(cClient @client, cString &scoreEvent, cString &args) {
+    void scoreEvent(cClient @client, String &scoreEvent, String &args) {
         Player @player = players.get(client);
 
         if (scoreEvent == "userinfochanged")
@@ -137,7 +137,7 @@ class Core {
         return true;
     }
 
-    cString @scoreboardMessage(int maxLen) {
+    String @scoreboardMessage(int maxLen) {
         return scoreboard.createMessage(maxLen);
     }
 
