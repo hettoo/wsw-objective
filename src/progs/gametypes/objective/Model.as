@@ -21,7 +21,7 @@ class Model {
     int model;
 
     Model(cString &model) {
-        this.model = G_ModelIndex("models/" + model + ".md3");
+        this.model = G_ModelIndex("models/" + model + ".md3", true);
     }
 
     int get() const {
