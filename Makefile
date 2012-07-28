@@ -33,7 +33,7 @@ $(PK3): $(FILES) $(THIS)
 	cd $(TMP_DIR); zip ../$(PK3) -r -xi *
 	rm -r $(TMP_DIR)
 
-local: all
+local: dist
 	cp $(PK3) $(WSW_DIR)/$(BASE_MOD)/
 
 production: local
@@ -55,4 +55,4 @@ restart: destroy local
 dev: restart
 	$(SERVER_CMD)
 
-.PHONY: all dist local production clean destroy restart dev
+.PHONY: all dist local production productionloop clean destroy restart dev
