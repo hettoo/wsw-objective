@@ -34,7 +34,7 @@ class Scoreboard {
 
         int playerId = (ent.isGhosting()
                 && (match.getState() == MATCH_STATE_PLAYTIME))
-            ? -(ent.playerNum() + 1) : ent.playerNum();
+            ? -(ent.playerNum + 1) : ent.playerNum;
 
         String entry = "&p " + playerId + " " + client.getClanName() + " "
             + client.stats.score + " " + client.ping + " "

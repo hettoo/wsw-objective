@@ -43,10 +43,10 @@ String @G_ReplaceSpaces(String &string) {
 }
 
 void G_InitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles) {
-    origin = ent.getOrigin();
+    origin = ent.origin;
     origin.z += ent.viewHeight;
 
-    angles = ent.getAngles() + Vec3(-10, 0, 0);
+    angles = ent.angles + Vec3(-10, 0, 0);
     if (angles.x < -90)
         angles.x = -90;
 
@@ -58,7 +58,7 @@ void G_InitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles) {
 bool G_CheckInitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles,
         Vec3 @mins, Vec3 @maxs) {
     G_InitThrow(ent, origin, angles);
-    return G_CanSpawn(origin, mins, maxs, ent.entNum());
+    return G_CanSpawn(origin, mins, maxs, ent.entNum);
 }
 
 bool G_CanSpawn(Vec3 @origin, Vec3 @mins, Vec3 @maxs, int ignore) {
@@ -80,7 +80,7 @@ bool G_Near(Vec3 @a, Vec3 @b, float radius) {
 
 bool G_Near(cEntity @a, cEntity @b, float radius) {
     return @a != null && @b != null && !a.isGhosting() && !b.isGhosting()
-        && G_Near(a.getOrigin(), b.getOrigin(), radius);
+        && G_Near(a.origin, b.origin, radius);
 }
 
 bool G_Near(Player @a, Player @b, float radius) {

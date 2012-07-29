@@ -34,7 +34,7 @@ class Players {
     Player @get(cClient @client) {
         if (@client == null)
             return null;
-        return get(client.playerNum());
+        return get(client.playerNum);
     }
 
     Classes @getClasses() {
@@ -46,7 +46,7 @@ class Players {
     }
 
     void initClient(cClient @client) {
-        int id = client.playerNum();
+        int id = client.playerNum;
         Player @player = get(id);
         if (@player == null) {
             @players[id] = Player();
@@ -69,7 +69,7 @@ class Players {
     }
 
     void removeClient(cClient @client) {
-        remove(client.playerNum());
+        remove(client.playerNum);
     }
 
     void newPlayer(cClient @client) {

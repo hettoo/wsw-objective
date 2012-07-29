@@ -53,17 +53,17 @@ class Sniper : Class {
     void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
 
-        Vec3 start = ent.getOrigin();
+        Vec3 start = ent.origin;
         start.z += ent.viewHeight;
 
         Vec3 end = start;
-        Vec3 angles = ent.getAngles();
+        Vec3 angles = ent.angles;
         Vec3 dir;
         angles.angleVectors(dir, null, null);
         end += dir * MAX_ARTILLERY_DISTANCE;
 
         cTrace view;
-        if (view.doTrace(start, Vec3(), Vec3(), end, ent.entNum(),
+        if (view.doTrace(start, Vec3(), Vec3(), end, ent.entNum,
                     MASK_SOLID)) {
             cTrace up;
             if (up.doTrace(view.getEndPos(), Vec3(), Vec3(),

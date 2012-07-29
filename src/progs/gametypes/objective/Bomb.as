@@ -83,7 +83,7 @@ class Bomb {
         @ent.owner = owner.getEnt();
         Vec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.getVelocity() + dir * BOMB_THROW_SPEED);
+        ent.setVelocity(ent.owner.velocity + dir * BOMB_THROW_SPEED);
         ent.team = team;
         ent.setSize(BOMB_MINS, BOMB_MAXS);
         ent.solid = SOLID_NOT;

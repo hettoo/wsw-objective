@@ -58,7 +58,7 @@ class Clusterbomb {
         @ent.owner = owner.getEnt();
         Vec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.getVelocity() + dir * CLUSTERBOMB_THROW_SPEED);
+        ent.setVelocity(ent.owner.velocity + dir * CLUSTERBOMB_THROW_SPEED);
         ent.setSize(CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;
@@ -78,7 +78,7 @@ class Clusterbomb {
         for (int i = 0; i < CB_NADES; i++) {
             Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
             dir.toAngles(dir);
-            cEntity @nade = G_FireGrenade(ent.getOrigin(), dir,
+            cEntity @nade = G_FireGrenade(ent.origin, dir,
                     CB_NADE_SPEED / random(),
                     CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                     1, ent.owner);
@@ -88,7 +88,7 @@ class Clusterbomb {
         for (int i = 0; i < CB_ROCKETS; i++) {
             Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
             dir.toAngles(dir);
-            G_FireRocket(ent.getOrigin(), dir,
+            G_FireRocket(ent.origin, dir,
                     CB_ROCKET_SPEED / random(),
                     CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                     1, ent.owner);

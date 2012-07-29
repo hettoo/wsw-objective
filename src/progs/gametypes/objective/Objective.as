@@ -51,8 +51,8 @@ class Objective {
 
         solid = true;
         model = 0;
-        origin = target.getOrigin();
-        angles = target.getAngles();
+        origin = target.origin;
+        angles = target.angles;
         moveType = MOVETYPE_NONE;
         startSpawned = true;
         team = GS_MAX_TEAMS;
@@ -77,7 +77,7 @@ class Objective {
         return name;
     }
 
-    Vec3 @getOrigin() {
+    Vec3 @origin {
         return origin;
     }
 
@@ -249,8 +249,8 @@ class Objective {
     }
 
     bool near(cEntity @other) {
-        return G_Near(@ent == null ? origin : ent.getOrigin(),
-                other.getOrigin(), radius);
+        return G_Near(@ent == null ? origin : ent.origin,
+                other.origin, radius);
     }
 
     bool near(Player @player) {
@@ -279,7 +279,7 @@ class Objective {
             if (@player != null && near(player)) {
                 if (name != "") {
                     int configStringId = CS_GENERAL
-                        + player.getClient().playerNum();
+                        + player.getClient().playerNum;
                     G_ConfigString(configStringId, "You are near the " + name);
                     player.setHUDStat(STAT_MESSAGE_SELF, configStringId);
                 }

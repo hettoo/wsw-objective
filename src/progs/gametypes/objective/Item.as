@@ -51,7 +51,7 @@ class Item {
         @ent.owner = owner.getEnt();
         Vec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.getVelocity() + dir * ITEM_THROW_SPEED);
+        ent.setVelocity(ent.owner.velocity + dir * ITEM_THROW_SPEED);
         ent.setSize(mins, maxs);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;

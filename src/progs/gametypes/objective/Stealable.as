@@ -77,7 +77,7 @@ class Stealable : Component {
         players.sound(DROP_SOUND.get());
 
         state = SS_DROPPED;
-        objective.spawn(dropper.getEnt().getOrigin());
+        objective.spawn(dropper.getEnt().origin);
         returnTime = STEALABLE_WAIT_LIMIT;
     }
 

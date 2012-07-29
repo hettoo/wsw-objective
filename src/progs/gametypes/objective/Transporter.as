@@ -48,7 +48,7 @@ class Transporter {
         @ent.owner = owner.getEnt();
         Vec3 dir;
         angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.getVelocity()
+        ent.setVelocity(ent.owner.velocity
                 + dir * TRANSPORTER_THROW_SPEED);
         ent.setSize(TRANSPORTER_MINS, TRANSPORTER_MAXS);
         ent.solid = SOLID_NOT;
@@ -71,8 +71,8 @@ class Transporter {
 
     void teleport() {
         ent.owner.teleportEffect(false);
-        ent.owner.setOrigin(ent.getOrigin());
-        ent.owner.setVelocity(ent.getVelocity());
+        ent.owner.setOrigin(ent.origin);
+        ent.owner.setVelocity(ent.velocity);
         ent.owner.teleportEffect(true);
         remove();
     }
