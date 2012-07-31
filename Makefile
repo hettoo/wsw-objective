@@ -1,4 +1,4 @@
-WSW_DIR = ~/.warsow-0.7
+WSW_DIR = ~/.warsow-1.0
 EXECUTABLE = wsw-server
 MOD = promod
 
