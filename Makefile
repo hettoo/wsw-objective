@@ -1,6 +1,6 @@
 WSW_DIR = ~/.warsow-1.0
 EXECUTABLE = wsw-server
-MOD = promod
+MOD = basewsw
 
 NAME = objective
 SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype $(NAME)
