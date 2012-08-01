@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 const String TITLE = "Objective";
 const String VERSION = "0.1-dev";
-const String AUTHOR = "^0<].^7h^2e^9tt^2o^7o^0.[>^7";
+const String AUTHOR = "^0<^7inc^2.^7hettoo^9/^7";
 
 const int DEFAULT_ALPHA_RESPAWN_TIME = 12;
 const int DEFAULT_BETA_RESPAWN_TIME = 18;
