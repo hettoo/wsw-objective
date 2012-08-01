@@ -23,7 +23,7 @@ const Image YES_ICON("hud/icons/vsay/yes");
 Scoreboard scoreboard;
 
 class Scoreboard {
-    String @scoreboardPlayer(cTeam @team, int entId, int maxLen) {
+    String @scoreboardPlayer(cTeam @team, int entId, uint maxLen) {
         cEntity @ent = team.ent(entId);
         cClient @client = ent.client;
         Player @player = players.get(client);
@@ -36,7 +36,7 @@ class Scoreboard {
                 && (match.getState() == MATCH_STATE_PLAYTIME))
             ? -(ent.playerNum + 1) : ent.playerNum;
 
-        String entry = "&p " + playerId + " " + client.getClanName() + " "
+        String entry = "&p " + playerId + " " + client.clanName + " "
             + client.stats.score + " " + client.ping + " "
             + player.getClassIcon() + " " + readyIcon + " ";
 
@@ -45,7 +45,7 @@ class Scoreboard {
         return "";
     }
 
-    String @scoreboardTeam(int teamId, int maxLen) {
+    String @scoreboardTeam(int teamId, uint maxLen) {
             cTeam @team = G_GetTeam(teamId);
 
             String message = "";

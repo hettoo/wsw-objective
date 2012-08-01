@@ -101,7 +101,7 @@ class Constructable : Component {
         constructProgress = 0;
     }
 
-    void constructProgress(Player @player) {
+    void getConstructProgress(Player @player) {
         float additional = CONSTRUCT_SPEED * frameTime;
         constructProgress += additional;
         spawnGhost();
@@ -123,7 +123,7 @@ class Constructable : Component {
                     constructed(player);
                 else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
                             / PROGRESS_FINISHED * constructArmor))
-                    constructProgress(player);
+                    getConstructProgress(player);
 
                 player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);
                 madeProgress = true;
@@ -134,7 +134,7 @@ class Constructable : Component {
         }
     }
 
-    void notConstructed() {
+    void getNotConstructed() {
         notConstructed += 0.001f * frameTime;
         if (notConstructed > CONSTRUCT_WAIT_LIMIT) {
             destroyGhost();
@@ -145,7 +145,7 @@ class Constructable : Component {
 
     void thinkActive() {
         if (constructProgress > 0 && !madeProgress)
-            notConstructed();
+            getNotConstructed();
         madeProgress = false;
     }
 }

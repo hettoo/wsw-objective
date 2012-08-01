@@ -58,23 +58,23 @@ class Sniper : Class {
 
         Vec3 end = start;
         Vec3 angles = ent.angles;
-        Vec3 dir;
-        angles.angleVectors(dir, null, null);
+        Vec3 dir, dir2, dir3;
+        angles.angleVectors(dir, dir2, dir3);
         end += dir * MAX_ARTILLERY_DISTANCE;
 
         cTrace view;
         if (view.doTrace(start, Vec3(), Vec3(), end, ent.entNum,
                     MASK_SOLID)) {
             cTrace up;
-            if (up.doTrace(view.getEndPos(), Vec3(), Vec3(),
-                        view.getEndPos() + Vec3(0, 0, ARTILLERY_HEIGHT), 0,
+            if (up.doTrace(view.get_endPos(), Vec3(), Vec3(),
+                        view.get_endPos() + Vec3(0, 0, ARTILLERY_HEIGHT), 0,
                         MASK_SOLID))
                 player.centerPrint("Can't spawn artillery there");
             else if (!player.takeArmor(ARTILLERY_ARMOR)) {
                 player.centerPrint(ARTILLERY_ARMOR
                         + " armor is required to spawn artillery");
             } else {
-                artillerySet.add(view.getEndPos(), player);
+                artillerySet.add(view.get_endPos(), player);
             }
         } else {
             player.centerPrint("Not solid or too far away to spawn artillery");

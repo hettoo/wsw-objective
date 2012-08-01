@@ -32,24 +32,24 @@ class Transporter {
 
     float removeTime;
 
-    Transporter(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
+    Transporter(Vec3 origin, Vec3 angles, Player @owner, int id) {
         this.id = id;
 
         @this.owner = owner;
         spawn(origin, angles);
     }
 
-    void spawn(Vec3 @origin, Vec3 @angles) {
+    void spawn(Vec3 origin, Vec3 angles) {
         @ent = G_SpawnEntity("transporter");
         ent.type = ET_GENERIC;
         ent.modelindex = TRANSPORTER_MODEL.get();
-        ent.setOrigin(origin);
-        ent.setAngles(angles);
+        ent.origin = origin;
+        ent.angles = angles;
         @ent.owner = owner.getEnt();
-        Vec3 dir;
-        angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.velocity
-                + dir * TRANSPORTER_THROW_SPEED);
+        Vec3 dir, dir2, dir3;
+        angles.angleVectors(dir, dir2, dir3);
+        ent.velocity = ent.owner.velocity
+                + dir * TRANSPORTER_THROW_SPEED;
         ent.setSize(TRANSPORTER_MINS, TRANSPORTER_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;
@@ -71,8 +71,8 @@ class Transporter {
 
     void teleport() {
         ent.owner.teleportEffect(false);
-        ent.owner.setOrigin(ent.origin);
-        ent.owner.setVelocity(ent.velocity);
+        ent.owner.origin = ent.origin;
+        ent.owner.velocity = ent.velocity;
         ent.owner.teleportEffect(true);
         remove();
     }

@@ -30,17 +30,17 @@ class Settings {
     String configFile;
 
     Settings() {
-        configFile = "configs/server/gametypes/" + gametype.getName() + ".cfg";
+        configFile = "configs/server/gametypes/" + gametype.name + ".cfg";
     }
 
     void setInfo() {
-        gametype.setTitle(TITLE);
-        gametype.setVersion(VERSION);
-        gametype.setAuthor(AUTHOR);
+        gametype.title = TITLE;
+        gametype.version = VERSION;
+        gametype.author = AUTHOR;
     }
 
     void createDefaultConfig() {
-        String config = "// '" + gametype.getTitle() + "' gametype"
+        String config = "// '" + gametype.title + "' gametype"
             + " configuration file\n"
             + "// This config will be executed each time the gametype is"
             + " started\n"
@@ -64,9 +64,9 @@ class Settings {
             + "set g_countdown_time \"5\"\n"
             + "set g_maxtimeouts \"3\" // -1 = unlimited\n"
             + "set g_challengers_queue \"0\"\n"
-            + "\necho \"" + gametype.getName() + ".cfg executed\"\n";
+            + "\necho \"" + gametype.name + ".cfg executed\"\n";
         G_WriteFile(configFile, config);
-        G_Print("Created default config file for '" + gametype.getName()
+        G_Print("Created default config file for '" + gametype.name
                 + "'\n");
         G_CmdExecute("exec " + configFile + " silent");
     }
@@ -74,7 +74,7 @@ class Settings {
     void setGametypeSettings() {
         gametype.spawnableItemsMask = IT_ARMOR;
 
-        if (gametype.isInstagib())
+        if (gametype.get_isInstagib())
             gametype.spawnableItemsMask &= ~uint(G_INSTAGIB_NEGATE_ITEMMASK);
 
         gametype.respawnableItemsMask = gametype.spawnableItemsMask;
@@ -106,7 +106,7 @@ class Settings {
 
         gametype.spawnpointRadius = 256;
 
-        if (gametype.isInstagib())
+        if (gametype.get_isInstagib())
             gametype.spawnpointRadius *= 2;
     }
 
@@ -157,7 +157,7 @@ class Settings {
 
         registerCommands();
 
-        G_Print("Gametype '" + gametype.getTitle() + "' initialized\n");
+        G_Print("Gametype '" + gametype.title + "' initialized\n");
     }
 
     void setupWarmup() {

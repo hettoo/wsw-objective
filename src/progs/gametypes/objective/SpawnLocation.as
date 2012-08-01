@@ -86,9 +86,9 @@ class SpawnLocation : Component {
                 ent.modelindex = FLAG_UNCAPTURED.get();
                 break;
         }
-        Vec3 @origin = objective.origin;
-        ent.setOrigin(origin);
-        ent.setAngles(Vec3(-90, 0, 0));
+        Vec3 origin = objective.origin;
+        ent.origin = origin;
+        ent.angles = Vec3(-90, 0, 0);
         ent.setSize(FLAG_MINS, FLAG_MAXS);
         ent.solid = SOLID_YES;
         ent.clipMask = MASK_PLAYERSOLID;

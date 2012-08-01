@@ -26,7 +26,7 @@ class TransporterSet : Set {
         transporterSet.resize(capacity);
     }
 
-    Transporter @add(Vec3 @origin, Vec3 @angles, Player @owner) {
+    Transporter @add(Vec3 origin, Vec3 angles, Player @owner) {
         int id = UNKNOWN;
         for (int i = 0; i < size && id == UNKNOWN; i++) {
             if (@transporterSet[i] == null)

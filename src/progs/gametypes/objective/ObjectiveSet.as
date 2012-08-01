@@ -40,7 +40,7 @@ class ObjectiveSet : Set {
     void analyze() {
         for (int i = 0; @G_GetEntity(i) != null; i++) {
             cEntity @ent = G_GetEntity(i);
-            String targetname = ent.getTargetnameString();
+            String targetname = ent.get_targetname();
             if (targetname.substr(0, 1) == OBJECTIVE_NAME_PREFIX)
                 add(ent);
         }
@@ -84,9 +84,9 @@ class ObjectiveSet : Set {
 
     void setAttribute(String &fieldname, String &value) {
         if (fieldname == "author")
-            gametype.setAuthor(AUTHOR
+            gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
-                    + S_COLOR_ORANGE + ")");
+                    + S_COLOR_ORANGE + ")";
         else if (fieldname == "goal")
             @goal = ResultSet(value);
     }

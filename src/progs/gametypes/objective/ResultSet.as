@@ -29,7 +29,7 @@ class ResultSet : Set {
 
     void analyze(String &targets) {
         String target;
-        for (int i = 0; i < targets.len(); i++) {
+        for (uint i = 0; i < targets.len(); i++) {
             String current = targets.substr(i, 1);
             if (current == ",") {
                 add(target);

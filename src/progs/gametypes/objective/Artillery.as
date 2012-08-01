@@ -27,15 +27,15 @@ const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 class Artillery {
     int id;
 
-    Vec3 @origin;
+    Vec3 origin;
     Player @owner;
     int rocketsFired;
     float wait;
 
-    Artillery(Vec3 @origin, Player @owner, int id) {
+    Artillery(Vec3 origin, Player @owner, int id) {
         this.id = id;
 
-        @this.origin = origin;
+        this.origin = origin;
         this.origin.z += ARTILLERY_HEIGHT;
         @this.owner = owner;
 

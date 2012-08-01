@@ -41,7 +41,7 @@ class Clusterbomb {
 
     float timer;
 
-    Clusterbomb(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
+    Clusterbomb(Vec3 origin, Vec3 angles, Player @owner, int id) {
         this.id = id;
 
         @this.owner = owner;
@@ -49,16 +49,16 @@ class Clusterbomb {
         spawn(origin, angles);
     }
 
-    void spawn(Vec3 @origin, Vec3 @angles) {
+    void spawn(Vec3 origin, Vec3 angles) {
         @ent = G_SpawnEntity("clusterbomb");
         ent.type = ET_GENERIC;
         ent.modelindex = CLUSTERBOMB_MODEL.get();
-        ent.setOrigin(origin);
-        ent.setAngles(angles);
+        ent.origin = origin;
+        ent.angles = angles;
         @ent.owner = owner.getEnt();
-        Vec3 dir;
-        angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.velocity + dir * CLUSTERBOMB_THROW_SPEED);
+        Vec3 dir, dir2, dir3;
+        angles.angleVectors(dir, dir2, dir3);
+        ent.velocity = ent.owner.velocity + dir * CLUSTERBOMB_THROW_SPEED;
         ent.setSize(CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_BOUNCEGRENADE;
@@ -77,8 +77,7 @@ class Clusterbomb {
     void releaseAmmo() {
         for (int i = 0; i < CB_NADES; i++) {
             Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
-            dir.toAngles(dir);
-            cEntity @nade = G_FireGrenade(ent.origin, dir,
+            cEntity @nade = G_FireGrenade(ent.origin, dir.toAngles(),
                     CB_NADE_SPEED / random(),
                     CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                     1, ent.owner);
@@ -87,8 +86,7 @@ class Clusterbomb {
         }
         for (int i = 0; i < CB_ROCKETS; i++) {
             Vec3 dir = Vec3(random() * 2 - 1, random() * 2 - 1, random());
-            dir.toAngles(dir);
-            G_FireRocket(ent.origin, dir,
+            G_FireRocket(ent.origin, dir.toAngles(),
                     CB_ROCKET_SPEED / random(),
                     CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                     1, ent.owner);

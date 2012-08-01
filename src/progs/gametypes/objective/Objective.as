@@ -45,7 +45,7 @@ class Objective {
     SecureLocation @secureLocation;
 
     Objective(cEntity @target) {
-        id = target.getTargetnameString();
+        id = target.get_targetname();
         id = id.substr(1, id.len());
         spawned = false;
 
@@ -77,7 +77,7 @@ class Objective {
         return name;
     }
 
-    Vec3 @origin {
+    Vec3 getOrigin() {
         return origin;
     }
 
@@ -136,7 +136,7 @@ class Objective {
         }
     }
 
-    void spawn(Vec3 @origin) {
+    void spawn(Vec3 origin) {
         if (spawned)
             return;
 
@@ -148,8 +148,8 @@ class Objective {
                 ent.type = ET_GENERIC;
                 ent.modelindex = model;
                 ent.team = owningTeam;
-                ent.setOrigin(origin);
-                ent.setAngles(angles);
+                ent.origin = origin;
+                ent.angles = angles;
                 ent.setSize(mins, maxs);
                 ent.solid = solid ? SOLID_YES : SOLID_NOT;
                 ent.clipMask = MASK_PLAYERSOLID;

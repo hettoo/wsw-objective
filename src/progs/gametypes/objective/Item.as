@@ -32,8 +32,8 @@ class Item {
 
     float removeTime;
 
-    Item(Vec3 @origin, Vec3 @angles, Player @owner, int id,
-            int model, int sound, Vec3 @mins, Vec3 @maxs, int type) {
+    Item(Vec3 origin, Vec3 angles, Player @owner, int id,
+            int model, int sound, Vec3 mins, Vec3 maxs, int type) {
         this.id = id;
         this.type = type;
         @this.owner = owner;
@@ -41,17 +41,17 @@ class Item {
         spawn(origin, angles, model, sound, mins, maxs);
     }
 
-    void spawn(Vec3 @origin, Vec3 @angles, int model, int sound,
-            Vec3 @mins, Vec3 @maxs) {
+    void spawn(Vec3 origin, Vec3 angles, int model, int sound,
+            Vec3 mins, Vec3 maxs) {
         @ent = G_SpawnEntity("item");
         ent.type = ET_GENERIC;
         ent.modelindex = model;
-        ent.setOrigin(origin);
-        ent.setAngles(angles);
+        ent.origin = origin;
+        ent.angles = angles;
         @ent.owner = owner.getEnt();
-        Vec3 dir;
-        angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.velocity + dir * ITEM_THROW_SPEED);
+        Vec3 dir, dir2, dir3;
+        angles.angleVectors(dir, dir2, dir3);
+        ent.velocity = ent.owner.velocity + dir * ITEM_THROW_SPEED;
         ent.setSize(mins, maxs);
         ent.solid = SOLID_NOT;
         ent.moveType = MOVETYPE_TOSS;

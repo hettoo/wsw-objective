@@ -50,8 +50,8 @@ class Bomb {
     cEntity @ent;
     cEntity @minimap;
 
-    Vec3 @origin;
-    Vec3 @angles;
+    Vec3 origin;
+    Vec3 angles;
     Player @owner;
 
     int team;
@@ -61,11 +61,11 @@ class Bomb {
     float soundTime;
     float notArmed;
 
-    Bomb(Vec3 @origin, Vec3 @angles, Player @owner, int id) {
+    Bomb(Vec3 origin, Vec3 angles, Player @owner, int id) {
         this.id = id;
 
-        @this.origin = origin;
-        @this.angles = angles;
+        this.origin = origin;
+        this.angles = angles;
         @this.owner = owner;
 
         team = owner.getEnt().team;
@@ -78,12 +78,12 @@ class Bomb {
         @ent = G_SpawnEntity("bomb");
         ent.type = ET_GENERIC;
         ent.modelindex = BOMB_MODEL.get();
-        ent.setOrigin(origin);
-        ent.setAngles(angles);
+        ent.origin = origin;
+        ent.angles = angles;
         @ent.owner = owner.getEnt();
-        Vec3 dir;
-        angles.angleVectors(dir, null, null);
-        ent.setVelocity(ent.owner.velocity + dir * BOMB_THROW_SPEED);
+        Vec3 dir, dir2, dir3;
+        angles.angleVectors(dir, dir2, dir3);
+        ent.velocity = ent.owner.velocity + dir * BOMB_THROW_SPEED;
         ent.team = team;
         ent.setSize(BOMB_MINS, BOMB_MAXS);
         ent.solid = SOLID_NOT;

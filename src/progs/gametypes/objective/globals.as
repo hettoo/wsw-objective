@@ -28,7 +28,7 @@ const int UNKNOWN = -1;
 
 String @G_ReplaceSpaces(String &string, String replacement) {
     String result;
-    for (int i = 0; i < string.len(); i++) {
+    for (uint i = 0; i < string.len(); i++) {
         String character = string.substr(i, 1);
         if (character == " ")
             result += replacement;
@@ -42,7 +42,7 @@ String @G_ReplaceSpaces(String &string) {
     return G_ReplaceSpaces(string, "_");
 }
 
-void G_InitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles) {
+void G_InitThrow(cEntity @ent, Vec3 origin, Vec3 angles) {
     origin = ent.origin;
     origin.z += ent.viewHeight;
 
@@ -50,32 +50,32 @@ void G_InitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles) {
     if (angles.x < -90)
         angles.x = -90;
 
-    Vec3 dir;
-    angles.angleVectors(dir, null, null);
+    Vec3 dir, dir2, dir3;
+    angles.angleVectors(dir, dir2, dir3);
     origin += dir * 24;
 }
 
-bool G_CheckInitThrow(cEntity @ent, Vec3 @origin, Vec3 @angles,
-        Vec3 @mins, Vec3 @maxs) {
+bool G_CheckInitThrow(cEntity @ent, Vec3 origin, Vec3 angles,
+        Vec3 mins, Vec3 maxs) {
     G_InitThrow(ent, origin, angles);
     return G_CanSpawn(origin, mins, maxs, ent.entNum);
 }
 
-bool G_CanSpawn(Vec3 @origin, Vec3 @mins, Vec3 @maxs, int ignore) {
+bool G_CanSpawn(Vec3 origin, Vec3 mins, Vec3 maxs, int ignore) {
     return !cTrace().doTrace(origin, mins , maxs, origin, ignore,
             MASK_PLAYERSOLID);
 }
 
-bool G_CanSpawn(Vec3 @origin, Vec3 @mins, Vec3 @maxs) {
+bool G_CanSpawn(Vec3 origin, Vec3 mins, Vec3 maxs) {
     return G_CanSpawn(origin, mins, maxs, -1);
 }
 
 String @G_GetTeamName(int team) {
-    return G_GetTeam(team).getName();
+    return G_GetTeam(team).name;
 }
 
-bool G_Near(Vec3 @a, Vec3 @b, float radius) {
-    return @a != null && @b != null && a.distance(b) <= radius;
+bool G_Near(Vec3 a, Vec3 b, float radius) {
+    return a.distance(b) <= radius;
 }
 
 bool G_Near(cEntity @a, cEntity @b, float radius) {
@@ -87,12 +87,12 @@ bool G_Near(Player @a, Player @b, float radius) {
     return @a != null && @b != null && G_Near(a.getEnt(), b.getEnt(), radius);
 }
 
-cEntity @G_SpawnIcon(int image, int team, Vec3 @origin) {
+cEntity @G_SpawnIcon(int image, int team, Vec3 origin) {
     cEntity @minimap = @G_SpawnEntity("minimap_icon");
     minimap.type = ET_MINIMAP_ICON;
     minimap.modelindex = image;
     minimap.team = team;
-    minimap.setOrigin(origin);
+    minimap.origin = origin;
     minimap.solid = SOLID_NOT;
     minimap.frame = 24;
     minimap.svflags |= SVF_BROADCAST;

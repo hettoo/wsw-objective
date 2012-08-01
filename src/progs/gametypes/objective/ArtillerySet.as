@@ -26,7 +26,7 @@ class ArtillerySet : Set {
         artillerySet.resize(capacity);
     }
 
-    void add(Vec3 @origin, Player @owner) {
+    void add(Vec3 origin, Player @owner) {
         int id = UNKNOWN;
         for (int i = 0; i < size && id == UNKNOWN; i++) {
             if (@artillerySet[i] == null)

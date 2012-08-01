@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Core {
     void spawnGametype() {
         objectiveSet.analyze();
-        objectiveSet.parse("mapscripts/" + cVar("mapname", "", 0).getString()
+        objectiveSet.parse("mapscripts/" + Cvar("mapname", "", 0).get_string()
                 + ".cfg");
         objectiveSet.initialSpawn();
     }
