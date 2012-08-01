@@ -26,8 +26,6 @@ class ObjectiveSet : Set {
 
     ResultSet @goal;
 
-    Players @players;
-
     void resize() {
         objectiveSet.resize(capacity);
     }

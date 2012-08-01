@@ -38,12 +38,6 @@ ItemSet itemSet;
 class ItemSet : Set {
     Item@[] itemSet;
 
-    Players @players;
-
-    void register(Players @players) {
-        @this.players = players;
-    }
-
     void resize() {
         itemSet.resize(capacity);
     }
