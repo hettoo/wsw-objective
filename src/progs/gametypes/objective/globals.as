@@ -42,23 +42,22 @@ String @G_ReplaceSpaces(String &string) {
     return G_ReplaceSpaces(string, "_");
 }
 
-void G_InitThrow(cEntity @ent, Vec3 origin, Vec3 angles) {
-    origin = ent.origin;
-    origin.z += ent.viewHeight;
-
-    angles = ent.angles + Vec3(-10, 0, 0);
+Vec3 G_ThrowAngles(cEntity @ent) {
+    Vec3 angles = ent.angles + Vec3(-10, 0, 0);
     if (angles.x < -90)
         angles.x = -90;
+    return angles;
+}
 
+Vec3 G_ThrowOrigin(cEntity @ent) {
+    Vec3 origin = ent.origin;
+    origin.z += ent.viewHeight;
+
+    Vec3 angles = G_ThrowAngles(ent);
     Vec3 dir, dir2, dir3;
     angles.angleVectors(dir, dir2, dir3);
     origin += dir * 24;
-}
-
-bool G_CheckInitThrow(cEntity @ent, Vec3 origin, Vec3 angles,
-        Vec3 mins, Vec3 maxs) {
-    G_InitThrow(ent, origin, angles);
-    return G_CanSpawn(origin, mins, maxs, ent.entNum);
+    return origin;
 }
 
 bool G_CanSpawn(Vec3 origin, Vec3 mins, Vec3 maxs, int ignore) {

@@ -86,10 +86,11 @@ class Sniper : Class {
             transporter.teleport();
             @transporter = null;
         } else {
-            Vec3 origin, angles;
             cEntity @ent = player.getEnt();
-            if (!G_CheckInitThrow(player.getEnt(), origin, angles,
-                        TRANSPORTER_MINS, TRANSPORTER_MAXS)) {
+            Vec3 origin = G_ThrowOrigin(ent);
+            Vec3 angles = G_ThrowAngles(ent);
+            if (!G_CanSpawn(origin, TRANSPORTER_MINS, TRANSPORTER_MAXS,
+                        ent.entNum)) {
                 player.centerPrint("Can't spawn a transporter there");
             } else if (!player.takeArmor(TRANSPORTER_ARMOR)) {
                 player.centerPrint(TRANSPORTER_ARMOR
