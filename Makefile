@@ -1,9 +1,10 @@
 WSW_DIR = ~/.warsow-1.0
+EXECUTE_DIR = .
 EXECUTABLE = wsw-server
 MOD = basewsw
 
 NAME = objective
-SERVER_CMD = $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype $(NAME)
+SERVER_CMD = cd $(EXECUTE_DIR) && $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype $(NAME)
 THIS = Makefile
 GT_DIR = src
 TMP_DIR = tmp
