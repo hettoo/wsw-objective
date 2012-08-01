@@ -59,7 +59,7 @@ bool GT_MatchStateFinished(int newMatchState) {
     return objective.matchStateFinished(newMatchState);
 }
 
-String @GT_ScoreboardMessage(int maxlen) {
+String @GT_ScoreboardMessage(uint maxlen) {
     return objective.scoreboardMessage(maxlen);
 }
 
