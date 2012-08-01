@@ -256,6 +256,10 @@ class Player {
         this.score = score;
     }
 
+    bool isAlive() {
+        return ent.health > 0;
+    }
+
     void didDamage(String &args) {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {

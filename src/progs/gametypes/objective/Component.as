@@ -46,7 +46,7 @@ class Component {
     }
 
     void think(Player @player) {
-        if (active)
+        if (active && player.isAlive() && player.getTeam() != TEAM_SPECTATOR)
             thinkActive(player);
     }
 }
