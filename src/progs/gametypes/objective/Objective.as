@@ -101,6 +101,14 @@ class Objective {
         @this.minimap = minimap;
     }
 
+    int getMoveType() {
+        return moveType;
+    }
+
+    void setMoveType(int moveType) {
+        this.moveType = moveType;
+    }
+
     void setAttribute(String &name, String &value) {
         if (name == "name") {
             this.name = value;

@@ -37,6 +37,7 @@ class Stealable : Component {
     ResultSet @targets;
 
     int state;
+    int oldMoveType;
     float returnTime;
 
     Stealable(Objective @objective) {
@@ -76,7 +77,10 @@ class Stealable : Component {
                     + " has dropped the " + objective.getName() + "!");
         players.sound(DROP_SOUND.get());
 
+        if (state == SS_RETURNED)
+            oldMoveType = objective.getMoveType();
         state = SS_DROPPED;
+        objective.setMoveType(MOVETYPE_TOSS);
         objective.spawn(dropper.getEnt().origin);
         returnTime = STEALABLE_WAIT_LIMIT;
     }
@@ -110,6 +114,7 @@ class Stealable : Component {
             returner.addScore(RETURN_SCORE);
 
         state = SS_RETURNED;
+        objective.setMoveType(oldMoveType);
         objective.respawn();
     }
 
