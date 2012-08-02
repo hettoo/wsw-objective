@@ -30,20 +30,14 @@ class Class {
     int classIcon;
 
     int primaryWeapon;
-    int primaryWeakSpawnAmmo;
-    int primaryWeakAmmo;
-    int primaryWeakMaxAmmo;
-    int primaryStrongSpawnAmmo;
-    int primaryStrongAmmo;
-    int primaryStrongMaxAmmo;
+    int primarySpawnAmmo;
+    int primaryAmmo;
+    int primaryMaxAmmo;
 
     int secondaryWeapon;
-    int secondaryWeakSpawnAmmo;
-    int secondaryWeakAmmo;
-    int secondaryWeakMaxAmmo;
-    int secondaryStrongSpawnAmmo;
-    int secondaryStrongAmmo;
-    int secondaryStrongMaxAmmo;
+    int secondarySpawnAmmo;
+    int secondaryAmmo;
+    int secondaryMaxAmmo;
 
     Class() {
         spawnHealth = 70;
@@ -66,15 +60,13 @@ class Class {
     }
 
     bool giveAmmopack(Player @player) {
-        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 0, 4, 12);
-        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 40, 100, 0, 0);
+        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 2, 5);
+        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 40, 100);
 
-        bool gavePrimary = player.giveAmmo(primaryWeapon,
-                primaryStrongAmmo, primaryStrongMaxAmmo,
-                primaryWeakAmmo, primaryWeakMaxAmmo);
-        bool gaveSecondary = player.giveAmmo(secondaryWeapon,
-                secondaryStrongAmmo, secondaryStrongMaxAmmo,
-                secondaryWeakAmmo, secondaryWeakMaxAmmo);
+        bool gavePrimary = player.giveAmmo(primaryWeapon, primaryAmmo,
+                primaryMaxAmmo);
+        bool gaveSecondary = player.giveAmmo(secondaryWeapon, secondaryAmmo,
+                secondaryMaxAmmo);
 
         return gaveGL || gaveMG || gavePrimary || gaveSecondary;
     }
@@ -90,14 +82,12 @@ class Class {
     }
 
     void giveSpawnAmmo(Player @player) {
-        player.giveAmmo(WEAP_GUNBLADE, 4, 0);
-        player.giveAmmo(WEAP_GRENADELAUNCHER, 0, 6);
-        player.giveAmmo(WEAP_MACHINEGUN, 60, 0);
+        player.giveAmmo(WEAP_GUNBLADE, 4);
+        player.giveAmmo(WEAP_GRENADELAUNCHER, 2);
+        player.giveAmmo(WEAP_MACHINEGUN, 60);
 
-        player.giveAmmo(primaryWeapon,
-                primaryStrongSpawnAmmo, primaryWeakSpawnAmmo);
-        player.giveAmmo(secondaryWeapon,
-                secondaryStrongSpawnAmmo, secondaryWeakSpawnAmmo);
+        player.giveAmmo(primaryWeapon, primarySpawnAmmo);
+        player.giveAmmo(secondaryWeapon, secondarySpawnAmmo);
     }
 
     void spawn(Player @player) {

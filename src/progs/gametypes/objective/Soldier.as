@@ -33,20 +33,14 @@ class Soldier : Class {
         maxArmor = 80;
 
         primaryWeapon = WEAP_ROCKETLAUNCHER;
-        primaryStrongSpawnAmmo = 12;
-        primaryStrongAmmo = 4;
-        primaryStrongMaxAmmo = 20;
-        primaryWeakSpawnAmmo = 15;
-        primaryWeakAmmo = 8;
-        primaryWeakMaxAmmo = 30;
+        primarySpawnAmmo = 12;
+        primaryAmmo = 4;
+        primaryMaxAmmo = 22;
 
         secondaryWeapon = WEAP_RIOTGUN;
-        secondaryStrongSpawnAmmo = 10;
-        secondaryStrongAmmo = 5;
-        secondaryStrongMaxAmmo = 15;
-        secondaryWeakSpawnAmmo = 12;
-        secondaryWeakAmmo = 5;
-        secondaryWeakMaxAmmo = 15;
+        secondarySpawnAmmo = 10;
+        secondaryAmmo = 3;
+        secondaryMaxAmmo = 18;
     }
 
     String @getName() {

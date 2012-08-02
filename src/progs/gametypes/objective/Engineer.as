@@ -25,20 +25,14 @@ class Engineer : Class {
         maxArmor = 90;
 
         primaryWeapon = WEAP_RIOTGUN;
-        primaryStrongSpawnAmmo = 8;
-        primaryStrongAmmo = 4;
-        primaryStrongMaxAmmo = 10;
-        primaryWeakSpawnAmmo = 10;
-        primaryWeakAmmo = 5;
-        primaryWeakMaxAmmo = 12;
+        primarySpawnAmmo = 10;
+        primaryAmmo = 5;
+        primaryMaxAmmo = 18;
 
         secondaryWeapon = WEAP_LASERGUN;
-        secondaryStrongSpawnAmmo = 40;
-        secondaryStrongAmmo = 30;
-        secondaryStrongMaxAmmo = 80;
-        secondaryWeakSpawnAmmo = 60;
-        secondaryWeakAmmo = 40;
-        secondaryWeakMaxAmmo = 100;
+        secondarySpawnAmmo = 40;
+        secondaryAmmo = 30;
+        secondaryMaxAmmo = 80;
     }
 
     String @getName() {

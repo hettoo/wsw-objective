@@ -26,20 +26,14 @@ class FieldOps : Class {
         maxArmor = 90;
 
         primaryWeapon = WEAP_PLASMAGUN;
-        primaryStrongSpawnAmmo = 50;
-        primaryStrongAmmo = 25;
-        primaryStrongMaxAmmo = 80;
-        primaryWeakSpawnAmmo = 60;
-        primaryWeakAmmo = 30;
-        primaryWeakMaxAmmo = 100;
+        primarySpawnAmmo = 50;
+        primaryAmmo = 25;
+        primaryMaxAmmo = 80;
 
         secondaryWeapon = WEAP_ROCKETLAUNCHER;
-        secondaryStrongSpawnAmmo = 10;
-        secondaryStrongAmmo = 4;
-        secondaryStrongMaxAmmo = 20;
-        secondaryWeakSpawnAmmo = 15;
-        secondaryWeakAmmo = 5;
-        secondaryWeakMaxAmmo = 25;
+        secondarySpawnAmmo = 10;
+        secondaryAmmo = 4;
+        secondaryMaxAmmo = 20;
     }
 
     String @getName() {

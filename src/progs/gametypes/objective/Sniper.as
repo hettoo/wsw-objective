@@ -30,20 +30,14 @@ class Sniper : Class {
         maxArmor = 100;
 
         primaryWeapon = WEAP_ELECTROBOLT;
-        primaryStrongSpawnAmmo = 8;
-        primaryStrongAmmo = 15;
-        primaryStrongMaxAmmo = 4;
-        primaryWeakSpawnAmmo = 10;
-        primaryWeakAmmo = 5;
-        primaryWeakMaxAmmo = 20;
+        primarySpawnAmmo = 8;
+        primaryAmmo = 15;
+        primaryMaxAmmo = 4;
 
         secondaryWeapon = WEAP_RIOTGUN;
-        secondaryStrongSpawnAmmo = 2;
-        secondaryStrongAmmo = 3;
-        secondaryStrongMaxAmmo = 8;
-        secondaryWeakSpawnAmmo = 10;
-        secondaryWeakAmmo = 5;
-        secondaryWeakMaxAmmo = 20;
+        secondarySpawnAmmo = 2;
+        secondaryAmmo = 3;
+        secondaryMaxAmmo = 8;
     }
 
     String @getName() {

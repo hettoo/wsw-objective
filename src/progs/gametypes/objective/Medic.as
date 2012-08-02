@@ -28,20 +28,14 @@ class Medic : Class {
         maxArmor = 80;
 
         primaryWeapon = WEAP_LASERGUN;
-        primaryStrongSpawnAmmo = 50;
-        primaryStrongAmmo = 25;
-        primaryStrongMaxAmmo = 80;
-        primaryWeakSpawnAmmo = 60;
-        primaryWeakAmmo = 30;
-        primaryWeakMaxAmmo = 100;
+        primarySpawnAmmo = 50;
+        primaryAmmo = 25;
+        primaryMaxAmmo = 80;
 
         secondaryWeapon = WEAP_PLASMAGUN;
-        secondaryStrongSpawnAmmo = 40;
-        secondaryStrongAmmo = 25;
-        secondaryStrongMaxAmmo = 70;
-        secondaryWeakSpawnAmmo = 50;
-        secondaryWeakAmmo = 30;
-        secondaryWeakMaxAmmo = 90;
+        secondarySpawnAmmo = 40;
+        secondaryAmmo = 25;
+        secondaryMaxAmmo = 70;
     }
 
     String @getName() {
