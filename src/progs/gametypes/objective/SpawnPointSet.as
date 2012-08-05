@@ -17,24 +17,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class SpawnPointSet : Set {
+class SpawnPointSet {
     cEntity@[] points;
 
-    void resize() {
-        points.resize(capacity);
-    }
-
-    int getSize() {
-        return size;
+    uint getSize() {
+        return points.size();
     }
 
     cEntity @getRandom() {
-        return points[brandom(0, size)];
+        return points[brandom(0, points.size())];
     }
 
     void add(cEntity @ent) {
-        makeRoom();
-        @points[size++] = ent;
+        points.insertLast(ent);
     }
 
     void analyze(String &name) {

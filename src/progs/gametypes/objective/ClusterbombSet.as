@@ -19,34 +19,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 ClusterbombSet clusterbombSet;
 
-class ClusterbombSet : Set {
+class ClusterbombSet {
     Clusterbomb@[] clusterbombSet;
 
-    void resize() {
-        clusterbombSet.resize(capacity);
-    }
-
     void add(Vec3 origin, Vec3 angles, Player @owner) {
-        int id = UNKNOWN;
-        for (int i = 0; i < size && id == UNKNOWN; i++) {
-            if (@clusterbombSet[i] == null)
-                id = i;
-        }
-        if (id == UNKNOWN) {
-            makeRoom();
-            id = size++;
-        }
-        @clusterbombSet[id] = Clusterbomb(origin, angles, owner, id);
+        clusterbombSet.insertLast(Clusterbomb(origin, angles, owner));
     }
 
-    void remove(int n) {
-        @clusterbombSet[n] = null;
+    bool remove(Clusterbomb @clusterbomb) {
+        for (uint i = 0; i < clusterbombSet.size(); i++) {
+            if (@clusterbombSet[i] == @clusterbomb) {
+                clusterbombSet.removeAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     void think() {
-        for (int i = 0; i < size; i++) {
-            if (@clusterbombSet[i] != null)
-                clusterbombSet[i].think();
-        }
+        for (uint i = 0; i < clusterbombSet.size(); i++)
+            clusterbombSet[i].think();
     }
 }

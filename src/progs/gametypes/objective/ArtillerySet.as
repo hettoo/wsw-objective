@@ -19,34 +19,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 ArtillerySet artillerySet;
 
-class ArtillerySet : Set {
+class ArtillerySet {
     Artillery@[] artillerySet;
 
-    void resize() {
-        artillerySet.resize(capacity);
-    }
-
     void add(Vec3 origin, Player @owner) {
-        int id = UNKNOWN;
-        for (int i = 0; i < size && id == UNKNOWN; i++) {
-            if (@artillerySet[i] == null)
-                id = i;
-        }
-        if (id == UNKNOWN) {
-            makeRoom();
-            id = size++;
-        }
-        @artillerySet[id] = Artillery(origin, owner, id);
+        artillerySet.insertLast(Artillery(origin, owner));
     }
 
-    void remove(int id) {
-        @artillerySet[id] = null;
+    bool remove(Artillery @artillery) {
+        for (uint i = 0; i < artillerySet.size(); i++) {
+            if (@artillerySet[i] == @artillery) {
+                artillerySet.removeAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     void think() {
-        for (int i = 0; i < size; i++) {
-            if (@artillerySet[i] != null)
-                artillerySet[i].think();
-        }
+        for (uint i = 0; i < artillerySet.size(); i++)
+            artillerySet[i].think();
     }
 }

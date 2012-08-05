@@ -45,8 +45,6 @@ enum BombState {
 }
 
 class Bomb {
-    int id;
-
     cEntity @ent;
     cEntity @minimap;
 
@@ -61,9 +59,7 @@ class Bomb {
     float soundTime;
     float notArmed;
 
-    Bomb(Vec3 origin, Vec3 angles, Player @owner, int id) {
-        this.id = id;
-
+    Bomb(Vec3 origin, Vec3 angles, Player @owner) {
         this.origin = origin;
         this.angles = angles;
         @this.owner = owner;
@@ -102,7 +98,7 @@ class Bomb {
             minimap.freeEntity();
             @minimap = null;
         }
-        bombSet.remove(id);
+        bombSet.remove(this);
     }
 
     void explode() {

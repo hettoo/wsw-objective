@@ -22,7 +22,6 @@ objective/Image.as;
 objective/Core.as;
 objective/Settings.as;
 objective/Scoreboard.as;
-objective/Set.as;
 objective/Players.as;
 objective/Player.as;
 objective/Classes.as;

@@ -19,36 +19,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 BombSet bombSet;
 
-class BombSet : Set {
+class BombSet {
     Bomb@[] bombSet;
 
-    void resize() {
-        bombSet.resize(capacity);
-    }
-
     void add(Vec3 origin, Vec3 angles, Player @owner) {
-        int id = UNKNOWN;
-        for (int i = 0; i < size && id == UNKNOWN; i++) {
-            if (@bombSet[i] == null)
-                id = i;
-        }
-        if (id == UNKNOWN) {
-            makeRoom();
-            id = size++;
-        }
-        Bomb @new = Bomb(origin, angles, owner, id);
+        Bomb @new = Bomb(origin, angles, owner);
         new.spawn();
-        @bombSet[id] = new;
+        bombSet.insertLast(new);
     }
 
-    void remove(int n) {
-        @bombSet[n] = null;
+    bool remove(Bomb @bomb) {
+        for (uint i = 0; i < bombSet.size(); i++) {
+            if (@bombSet[i] == @bomb) {
+                bombSet.removeAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     void think() {
-        for (int i = 0; i < size; i++) {
-            if (@bombSet[i] != null)
-                bombSet[i].think();
-        }
+        for (uint i = 0; i < bombSet.size(); i++)
+            bombSet[i].think();
     }
 }

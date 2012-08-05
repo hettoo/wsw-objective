@@ -17,13 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class ResultSet : Set {
-    bool empty;
+class ResultSet {
     Result@[] resultSet;
 
     ResultSet(String &targets) {
-        empty = true;
-
         analyze(targets);
     }
 
@@ -41,22 +38,16 @@ class ResultSet : Set {
         add(target);
     }
 
-    void resize() {
-        resultSet.resize(capacity);
-    }
-
     void add(String &target) {
-        makeRoom();
-        @resultSet[size++] = Result(target);
-        empty = false;
+        resultSet.insertLast(Result(target));
     }
 
     bool isEmpty() {
-        return empty;
+        return resultSet.empty();
     }
 
     bool contains(Objective @objective) {
-        for (int i = 0; i < size; i++) {
+        for (uint i = 0; i < resultSet.size(); i++) {
             if (@resultSet[i].getObjective() == @objective)
                 return true;
         }
@@ -68,17 +59,17 @@ class ResultSet : Set {
     }
 
     void apply(int team) {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < resultSet.size(); i++)
             resultSet[i].apply(team);
     }
 
     void apply() {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < resultSet.size(); i++)
             resultSet[i].apply();
     }
 
     bool done() {
-        for (int i = 0; i < size; i++) {
+        for (uint i = 0; i < resultSet.size(); i++) {
             if (!resultSet[i].done())
                 return false;
         }

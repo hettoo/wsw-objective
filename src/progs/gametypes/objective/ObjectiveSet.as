@@ -21,18 +21,13 @@ const String OBJECTIVE_NAME_PREFIX = "!";
 
 ObjectiveSet objectiveSet;
 
-class ObjectiveSet : Set {
+class ObjectiveSet {
     Objective@[] objectiveSet;
 
     ResultSet @goal;
 
-    void resize() {
-        objectiveSet.resize(capacity);
-    }
-
     void add(cEntity @ent) {
-        makeRoom();
-        @objectiveSet[size++] = Objective(ent);
+        objectiveSet.insertLast(Objective(ent));
     }
 
     void analyze() {
@@ -45,7 +40,7 @@ class ObjectiveSet : Set {
     }
 
     Objective @find(String &id) {
-        for (int i = 0; i < size; i++) {
+        for (uint i = 0; i < objectiveSet.size(); i++) {
             if (objectiveSet[i].getId() == id)
                 return @objectiveSet[i];
         }
@@ -66,8 +61,8 @@ class ObjectiveSet : Set {
     cEntity @randomSpawnPoint(cEntity @self) {
         int[] suitableSpawns;
         int suitableSpawnCount = 0;
-        suitableSpawns.resize(size);
-        for (int i = 0; i < size; i++) {
+        suitableSpawns.resize(objectiveSet.size());
+        for (uint i = 0; i < objectiveSet.size(); i++) {
             if (objectiveSet[i].isSpawn() && objectiveSet[i].isSpawned()
                     && objectiveSet[i].getTeam() == self.team)
                 suitableSpawns[suitableSpawnCount++] = i;
@@ -115,25 +110,25 @@ class ObjectiveSet : Set {
     }
 
     void initialSpawn() {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].initialSpawn();
         goalTest();
     }
 
     void think() {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].think();
     }
 
     void exploded(cEntity @ent, Player @planter) {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].exploded(ent, planter);
         goalTest();
     }
 
     bool planted(cEntity @ent) {
         bool effective = false;
-        for (int i = 0; i < size; i++) {
+        for (uint i = 0; i < objectiveSet.size(); i++) {
             if (!effective)
                 effective = objectiveSet[i].planted(ent);
         }
@@ -141,7 +136,7 @@ class ObjectiveSet : Set {
     }
 
     void defused(cEntity @ent, Player @defuser) {
-        for (int i = 0; i < size; i++)
+        for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].defused(ent, defuser);
     }
 }

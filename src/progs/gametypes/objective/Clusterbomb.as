@@ -34,16 +34,12 @@ const int CB_ROCKETS = 8;
 const int CB_ROCKET_SPEED = 1000;
 
 class Clusterbomb {
-    int id;
-
     cEntity @ent;
     Player @owner;
 
     float timer;
 
-    Clusterbomb(Vec3 origin, Vec3 angles, Player @owner, int id) {
-        this.id = id;
-
+    Clusterbomb(Vec3 origin, Vec3 angles, Player @owner) {
         @this.owner = owner;
 
         spawn(origin, angles);
@@ -71,7 +67,7 @@ class Clusterbomb {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
-        clusterbombSet.remove(id);
+        clusterbombSet.remove(this);
     }
 
     void releaseAmmo() {

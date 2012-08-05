@@ -25,16 +25,12 @@ Vec3 TRANSPORTER_MINS(-24, -24, -24);
 Vec3 TRANSPORTER_MAXS(24, 24, 40);
 
 class Transporter {
-    int id;
-
     cEntity @ent;
     Player @owner;
 
     float removeTime;
 
-    Transporter(Vec3 origin, Vec3 angles, Player @owner, int id) {
-        this.id = id;
-
+    Transporter(Vec3 origin, Vec3 angles, Player @owner) {
         @this.owner = owner;
         spawn(origin, angles);
     }
@@ -62,7 +58,7 @@ class Transporter {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
-        transporterSet.remove(id);
+        transporterSet.remove(this);
     }
 
     bool isActive() {

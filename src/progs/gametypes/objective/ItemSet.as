@@ -35,48 +35,33 @@ enum Items {
 
 ItemSet itemSet;
 
-class ItemSet : Set {
+class ItemSet {
     Item@[] itemSet;
 
-    void resize() {
-        itemSet.resize(capacity);
-    }
-
-    int getNextId() {
-        int id = UNKNOWN;
-        for (int i = 0; i < size && id == UNKNOWN; i++) {
-            if (@itemSet[i] == null)
-                id = i;
-        }
-        if (id == UNKNOWN) {
-            makeRoom();
-            id = size++;
-        }
-        return id;
-    }
-
     void addHealthpack(Vec3 origin, Vec3 angles, Player @owner) {
-        int id = getNextId();
-        @itemSet[id] = Item(origin, angles, owner, id,
-                HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
-                HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK);
+        itemSet.insertLast(Item(origin, angles, owner,
+                    HEALTHPACK_MODEL.get(), HEALTHPACK_SOUND.get(),
+                    HEALTHPACK_MINS, HEALTHPACK_MAXS, ITEM_HEALTHPACK));
     }
 
     void addAmmopack(Vec3 origin, Vec3 angles, Player @owner) {
-        int id = getNextId();
-        @itemSet[id] = Item(origin, angles, owner, id,
-                AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),
-                AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK);
+        itemSet.insertLast(Item(origin, angles, owner,
+                    AMMOPACK_MODEL.get(), AMMOPACK_SOUND.get(),
+                AMMOPACK_MINS, AMMOPACK_MAXS, ITEM_AMMOPACK));
     }
 
-    void remove(int n) {
-        @itemSet[n] = null;
+    bool remove(Item @item) {
+        for (uint i = 0; i < itemSet.size(); i++) {
+            if (@itemSet[i] == @item) {
+                itemSet.removeAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     void think() {
-        for (int i = 0; i < size; i++) {
-            if (@itemSet[i] != null)
-                itemSet[i].think();
-        }
+        for (uint i = 0; i < itemSet.size(); i++)
+            itemSet[i].think();
     }
 }

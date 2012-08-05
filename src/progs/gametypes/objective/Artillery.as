@@ -25,16 +25,13 @@ const int ARTILLERY_IMPACT = 300;
 const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 
 class Artillery {
-    int id;
 
     Vec3 origin;
     Player @owner;
     int rocketsFired;
     float wait;
 
-    Artillery(Vec3 origin, Player @owner, int id) {
-        this.id = id;
-
+    Artillery(Vec3 origin, Player @owner) {
         this.origin = origin;
         this.origin.z += ARTILLERY_HEIGHT;
         @this.owner = owner;
@@ -58,7 +55,7 @@ class Artillery {
                 ARTILLERY_IMPACT, 1, owner.getEnt());
 
         if (++rocketsFired == ARTILLERY_ROCKETS)
-            artillerySet.remove(id);
+            artillerySet.remove(this);
     }
 
     void think() {

@@ -19,35 +19,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 TransporterSet transporterSet;
 
-class TransporterSet : Set {
+class TransporterSet {
     Transporter@[] transporterSet;
 
-    void resize() {
-        transporterSet.resize(capacity);
-    }
-
     Transporter @add(Vec3 origin, Vec3 angles, Player @owner) {
-        int id = UNKNOWN;
-        for (int i = 0; i < size && id == UNKNOWN; i++) {
-            if (@transporterSet[i] == null)
-                id = i;
-        }
-        if (id == UNKNOWN) {
-            makeRoom();
-            id = size++;
-        }
-        @transporterSet[id] = Transporter(origin, angles, owner, id);
-        return transporterSet[id];
+        Transporter @new = Transporter(origin, angles, owner);
+        transporterSet.insertLast(new);
+        return new;
     }
 
-    void remove(int n) {
-        @transporterSet[n] = null;
+    bool remove(Transporter @transporter) {
+        for (uint i = 0; i < transporterSet.size(); i++) {
+            if (@transporterSet[i] == @transporter) {
+                transporterSet.removeAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     void think() {
-        for (int i = 0; i < size; i++) {
-            if (@transporterSet[i] != null)
-                transporterSet[i].think();
-        }
+        for (uint i = 0; i < transporterSet.size(); i++)
+            transporterSet[i].think();
     }
 }

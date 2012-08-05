@@ -24,17 +24,14 @@ const int ITEM_THROW_SPEED = 400;
 const int ITEM_SCORE = 1;
 
 class Item {
-    int id;
-
     cEntity @ent;
     int type;
     Player @owner;
 
     float removeTime;
 
-    Item(Vec3 origin, Vec3 angles, Player @owner, int id,
-            int model, int sound, Vec3 mins, Vec3 maxs, int type) {
-        this.id = id;
+    Item(Vec3 origin, Vec3 angles, Player @owner, int model, int sound,
+            Vec3 mins, Vec3 maxs, int type) {
         this.type = type;
         @this.owner = owner;
 
@@ -65,7 +62,7 @@ class Item {
         ent.unlinkEntity();
         ent.freeEntity();
         @ent = null;
-        itemSet.remove(id);
+        itemSet.remove(this);
     }
 
     bool near(cEntity @other) {
