@@ -25,7 +25,6 @@ const int ARTILLERY_IMPACT = 300;
 const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 
 class Artillery {
-
     Vec3 origin;
     Player @owner;
     int rocketsFired;

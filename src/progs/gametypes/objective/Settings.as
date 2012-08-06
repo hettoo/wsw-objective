@@ -141,7 +141,7 @@ class Settings {
         G_RegisterCommand("class");
         G_RegisterCommand("classaction1");
         G_RegisterCommand("classaction2");
-        G_RegisterCommand("gamemenu");
+        G_RegisterCommand("gametypemenu");
         G_RegisterCommand("gametype");
     }
 

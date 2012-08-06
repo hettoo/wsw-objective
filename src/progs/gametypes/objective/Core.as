@@ -36,7 +36,7 @@ class Core {
         } else if (cmd == "class") {
             players.get(client).setClass(args);
             return true;
-        } else if (cmd == "gamemenu") {
+        } else if (cmd == "gametypemenu") {
             players.get(client).showGameMenu();
             return true;
         } else if (cmd == "classaction1") {
