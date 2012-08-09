@@ -33,6 +33,7 @@ class Player {
 
     float score;
     Stealable @carry;
+    CarryIdenticator @carryIdenticator;
 
     Class @playerClass;
     int currentClass;
@@ -70,6 +71,12 @@ class Player {
 
     void setCarry(Stealable @carry) {
         @this.carry = carry;
+        if (@carry == null) {
+            carryIdenticator.destroy();
+            @carryIdenticator = null;
+        } else {
+            @carryIdenticator = CarryIdenticator(ent);
+        }
     }
 
     bool secureCarry(Objective @target) {
@@ -77,7 +84,7 @@ class Player {
             return false;
 
         carry.secured(this, target);
-        @carry = null;
+        setCarry(null);
         return true;
     }
 
@@ -221,6 +228,9 @@ class Player {
         GENERIC_ChargeGunblade(client);
         if (ent.health > 0)
             playerClass.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
+
+        if (@carryIdenticator != null)
+            carryIdenticator.update();
     }
 
     void classAction1() {

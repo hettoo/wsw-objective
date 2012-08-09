@@ -80,6 +80,7 @@ class Stealable : Component {
         if (state == SS_RETURNED)
             oldMoveType = objective.getMoveType();
         state = SS_DROPPED;
+        dropper.setCarry(null);
         objective.setMoveType(MOVETYPE_TOSS);
         objective.spawn(dropper.getEnt().origin);
         returnTime = STEALABLE_WAIT_LIMIT;

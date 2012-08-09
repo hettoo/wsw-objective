@@ -49,6 +49,7 @@ objective/Destroyable.as;
 objective/SpawnLocation.as;
 objective/SpawnPointSet.as;
 objective/Stealable.as;
+objective/CarryIdenticator.as;
 objective/SecureLocation.as;
 objective/ResultSet.as;
 objective/Result.as;
