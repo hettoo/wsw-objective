@@ -27,7 +27,7 @@ class Class {
     int maxHealth;
     int maxArmor;
 
-    int classIcon;
+    Image @classIcon;
 
     int primaryWeapon;
     int primarySpawnAmmo;
@@ -43,8 +43,7 @@ class Class {
         spawnHealth = 70;
         maxHealth = 90;
 
-        classIcon = G_ImageIndex("gfx/hud/icons/objective/classes/"
-                + getSimpleName());
+        @classIcon = Image("hud/icons/objective/classes/" + getSimpleName());
     }
 
     String @getSimpleName() {
@@ -56,7 +55,7 @@ class Class {
     }
 
     int getIcon() {
-        return classIcon;
+        return classIcon.get();
     }
 
     bool giveAmmopack(Player @player) {
@@ -100,7 +99,7 @@ class Class {
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
         player.setHUDStat(player.getTeam() == TEAM_ALPHA
-                ? STAT_IMAGE_ALPHA : STAT_IMAGE_BETA, classIcon);
+                ? STAT_IMAGE_ALPHA : STAT_IMAGE_BETA, classIcon.get());
     }
 
     void classAction1(Player @player) {
