@@ -11,7 +11,7 @@ TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
 FILES = $(shell find $(GT_DIR))
-SETTINGS_FILE = $(GT_DIR)/progs/gametypes/$(NAME)/Settings.as
+SETTINGS_FILE = $(GT_DIR)/progs/gametypes/$(NAME)/main/Settings.as
 EVERY_PK3 = $(NAME)-*.pk3
 CFG = $(NAME).cfg
 
