@@ -26,6 +26,14 @@ const int PROGRESS_FINISHED = 100;
 String WTF = "???";
 const int UNKNOWN = -1;
 
+bool G_IsNewline(String byte) {
+    return byte == "\n" || byte == "\r";
+}
+
+bool G_IsWhitespace(String byte) {
+    return byte == " " || byte == "\t" || G_IsNewline(byte);
+}
+
 String @G_ReplaceSpaces(String &string, String replacement) {
     String result;
     for (uint i = 0; i < string.len(); i++) {
@@ -97,4 +105,22 @@ cEntity @G_SpawnIcon(int image, int team, Vec3 origin) {
     minimap.svflags |= SVF_BROADCAST;
     minimap.svflags &= ~SVF_NOCLIENT;
     return minimap;
+}
+
+String @G_Join(String@[] list, String glue) {
+    String result = "";
+    for (uint i = 0; i < list.size(); i++) {
+        if (i > 0)
+            result += glue;
+        result += list[i];
+    }
+    return result;
+}
+
+String @G_Join(String@[] list) {
+    return G_Join(list, " ");
+}
+
+void G_Debug(String message) {
+    G_Print(message + "\n");
 }

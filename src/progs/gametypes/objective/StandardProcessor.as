@@ -17,27 +17,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class SecureLocation : Component {
-    bool occupied;
-
-    SecureLocation(Objective @objective) {
-        occupied = false;
-        @this.objective = objective;
+class StandardProcessor : Processor {
+    bool process(String method, String@[] arguments) {
+        if (method == "author")
+            gametype.author = AUTHOR
+                    + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
+                    + G_Join(arguments) + S_COLOR_ORANGE + ")";
+        else if (method == "goal")
+            objectiveSet.setGoal(ResultSet(arguments));
+        else
+            return false;
+        return true;
     }
 
-    void thinkActive(Player @player) {
-        if (occupied)
-            return;
-
-        Stealable @carry = player.getCarry();
-        if (@carry == null)
-            return;
-
-        int newModel = carry.getObjective().getModel();
-        if (player.secureCarry(objective)) {
-            objective.setModel(newModel);
-            objective.respawn();
-            occupied = true;
-        }
+    Processor @subProcessor(String target) {
+        Objective @objective = objectiveSet.find(target);
+        if (@objective != null)
+            return objective;
+        if (target == "players")
+            return players;
+        return null;
     }
 }

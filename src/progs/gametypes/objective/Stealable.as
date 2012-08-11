@@ -46,11 +46,9 @@ class Stealable : Component {
         @this.objective = objective;
     }
 
-    bool setAttribute(String &name, String &value) {
-        if (name == "stealable")
-            active = value.toInt() == 1;
-        else if (name == "targets")
-            @targets = ResultSet(value);
+    bool process(String method, String@[] arguments) {
+        if (method == "targets")
+            @targets = ResultSet(arguments);
         else
             return false;
         return true;

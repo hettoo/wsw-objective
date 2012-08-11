@@ -30,7 +30,7 @@ const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 class Constructable : Component {
     float constructArmor;
     Objective @ghost;
-    ResultSet @onConstructed;
+    Callback @onConstructed;
 
     float constructProgress;
     float constructingSoundWait;
@@ -50,15 +50,13 @@ class Constructable : Component {
         @this.objective = objective;
     }
 
-    bool setAttribute(String &name, String &value) {
-        if (name == "constructable")
-            active = value.toInt() == 1;
-        else if (name == "constructArmor")
-            constructArmor = value.toInt();
-        else if (name == "ghost")
-            @ghost = objectiveSet.find(value);
-        else if (name == "onConstructed")
-            @onConstructed = ResultSet(value);
+    bool process(String method, String@[] arguments) {
+        if (method == "constructArmor")
+            constructArmor = arguments[0].toInt();
+        else if (method == "ghost")
+            @ghost = objectiveSet.find(G_Join(arguments));
+        else if (method == "onConstructed")
+            @onConstructed = parser.createCallback(arguments[0]);
         else
             return false;
         return true;
@@ -80,25 +78,16 @@ class Constructable : Component {
         spawnedGhost = false;
     }
 
-    void spawnConstructed(Player @player) {
-        if (@onConstructed == null)
-            return;
-
-        int team = player.getClient().team;
-        onConstructed.apply(team);
-        String name = onConstructed.getName();
-        if (name != "")
-            players.say(G_GetTeamName(team)
-                    + " has constructed the " + name + "!");
-        players.sound(CONSTRUCTED_SOUND.get());
-        objectiveSet.goalTest();
-    }
-
     void constructed(Player @player) {
-        spawnConstructed(player);
         objective.destroy();
         destroyGhost();
         constructProgress = 0;
+        players.sound(CONSTRUCTED_SOUND.get());
+        if (@onConstructed != null) {
+            objective.setActiveTeam(player.getClient().team);
+            parser.executeCallback(onConstructed);
+            objective.unsetActiveTeam();
+        }
     }
 
     void getConstructProgress(Player @player) {

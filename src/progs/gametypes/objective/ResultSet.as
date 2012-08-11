@@ -20,22 +20,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class ResultSet {
     Result@[] resultSet;
 
-    ResultSet(String &targets) {
+    ResultSet(String@[] targets) {
         analyze(targets);
     }
 
-    void analyze(String &targets) {
+    void analyze(String@[] targets) {
         String target;
-        for (uint i = 0; i < targets.len(); i++) {
-            String current = targets.substr(i, 1);
-            if (current == ",") {
-                add(target);
-                target = "";
-            } else {
-                target += current;
-            }
-        }
-        add(target);
+        for (uint i = 0; i < targets.size(); i++)
+            add(targets[i]);
     }
 
     void add(String &target) {
@@ -52,20 +44,6 @@ class ResultSet {
                 return true;
         }
         return false;
-    }
-
-    String @getName() {
-        return resultSet[0].getName();
-    }
-
-    void apply(int team) {
-        for (uint i = 0; i < resultSet.size(); i++)
-            resultSet[i].apply(team);
-    }
-
-    void apply() {
-        for (uint i = 0; i < resultSet.size(); i++)
-            resultSet[i].apply();
     }
 
     bool done() {

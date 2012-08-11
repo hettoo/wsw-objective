@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Players players;
 
-class Players {
+class Players : Processor {
     Player@[] players;
     int size;
 
@@ -124,5 +124,13 @@ class Players {
 
     void sound(int team, int sound) {
         G_AnnouncerSound(null, sound, team, true, null);
+    }
+
+    bool process(String method, String@[] arguments) {
+        if (method == "say")
+            say(G_Join(arguments));
+        else
+            return false;
+        return true;
     }
 }

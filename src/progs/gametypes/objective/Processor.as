@@ -17,40 +17,37 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Component : Processor {
-    bool active;
-
-    Objective @objective;
-
-    Component() {
-        active = false;
-    }
+class Processor {
+    Parser @parser;
 
     void startProcessor() {
-        active = true;
     }
 
-    bool isActive() {
-        return active;
+    void stopProcessor() {
     }
 
-    Objective @getObjective() {
-        return objective;
+    void setParser(Parser @parser) {
+        @this.parser = parser;
     }
 
-    void thinkActive() {
+    bool process(String@[] targets, String method, String@[] arguments) {
+        if (targets.size() == 0)
+            return process(method, arguments);
+        else {
+            Processor @subProcessor = subProcessor(targets[0]);
+            if (@subProcessor != null) {
+                targets.removeAt(0);
+                return subProcessor.process(targets, method, arguments);
+            }
+        }
+        return false;
     }
 
-    void think() {
-        if (active)
-            thinkActive();
+    bool process(String method, String@[] arguments) {
+        return false;
     }
 
-    void thinkActive(Player @player) {
-    }
-
-    void think(Player @player) {
-        if (active && player.isAlive() && player.getTeam() != TEAM_SPECTATOR)
-            thinkActive(player);
+    Processor @subProcessor(String target) {
+        return null;
     }
 }

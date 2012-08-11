@@ -17,27 +17,22 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class SecureLocation : Component {
-    bool occupied;
+class Callback {
+    Processor@[] processors;
+    String @code;
 
-    SecureLocation(Objective @objective) {
-        occupied = false;
-        @this.objective = objective;
+    Callback(Processor@[] processors, String code) {
+        this.processors.resize(processors.size());
+        for (uint i = 0; i < processors.size(); i++)
+            @this.processors[i] = processors[i];
+        @this.code = code;
     }
 
-    void thinkActive(Player @player) {
-        if (occupied)
-            return;
+    Processor@[] getProcessors() {
+        return processors;
+    }
 
-        Stealable @carry = player.getCarry();
-        if (@carry == null)
-            return;
-
-        int newModel = carry.getObjective().getModel();
-        if (player.secureCarry(objective)) {
-            objective.setModel(newModel);
-            objective.respawn();
-            occupied = true;
-        }
+    String @getCode() {
+        return code;
     }
 }

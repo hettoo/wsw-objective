@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Objective {
+class Objective : Processor {
     String id;
 
     String name;
@@ -25,6 +25,7 @@ class Objective {
     cEntity @minimap;
     bool spawned;
     int owningTeam;
+    int activeTeam;
 
     bool startSpawned;
     bool solid;
@@ -57,6 +58,7 @@ class Objective {
         startSpawned = true;
         team = GS_MAX_TEAMS;
         owningTeam = team;
+        unsetActiveTeam();
         radius = 125;
 
         target.unlinkEntity();
@@ -97,6 +99,14 @@ class Objective {
         return icon;
     }
 
+    void setActiveTeam(int team) {
+        this.activeTeam = team;
+    }
+
+    void unsetActiveTeam() {
+        this.activeTeam = GS_MAX_TEAMS;
+    }
+
     void setIcon(cEntity @minimap) {
         @this.minimap = minimap;
     }
@@ -109,39 +119,59 @@ class Objective {
         this.moveType = moveType;
     }
 
-    void setAttribute(String &name, String &value) {
-        if (name == "name") {
-            this.name = value;
-        } else if (name == "startSpawned") {
-            startSpawned = value.toInt() == 1;
-        } else if (name == "solid") {
-            solid = value.toInt() == 1;
-        } else if (name == "model") {
-            model = Model(value).get();
-        } else if (name == "icon") {
-            icon = Image(value).get();
-        } else if (name == "moveType") {
-            moveType = value.toInt();
-        } else if (name == "mins") {
-            mins = Vec3(value.getToken(0).toFloat(),
-                    value.getToken(1).toFloat(), value.getToken(2).toFloat());
-        } else if (name == "maxs") {
-            maxs = Vec3(value.getToken(0).toFloat(),
-                    value.getToken(1).toFloat(), value.getToken(2).toFloat());
-        } else if (name == "team") {
-            if (value.tolower() == "alpha")
+    bool process(String method, String@[] arguments) {
+        if (method == "name") {
+            this.name = G_Join(arguments);
+        } else if (method == "startSpawned") {
+            startSpawned = arguments[0].toInt() == 1;
+        } else if (method == "solid") {
+            solid = arguments[0].toInt() == 1;
+        } else if (method == "model") {
+            model = Model(G_Join(arguments)).get();
+        } else if (method == "icon") {
+            icon = Image(G_Join(arguments)).get();
+        } else if (method == "moveType") {
+            moveType = arguments[0].toInt();
+        } else if (method == "mins") {
+            mins = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
+                    arguments[2].toFloat());
+        } else if (method == "maxs") {
+            maxs = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
+                    arguments[2].toFloat());
+        } else if (method == "team") {
+            String name = arguments[0].tolower();
+            if (name == "alpha")
                 team = TEAM_ALPHA;
-            else if (value.tolower() == "beta")
+            else if (name == "beta")
                 team = TEAM_BETA;
             owningTeam = team;
-        } else if (name == "radius") {
-            radius = value.toInt();
-        } else if (constructable.setAttribute(name, value)) {
-        } else if (destroyable.setAttribute(name, value)) {
-        } else if (spawnLocation.setAttribute(name, value)) {
-        } else if (stealable.setAttribute(name, value)) {
-        } else if (secureLocation.setAttribute(name, value)) {
+        } else if (method == "radius") {
+            radius = arguments[0].toInt();
+        } else if (method == "spawnObjective") {
+            objectiveSet.find(arguments[0]).spawn(activeTeam);
+        } else if (method == "spawnObjectiveOther") {
+            objectiveSet.find(arguments[0]).spawn(
+                    players.otherTeam(activeTeam));
+        } else if (method == "capture") {
+            objectiveSet.find(arguments[0]).lock(activeTeam);
+        } else {
+            return false;
         }
+        return true;
+    }
+
+    Processor @subProcessor(String target) {
+        if (target == "constructable")
+            return constructable;
+        if (target == "destroyable")
+            return destroyable;
+        if (target == "spawnLocation")
+            return spawnLocation;
+        if (target == "stealable")
+            return stealable;
+        if (target == "secureLocation")
+            return secureLocation;
+        return null;
     }
 
     void spawn(Vec3 origin) {
@@ -172,6 +202,8 @@ class Objective {
         }
 
         spawned = true;
+
+        objectiveSet.goalTest();
     }
 
     void spawn() {
@@ -201,7 +233,7 @@ class Objective {
             spawn();
     }
 
-    void destroy() {
+    void destroy(bool goalTest) {
         if (!spawned)
             return;
 
@@ -217,10 +249,16 @@ class Objective {
         }
         spawned = false;
         owningTeam = team;
+
+        objectiveSet.goalTest();
+    }
+
+    void destroy() {
+        destroy(true);
     }
 
     void respawn(int team) {
-        destroy();
+        destroy(false);
         spawn(team);
     }
 

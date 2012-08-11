@@ -25,6 +25,11 @@ class ObjectiveSet {
     Objective@[] objectiveSet;
 
     ResultSet @goal;
+    bool suppressGoalTest;
+
+    ObjectiveSet() {
+        suppressGoalTest = false;
+    }
 
     void add(cEntity @ent) {
         objectiveSet.insertLast(Objective(ent));
@@ -47,8 +52,12 @@ class ObjectiveSet {
         return null;
     }
 
+    void setGoal(ResultSet @goal) {
+        @this.goal = goal;
+    }
+
     void goalTest() {
-        if (@goal == null || goal.isEmpty())
+        if (suppressGoalTest || @goal == null || goal.isEmpty())
             return;
 
         Objective @objective;
@@ -75,43 +84,16 @@ class ObjectiveSet {
         return objectiveSet[spawnLocation].getRandomSpawnPoint();
     }
 
-    void setAttribute(String &fieldname, String &value) {
-        if (fieldname == "author")
-            gametype.author = AUTHOR
-                    + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE + value
-                    + S_COLOR_ORANGE + ")";
-        else if (fieldname == "goal")
-            @goal = ResultSet(value);
-    }
-
     void parse(String &filename) {
         String file = G_LoadFile(filename);
-        Objective @objective;
-        String fieldname;
-        bool stop = false;
-        int i = 0;
-        do {
-            String token = file.getToken(i);
-            if (token.substr(0, 1) == OBJECTIVE_NAME_PREFIX) {
-                @objective = find(token.substr(1, token.len()));
-            } else if (fieldname == "") {
-                fieldname = token;
-                if (fieldname == "")
-                    stop = true;
-            } else {
-                if (@objective == null)
-                    setAttribute(fieldname, token);
-                else
-                    objective.setAttribute(fieldname, token);
-                fieldname = "";
-            }
-            i++;
-        } while (!stop);
+        Parser(StandardProcessor()).parse(file);
     }
 
     void initialSpawn() {
+        suppressGoalTest = true;
         for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].initialSpawn();
+        suppressGoalTest = false;
         goalTest();
     }
 
@@ -121,8 +103,10 @@ class ObjectiveSet {
     }
 
     void exploded(cEntity @ent, Player @planter) {
+        suppressGoalTest = true;
         for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].exploded(ent, planter);
+        suppressGoalTest = false;
         goalTest();
     }
 

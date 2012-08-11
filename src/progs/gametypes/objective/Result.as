@@ -20,8 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 enum ResultMethod {
     RM_SPAWN,
     RM_DESTROY,
-    RM_SECURE,
-    RM_LOCK
+    RM_SECURE
 }
 
 class Result {
@@ -35,47 +34,13 @@ class Result {
             method = RM_DESTROY;
         else if (methodString == "@")
             method = RM_SECURE;
-        else if (methodString == "*")
-            method = RM_LOCK;
 
         @objective = objectiveSet.find(target.substr(method == RM_SPAWN ? 0 : 1,
                     target.len()));
     }
 
-    String @getName() {
-        return objective.getName();
-    }
-
     Objective @getObjective() {
         return objective;
-    }
-
-    void apply(int team) {
-        switch (method) {
-            case RM_SPAWN:
-                objective.spawn(team);
-                break;
-            case RM_DESTROY:
-                objective.destroy();
-                break;
-            case RM_LOCK:
-                objective.lock(team);
-                break;
-        }
-    }
-
-    void apply() {
-        switch (method) {
-            case RM_SPAWN:
-                objective.spawn();
-                break;
-            case RM_DESTROY:
-                objective.destroy();
-                break;
-            case RM_LOCK:
-                objective.lock();
-                break;
-        }
     }
 
     bool done() {

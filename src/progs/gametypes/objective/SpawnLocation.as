@@ -40,6 +40,12 @@ class SpawnLocation : Component {
         @this.objective = objective;
     }
 
+    void startProcessor() {
+        Component::startProcessor();
+        @spawnPointSet = SpawnPointSet();
+        spawnPointSet.analyze(objective.getId());
+    }
+
     bool isActive() {
         return Component::isActive() && spawnPointSet.getSize() > 0;
     }
@@ -54,17 +60,13 @@ class SpawnLocation : Component {
         objective.respawn();
     }
 
-    bool setAttribute(String &name, String &value) {
-        if (name == "spawnLocation") {
-            active = value.toInt() == 1;
-            @spawnPointSet = SpawnPointSet();
-            spawnPointSet.analyze(objective.getId());
-        } else if (name == "capturable") {
-            capturable = value.toInt() == 1;
-        } else if (name == "alphaFallback") {
-            @alphaFallback = objectiveSet.find(value);
-        } else if (name == "betaFallback") {
-            @betaFallback = objectiveSet.find(value);
+    bool process(String method, String@[] arguments) {
+        if (method == "capturable") {
+            capturable = arguments[0].toInt() == 1;
+        } else if (method == "alphaFallback") {
+            @alphaFallback = objectiveSet.find(arguments[0]);
+        } else if (method == "betaFallback") {
+            @betaFallback = objectiveSet.find(arguments[0]);
         } else {
             return false;
         }

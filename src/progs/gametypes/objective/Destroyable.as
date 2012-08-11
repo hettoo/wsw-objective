@@ -27,31 +27,28 @@ const int DESTROY_SCORE = 4;
 const int DEFUSE_SCORE = 4;
 
 class Destroyable : Component {
-    ResultSet @onDestroyed;
+    Callback @onDestroyed;
 
     Destroyable(Objective @objective) {
         @this.objective = objective;
     }
 
-    bool setAttribute(String &name, String &value) {
-        if (name == "destroyable")
-            active = value.toInt() == 1;
-        else if (name == "onDestroyed")
-            @onDestroyed = ResultSet(value);
+    bool process(String method, String@[] arguments) {
+        if (method == "onDestroyed")
+            @onDestroyed = parser.createCallback(arguments[0]);
         else
             return false;
         return true;
     }
 
     void destruct(Player @planter) {
-        if (objective.getName() != "")
-            players.say(G_GetTeamName(objective.getOtherTeam())
-                    + " has destroyed the " + objective.getName() + "!");
         players.sound(DESTROY_SOUND.get());
-
         objective.destroy();
-        if (@onDestroyed != null)
-            onDestroyed.apply(planter.getClient().team);
+        if (@onDestroyed != null) {
+            objective.setActiveTeam(planter.getClient().team);
+            parser.executeCallback(onDestroyed);
+            objective.unsetActiveTeam();
+        }
         planter.addScore(DESTROY_SCORE);
     }
 
