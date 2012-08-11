@@ -22,8 +22,9 @@ class Component : Processor {
 
     Objective @objective;
 
-    Component() {
+    Component(Objective @objective) {
         active = false;
+        @this.objective = objective;
     }
 
     void startProcessor() {

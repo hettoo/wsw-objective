@@ -21,8 +21,8 @@ class SecureLocation : Component {
     bool occupied;
 
     SecureLocation(Objective @objective) {
+        super(objective);
         occupied = false;
-        @this.objective = objective;
     }
 
     void thinkActive(Player @player) {

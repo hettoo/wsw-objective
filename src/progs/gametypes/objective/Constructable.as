@@ -39,6 +39,8 @@ class Constructable : Component {
     bool spawnedGhost;
 
     Constructable(Objective @objective) {
+        super(objective);
+
         constructArmor = DEFAULT_CONSTRUCT_ARMOR;
 
         constructProgress = 0;
@@ -46,8 +48,6 @@ class Constructable : Component {
         madeProgress = false;
         notConstructed = 0;
         spawnedGhost = false;
-
-        @this.objective = objective;
     }
 
     bool process(String method, String@[] arguments) {

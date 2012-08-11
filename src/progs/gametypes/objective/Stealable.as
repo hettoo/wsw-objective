@@ -34,23 +34,25 @@ enum StealableState {
 }
 
 class Stealable : Component {
-    ResultSet @targets;
+    Objective@[] targets;
 
     int state;
     int oldMoveType;
     float returnTime;
 
     Stealable(Objective @objective) {
+        super(objective);
         state = SS_RETURNED;
-
-        @this.objective = objective;
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "targets")
-            @targets = ResultSet(arguments);
-        else
+        if (method == "targets") {
+            targets.resize(arguments.size());
+            for (uint i = 0; i < arguments.size(); i++)
+                @targets[i] = objectiveSet.find(arguments[i]);
+        } else {
             return false;
+        }
         return true;
     }
 
@@ -85,7 +87,7 @@ class Stealable : Component {
     }
 
     bool secured(Player @securer, Objective @target) {
-        if (!targets.contains(target))
+        if (targets.find(target) < 0)
             return false;
 
         if (objective.getName() != "")

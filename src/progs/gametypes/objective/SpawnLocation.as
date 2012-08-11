@@ -35,9 +35,8 @@ class SpawnLocation : Component {
     SpawnPointSet @spawnPointSet;
 
     SpawnLocation(Objective @objective) {
+        super(objective);
         capturable = false;
-
-        @this.objective = objective;
     }
 
     void startProcessor() {

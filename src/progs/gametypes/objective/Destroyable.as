@@ -30,7 +30,7 @@ class Destroyable : Component {
     Callback @onDestroyed;
 
     Destroyable(Objective @objective) {
-        @this.objective = objective;
+        super(objective);
     }
 
     bool process(String method, String@[] arguments) {
