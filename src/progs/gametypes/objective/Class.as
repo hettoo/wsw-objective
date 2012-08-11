@@ -48,7 +48,7 @@ class Class {
     }
 
     String @getSimpleName() {
-        return G_ReplaceSpaces(getName().tolower());
+        return utils.replaceSpaces(getName().tolower());
     }
 
     String @getName() {

@@ -128,7 +128,7 @@ class Players : Processor {
 
     bool process(String method, String@[] arguments) {
         if (method == "say")
-            say(G_Join(arguments));
+            say(utils.join(arguments));
         else
             return false;
         return true;

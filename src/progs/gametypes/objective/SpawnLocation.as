@@ -97,7 +97,7 @@ class SpawnLocation : Component {
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
         objective.setEnt(ent);
-        objective.setIcon(G_SpawnIcon(FLAG_ICON.get(), ent.team, origin));
+        objective.setIcon(utils.spawnIcon(FLAG_ICON.get(), ent.team, origin));
     }
 
     cEntity @getRandomSpawnPoint() {
@@ -126,7 +126,7 @@ class SpawnLocation : Component {
     void captured(Player @capturer) {
         int team = capturer.getClient().team;
         if (objective.getName() != "")
-            players.say(G_GetTeamName(team)
+            players.say(utils.getTeamName(team)
                     + " has captured the " + objective.getName() + "!");
         players.sound(CAPTURE_SOUND.get());
         capturer.addScore(CAPTURE_SCORE);

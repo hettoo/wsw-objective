@@ -42,9 +42,9 @@ class FieldOps : Class {
 
     void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
-        Vec3 origin = G_ThrowOrigin(ent);
-        Vec3 angles = G_ThrowAngles(ent);
-        if (!G_CanSpawn(origin, AMMOPACK_MINS, AMMOPACK_MAXS, ent.entNum))
+        Vec3 origin = utils.throwOrigin(ent);
+        Vec3 angles = utils.throwAngles(ent);
+        if (!utils.canSpawn(origin, AMMOPACK_MINS, AMMOPACK_MAXS, ent.entNum))
             player.centerPrint("Can't spawn an ammopack there");
         else if (!player.takeArmor(AMMOPACK_ARMOR))
             player.centerPrint(AMMOPACK_ARMOR
@@ -55,9 +55,9 @@ class FieldOps : Class {
 
     void classAction2(Player @player) {
         cEntity @ent = player.getEnt();
-        Vec3 origin = G_ThrowOrigin(ent);
-        Vec3 angles = G_ThrowAngles(ent);
-        if (!G_CanSpawn(origin, CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS,
+        Vec3 origin = utils.throwOrigin(ent);
+        Vec3 angles = utils.throwAngles(ent);
+        if (!utils.canSpawn(origin, CLUSTERBOMB_MINS, CLUSTERBOMB_MAXS,
                     ent.entNum))
             player.centerPrint("Can't spawn a clusterbomb there");
         else if (!player.takeArmor(CLUSTERBOMB_ARMOR))

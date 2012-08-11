@@ -67,7 +67,7 @@ class Soldier : Class {
                 if (@other != null) {
                     cClient @client = other.getClient();
                     if (@client != null && client.team == team
-                            && G_Near(player, other, SHIELD_RADIUS))
+                            && utils.near(player, other, SHIELD_RADIUS))
                         other.giveItem(POWERUP_SHELL, SHIELD_TIME);
                     G_Sound(other.getEnt(), CHAN_ITEM, SHIELD_SOUND.get(),
                             ATTN_POWERUP);

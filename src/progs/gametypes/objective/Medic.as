@@ -44,9 +44,9 @@ class Medic : Class {
 
     void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
-        Vec3 origin = G_ThrowOrigin(ent);
-        Vec3 angles = G_ThrowAngles(ent);
-        if (!G_CanSpawn(origin, HEALTHPACK_MINS, HEALTHPACK_MAXS, ent.entNum))
+        Vec3 origin = utils.throwOrigin(ent);
+        Vec3 angles = utils.throwAngles(ent);
+        if (!utils.canSpawn(origin, HEALTHPACK_MINS, HEALTHPACK_MAXS, ent.entNum))
             player.centerPrint("Can't spawn a healthpack there");
         else if (!player.takeArmor(HEALTH_ARMOR))
             player.centerPrint(HEALTH_ARMOR

@@ -54,7 +54,7 @@ class Constructable : Component {
         if (method == "constructArmor")
             constructArmor = arguments[0].toInt();
         else if (method == "ghost")
-            @ghost = objectiveSet.find(G_Join(arguments));
+            @ghost = objectiveSet.find(utils.join(arguments));
         else if (method == "onConstructed")
             @onConstructed = parser.createCallback(arguments[0]);
         else

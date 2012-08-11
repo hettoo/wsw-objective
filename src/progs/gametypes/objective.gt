@@ -15,7 +15,7 @@ legacy/quake3_items.as;
 legacy_items.as;
 
 objective.as;
-objective/globals.as;
+objective/Utils.as;
 objective/Model.as;
 objective/Sound.as;
 objective/Image.as;

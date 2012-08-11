@@ -121,15 +121,15 @@ class Objective : Processor {
 
     bool process(String method, String@[] arguments) {
         if (method == "name") {
-            this.name = G_Join(arguments);
+            this.name = utils.join(arguments);
         } else if (method == "startSpawned") {
             startSpawned = arguments[0].toInt() == 1;
         } else if (method == "solid") {
             solid = arguments[0].toInt() == 1;
         } else if (method == "model") {
-            model = Model(G_Join(arguments)).get();
+            model = Model(utils.join(arguments)).get();
         } else if (method == "icon") {
-            icon = Image(G_Join(arguments)).get();
+            icon = Image(utils.join(arguments)).get();
         } else if (method == "moveType") {
             moveType = arguments[0].toInt();
         } else if (method == "mins") {
@@ -197,7 +197,7 @@ class Objective : Processor {
             }
 
             if (icon != 0)
-                @minimap = G_SpawnIcon(icon, owningTeam, origin);
+                @minimap = utils.spawnIcon(icon, owningTeam, origin);
 
         }
 
@@ -295,7 +295,7 @@ class Objective : Processor {
     }
 
     bool near(cEntity @other) {
-        return G_Near(@ent == null ? origin : ent.origin,
+        return utils.near(@ent == null ? origin : ent.origin,
                 other.origin, radius);
     }
 

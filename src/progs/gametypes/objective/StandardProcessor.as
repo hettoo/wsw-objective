@@ -22,7 +22,7 @@ class StandardProcessor : Processor {
         if (method == "author")
             gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
-                    + G_Join(arguments) + S_COLOR_ORANGE + ")";
+                    + utils.join(arguments) + S_COLOR_ORANGE + ")";
         else if (method == "goal")
             objectiveSet.setGoal(ResultSet(arguments));
         else

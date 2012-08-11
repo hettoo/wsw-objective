@@ -66,7 +66,7 @@ class Item {
     }
 
     bool near(cEntity @other) {
-        return G_Near(ent, other, ITEM_RADIUS);
+        return utils.near(ent, other, ITEM_RADIUS);
     }
 
     bool near(Player @player) {

@@ -62,7 +62,7 @@ class Stealable : Component {
 
     void stolen(Player @thief) {
         if (objective.getName() != "")
-            players.say(G_GetTeamName(thief.getClient().team)
+            players.say(utils.getTeamName(thief.getClient().team)
                     + " has stolen the " + objective.getName() + "!");
         players.sound(STEAL_SOUND.get());
 
@@ -73,7 +73,7 @@ class Stealable : Component {
 
     void dropped(Player @dropper) {
         if (objective.getName() != "")
-            players.say(G_GetTeamName(dropper.getClient().team)
+            players.say(utils.getTeamName(dropper.getClient().team)
                     + " has dropped the " + objective.getName() + "!");
         players.sound(DROP_SOUND.get());
 
@@ -91,7 +91,7 @@ class Stealable : Component {
             return false;
 
         if (objective.getName() != "")
-            players.say(G_GetTeamName(securer.getClient().team)
+            players.say(utils.getTeamName(securer.getClient().team)
                     + " has secured the " + objective.getName()
                     + (target.getName() == ""
                         ? "" : " at the " + target.getName()) + "!");
@@ -108,7 +108,7 @@ class Stealable : Component {
 
     void returned(Player @returner) {
         if (objective.getName() != "")
-            players.say(G_GetTeamName(objective.getTeam())
+            players.say(utils.getTeamName(objective.getTeam())
                     + " has returned the " + objective.getName() + "!");
         players.sound(RETURN_SOUND.get());
         if (@returner != null)

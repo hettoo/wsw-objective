@@ -54,14 +54,14 @@ class Destroyable : Component {
 
     void planted() {
         if (objective.getName() != "")
-            players.say(G_GetTeamName(objective.getOtherTeam())
+            players.say(utils.getTeamName(objective.getOtherTeam())
                     + " planted a bomb at the " + objective.getName() + "!");
         players.sound(PLANT_SOUND.get());
     }
 
     void defused(Player @defuser) {
         if (objective.getName() != "")
-            players.say(G_GetTeamName(objective.getTeam())
+            players.say(utils.getTeamName(objective.getTeam())
                     + " defused the bomb at the " + objective.getName() + "!");
         players.sound(DEFUSE_SOUND.get());
         defuser.addScore(DEFUSE_SCORE);

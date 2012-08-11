@@ -41,9 +41,9 @@ class Engineer : Class {
 
     void classAction1(Player @player) {
         cEntity @ent = player.getEnt();
-        Vec3 origin = G_ThrowOrigin(ent);
-        Vec3 angles = G_ThrowAngles(ent);
-        if (!G_CanSpawn(origin, BOMB_MINS, BOMB_MAXS, ent.entNum)) {
+        Vec3 origin = utils.throwOrigin(ent);
+        Vec3 angles = utils.throwAngles(ent);
+        if (!utils.canSpawn(origin, BOMB_MINS, BOMB_MAXS, ent.entNum)) {
             player.centerPrint("Can't spawn a bomb there");
         } else if (!player.takeArmor(BOMB_ARMOR)) {
             player.centerPrint(BOMB_ARMOR

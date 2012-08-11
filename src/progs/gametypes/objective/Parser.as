@@ -61,7 +61,7 @@ class Parser {
     }
 
     bool parseIgnored() {
-        return G_IsNewline(byte);
+        return utils.isNewline(byte);
     }
 
     Processor @getProcessor() {
@@ -74,7 +74,7 @@ class Parser {
     void enterSection() {
         Processor @newProcessor = getProcessor().subProcessor(sectionName);
         if (@newProcessor == null)
-            G_Debug("Unknown section: " + sectionName);
+            utils.debug("Unknown section: " + sectionName);
         pushProcessor(newProcessor);
     }
 
@@ -99,7 +99,7 @@ class Parser {
         message += method;
         for (uint i = 0; i < arguments.length; i++)
             message += " " + arguments[i];
-        G_Debug(message);
+        utils.debug(message);
     }
 
     bool parseSection() {
@@ -108,7 +108,7 @@ class Parser {
         } else if (byte == "]" && processors.length > 1) {
             leaveSection();
         } else if (parsingSection) {
-            if (G_IsWhitespace(byte))
+            if (utils.isWhitespace(byte))
                 parsingSection = false;
             else
                 sectionName += byte;
@@ -137,7 +137,7 @@ class Parser {
                 brackets--;
             if (brackets > 0)
                 arguments[parsedArguments] += byte;
-        } else if (G_IsWhitespace(byte)) {
+        } else if (utils.isWhitespace(byte)) {
             parsedArguments++;
         } else if (byte == ";") {
             executeMethod();
@@ -156,7 +156,7 @@ class Parser {
             if (byte == ".") {
                 targets.insertLast(method);
                 @method = "";
-            } else if (G_IsWhitespace(byte)) {
+            } else if (utils.isWhitespace(byte)) {
                 parsingMethod = false;
                 parsingArguments = true;
                 arguments.resize(0);

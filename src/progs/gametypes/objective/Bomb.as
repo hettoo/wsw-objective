@@ -110,7 +110,7 @@ class Bomb {
     }
 
     bool near(cEntity @other) {
-        return G_Near(ent, other, BOMB_RADIUS);
+        return utils.near(ent, other, BOMB_RADIUS);
     }
 
     bool near(Player @player) {
@@ -143,7 +143,7 @@ class Bomb {
         explodeTime = BOMB_TIME;
         setSoundTime();
         if (objectiveSet.planted(ent))
-            @minimap = G_SpawnIcon(BOMB_ICON.get(), team, origin);
+            @minimap = utils.spawnIcon(BOMB_ICON.get(), team, origin);
     }
 
     void defuseProgress() {
