@@ -4,14 +4,17 @@ EXECUTABLE = wsw-server
 MOD = basewsw
 
 NAME = objective
-SERVER_CMD = cd $(EXECUTE_DIR) && $(EXECUTABLE) +set fs_game $(MOD) +set g_gametype $(NAME)
+SERVER_CMD = cd $(EXECUTE_DIR) && $(EXECUTABLE) +set fs_game $(MOD) \
+			 +set g_gametype $(NAME)
 THIS = Makefile
-GT_DIR = src
+SOURCE_DIR = source
+SOURCE_DESTINATION_DIR = /progs/gametypes/
+DATA_DIR = data
 TMP_DIR = tmp
 BASE_MOD = basewsw
 CONFIG_DIR = configs/server/gametypes
-FILES = $(shell find $(GT_DIR))
-SETTINGS_FILE = $(GT_DIR)/progs/gametypes/$(NAME)/main/Settings.as
+FILES = $(shell find $(SOURCE_DIR) $(DATA_DIR))
+SETTINGS_FILE = $(SOURCE_DIR)/$(NAME)/main/Settings.as
 EVERY_PK3 = $(NAME)-*.pk3
 CFG = $(NAME).cfg
 
@@ -26,9 +29,10 @@ dist: $(PK3)
 
 $(PK3): $(FILES) $(THIS)
 	rm -rf $(TMP_DIR)
-	mkdir $(TMP_DIR)
+	mkdir -p $(TMP_DIR)$(SOURCE_DESTINATION_DIR)
 	rm -f $(PK3)
-	cp -r $(GT_DIR)/* $(TMP_DIR)/
+	cp -r $(SOURCE_DIR)/* $(TMP_DIR)$(SOURCE_DESTINATION_DIR)
+	cp -r $(DATA_DIR)/* $(TMP_DIR)/
 	cd $(TMP_DIR); zip ../$(PK3) -r -xi *
 	rm -r $(TMP_DIR)
 
