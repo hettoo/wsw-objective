@@ -81,7 +81,9 @@ class Utils {
     }
 
     String @getTeamName(int team) {
-        return G_GetTeam(team).name;
+        if (team < GS_MAX_TEAMS)
+            return G_GetTeam(team).name;
+        return WTF;
     }
 
     bool near(Vec3 a, Vec3 b, float radius) {

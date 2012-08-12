@@ -103,7 +103,9 @@ class Players : Processor {
     int otherTeam(int team) {
         if (team == TEAM_ALPHA)
             return TEAM_BETA;
-        return TEAM_ALPHA;
+        else if (team == TEAM_BETA)
+            return TEAM_ALPHA;
+        return team;
     }
 
     void say(String &message) {

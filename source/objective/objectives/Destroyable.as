@@ -43,9 +43,14 @@ class Destroyable : Component {
 
     void destruct(Player @planter) {
         players.sound(DESTROY_SOUND.get());
+        int team = objective.getOtherTeam();
         objective.destroy();
+        String name = objective.getName();
+        if (name != "")
+            players.say(utils.getTeamName(team) + " has destroyed the " + name
+                    + "!");
         if (@onDestroyed != null) {
-            objective.setActiveTeam(planter.getClient().team);
+            objective.setActiveTeam(team);
             parser.executeCallback(onDestroyed);
             objective.unsetActiveTeam();
         }
