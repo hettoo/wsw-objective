@@ -36,8 +36,11 @@ class Processor {
         else {
             Processor @subProcessor = subProcessor(targets[0]);
             if (@subProcessor != null) {
+                subProcessor.startProcessor();
                 targets.removeAt(0);
-                return subProcessor.process(targets, method, arguments);
+                bool result = subProcessor.process(targets, method, arguments);
+                subProcessor.stopProcessor();
+                return result;
             }
         }
         return false;

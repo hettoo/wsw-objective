@@ -46,17 +46,12 @@ class Parser {
     }
 
     void pushProcessor(Processor @processor) {
-        if (@processor != null) {
+        if (@processor != null)
             processor.setParser(this);
-            processor.startProcessor();
-        }
         processors.insertLast(processor);
     }
 
     void popProcessor() {
-        Processor @processor = processors[processors.length - 1];
-        if (@processor != null)
-            processor.stopProcessor();
         processors.removeLast();
     }
 
@@ -75,6 +70,8 @@ class Parser {
         Processor @newProcessor = getProcessor().subProcessor(sectionName);
         if (@newProcessor == null)
             utils.debug("Unknown section: " + sectionName);
+        else
+            newProcessor.startProcessor();
         pushProcessor(newProcessor);
     }
 
@@ -171,6 +168,7 @@ class Parser {
 
     void parse(String code) {
         reset();
+        processors[0].startProcessor();
         for (uint i = 0; i < code.length(); i++) {
             byte = code.subString(i, 1);
             if (!parseIgnored() && !parseArguments() && !parseSection()
@@ -178,6 +176,7 @@ class Parser {
                 // whatever
             }
         }
+        processors[0].stopProcessor();
     }
 
     Callback @createCallback(String code) {

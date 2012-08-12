@@ -37,12 +37,15 @@ class SpawnLocation : Component {
     SpawnLocation(Objective @objective) {
         super(objective);
         capturable = false;
+        @spawnPointSet = null;
     }
 
     void startProcessor() {
         Component::startProcessor();
-        @spawnPointSet = SpawnPointSet();
-        spawnPointSet.analyze(objective.getId());
+        if (@spawnPointSet == null) {
+            @spawnPointSet = SpawnPointSet();
+            spawnPointSet.analyze(objective.getId());
+        }
     }
 
     bool isActive() {
@@ -60,15 +63,14 @@ class SpawnLocation : Component {
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "capturable") {
+        if (method == "capturable")
             capturable = arguments[0].toInt() == 1;
-        } else if (method == "alphaFallback") {
+        else if (method == "alphaFallback")
             @alphaFallback = objectiveSet.find(arguments[0]);
-        } else if (method == "betaFallback") {
+        else if (method == "betaFallback")
             @betaFallback = objectiveSet.find(arguments[0]);
-        } else {
-            return false;
-        }
+        else
+            return Component::process(method, arguments);
         return true;
     }
 

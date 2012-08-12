@@ -37,7 +37,7 @@ class Destroyable : Component {
         if (method == "onDestroyed")
             @onDestroyed = parser.createCallback(arguments[0]);
         else
-            return false;
+            return Component::process(method, arguments);
         return true;
     }
 

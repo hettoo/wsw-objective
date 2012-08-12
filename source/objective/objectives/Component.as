@@ -31,6 +31,14 @@ class Component : Processor {
         active = true;
     }
 
+    bool process(String method, String@[] arguments) {
+        if (method == "active") {
+            active = arguments[0].toInt() == 1;
+            return true;
+        }
+        return false;
+    }
+
     bool isActive() {
         return active;
     }

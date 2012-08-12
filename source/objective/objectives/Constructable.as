@@ -58,7 +58,7 @@ class Constructable : Component {
         else if (method == "onConstructed")
             @onConstructed = parser.createCallback(arguments[0]);
         else
-            return false;
+            return Component::process(method, arguments);
         return true;
     }
 

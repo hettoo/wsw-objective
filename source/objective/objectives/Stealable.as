@@ -51,7 +51,7 @@ class Stealable : Component {
             for (uint i = 0; i < arguments.size(); i++)
                 @targets[i] = objectiveSet.find(arguments[i]);
         } else {
-            return false;
+            return Component::process(method, arguments);
         }
         return true;
     }
