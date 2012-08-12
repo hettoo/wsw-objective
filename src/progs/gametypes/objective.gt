@@ -24,9 +24,9 @@ objective/main/Scoreboard.as;
 objective/main/Players.as;
 objective/main/Player.as;
 
-objective/wrappers/Model.as;
-objective/wrappers/Sound.as;
-objective/wrappers/Image.as;
+objective/data/Model.as;
+objective/data/Sound.as;
+objective/data/Image.as;
 
 objective/classes/Classes.as;
 objective/classes/Class.as;
