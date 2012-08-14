@@ -31,16 +31,27 @@ class Soldier : Class {
     Soldier() {
         spawnArmor = 20;
         maxArmor = 80;
+    }
 
-        primaryWeapon = WEAP_ROCKETLAUNCHER;
-        primarySpawnAmmo = 12;
-        primaryAmmo = 4;
-        primaryMaxAmmo = 22;
+    void giveSpawnAmmo(Player @player) {
+        Class::giveSpawnAmmo(player);
 
-        secondaryWeapon = WEAP_RIOTGUN;
-        secondarySpawnAmmo = 10;
-        secondaryAmmo = 3;
-        secondaryMaxAmmo = 18;
+        player.giveAmmo(WEAP_ROCKETLAUNCHER, 12);
+        player.giveAmmo(WEAP_RIOTGUN, 8);
+    }
+
+    bool giveAmmopack(Player @player) {
+        bool given = Class::giveAmmopack(player);
+
+        given = player.giveAmmo(WEAP_ROCKETLAUNCHER, 4, 16) || given;
+        given = player.giveAmmo(WEAP_RIOTGUN, 4, 10) || given;
+
+        return given;
+    }
+
+    void spawn(Player @player) {
+        Class::spawn(player);
+        player.getClient().selectWeapon(WEAP_ROCKETLAUNCHER);
     }
 
     String @getName() {

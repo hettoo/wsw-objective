@@ -28,16 +28,27 @@ class Sniper : Class {
     Sniper() {
         spawnArmor = 0;
         maxArmor = 100;
+    }
 
-        primaryWeapon = WEAP_ELECTROBOLT;
-        primarySpawnAmmo = 8;
-        primaryAmmo = 15;
-        primaryMaxAmmo = 4;
+    void giveSpawnAmmo(Player @player) {
+        Class::giveSpawnAmmo(player);
 
-        secondaryWeapon = WEAP_RIOTGUN;
-        secondarySpawnAmmo = 2;
-        secondaryAmmo = 3;
-        secondaryMaxAmmo = 8;
+        player.giveAmmo(WEAP_ELECTROBOLT, 10);
+        player.giveAmmo(WEAP_RIOTGUN, 5);
+    }
+
+    bool giveAmmopack(Player @player) {
+        bool given = Class::giveAmmopack(player);
+
+        given = player.giveAmmo(WEAP_ELECTROBOLT, 4, 12) || given;
+        given = player.giveAmmo(WEAP_RIOTGUN, 2, 7) || given;
+
+        return given;
+    }
+
+    void spawn(Player @player) {
+        Class::spawn(player);
+        player.getClient().selectWeapon(WEAP_ELECTROBOLT);
     }
 
     String @getName() {

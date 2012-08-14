@@ -26,16 +26,27 @@ class Medic : Class {
 
         spawnArmor = 30;
         maxArmor = 80;
+    }
 
-        primaryWeapon = WEAP_LASERGUN;
-        primarySpawnAmmo = 50;
-        primaryAmmo = 25;
-        primaryMaxAmmo = 80;
+    void giveSpawnAmmo(Player @player) {
+        Class::giveSpawnAmmo(player);
 
-        secondaryWeapon = WEAP_PLASMAGUN;
-        secondarySpawnAmmo = 40;
-        secondaryAmmo = 25;
-        secondaryMaxAmmo = 70;
+        player.giveAmmo(WEAP_LASERGUN, 110);
+        player.giveAmmo(WEAP_PLASMAGUN, 60);
+    }
+
+    bool giveAmmopack(Player @player) {
+        bool given = Class::giveAmmopack(player);
+
+        given = player.giveAmmo(WEAP_LASERGUN, 40, 150) || given;
+        given = player.giveAmmo(WEAP_PLASMAGUN, 30, 90) || given;
+
+        return given;
+    }
+
+    void spawn(Player @player) {
+        Class::spawn(player);
+        player.getClient().selectWeapon(WEAP_LASERGUN);
     }
 
     String @getName() {
@@ -46,7 +57,8 @@ class Medic : Class {
         cEntity @ent = player.getEnt();
         Vec3 origin = utils.throwOrigin(ent);
         Vec3 angles = utils.throwAngles(ent);
-        if (!utils.canSpawn(origin, HEALTHPACK_MINS, HEALTHPACK_MAXS, ent.entNum))
+        if (!utils.canSpawn(origin, HEALTHPACK_MINS, HEALTHPACK_MAXS,
+                    ent.entNum))
             player.centerPrint("Can't spawn a healthpack there");
         else if (!player.takeArmor(HEALTH_ARMOR))
             player.centerPrint(HEALTH_ARMOR

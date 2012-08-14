@@ -23,16 +23,27 @@ class Engineer : Class {
     Engineer() {
         spawnArmor = 40;
         maxArmor = 90;
+    }
 
-        primaryWeapon = WEAP_RIOTGUN;
-        primarySpawnAmmo = 10;
-        primaryAmmo = 5;
-        primaryMaxAmmo = 18;
+    void giveSpawnAmmo(Player @player) {
+        Class::giveSpawnAmmo(player);
 
-        secondaryWeapon = WEAP_LASERGUN;
-        secondarySpawnAmmo = 40;
-        secondaryAmmo = 30;
-        secondaryMaxAmmo = 80;
+        player.giveAmmo(WEAP_RIOTGUN, 10);
+        player.giveAmmo(WEAP_LASERGUN, 80);
+    }
+
+    bool giveAmmopack(Player @player) {
+        bool given = Class::giveAmmopack(player);
+
+        given = player.giveAmmo(WEAP_RIOTGUN, 4, 14) || given;
+        given = player.giveAmmo(WEAP_LASERGUN, 30, 100) || given;
+
+        return given;
+    }
+
+    void spawn(Player @player) {
+        Class::spawn(player);
+        player.getClient().selectWeapon(WEAP_RIOTGUN);
     }
 
     String @getName() {

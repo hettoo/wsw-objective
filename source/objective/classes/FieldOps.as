@@ -24,16 +24,27 @@ class FieldOps : Class {
     FieldOps() {
         spawnArmor = 20;
         maxArmor = 90;
+    }
 
-        primaryWeapon = WEAP_PLASMAGUN;
-        primarySpawnAmmo = 50;
-        primaryAmmo = 25;
-        primaryMaxAmmo = 80;
+    void giveSpawnAmmo(Player @player) {
+        Class::giveSpawnAmmo(player);
 
-        secondaryWeapon = WEAP_ROCKETLAUNCHER;
-        secondarySpawnAmmo = 10;
-        secondaryAmmo = 4;
-        secondaryMaxAmmo = 20;
+        player.giveAmmo(WEAP_PLASMAGUN, 90);
+        player.giveAmmo(WEAP_ROCKETLAUNCHER, 8);
+    }
+
+    bool giveAmmopack(Player @player) {
+        bool given = Class::giveAmmopack(player);
+
+        given = player.giveAmmo(WEAP_PLASMAGUN, 30, 120) || given;
+        given = player.giveAmmo(WEAP_ROCKETLAUNCHER, 4, 12) || given;
+
+        return given;
+    }
+
+    void spawn(Player @player) {
+        Class::spawn(player);
+        player.getClient().selectWeapon(WEAP_PLASMAGUN);
     }
 
     String @getName() {

@@ -29,16 +29,6 @@ class Class {
 
     Image @classIcon;
 
-    int primaryWeapon;
-    int primarySpawnAmmo;
-    int primaryAmmo;
-    int primaryMaxAmmo;
-
-    int secondaryWeapon;
-    int secondarySpawnAmmo;
-    int secondaryAmmo;
-    int secondaryMaxAmmo;
-
     Class() {
         spawnHealth = 70;
         maxHealth = 90;
@@ -59,15 +49,10 @@ class Class {
     }
 
     bool giveAmmopack(Player @player) {
-        bool gaveGL = player.giveAmmo(WEAP_GRENADELAUNCHER, 2, 5);
-        bool gaveMG = player.giveAmmo(WEAP_MACHINEGUN, 40, 100);
+        bool given = player.giveAmmo(WEAP_GRENADELAUNCHER, 2, 5);
+        given = player.giveAmmo(WEAP_MACHINEGUN, 40, 120) || given;
 
-        bool gavePrimary = player.giveAmmo(primaryWeapon, primaryAmmo,
-                primaryMaxAmmo);
-        bool gaveSecondary = player.giveAmmo(secondaryWeapon, secondaryAmmo,
-                secondaryMaxAmmo);
-
-        return gaveGL || gaveMG || gavePrimary || gaveSecondary;
+        return given;
     }
 
     bool giveHealthpack(Player @player) {
@@ -82,11 +67,8 @@ class Class {
 
     void giveSpawnAmmo(Player @player) {
         player.giveAmmo(WEAP_GUNBLADE, 4);
-        player.giveAmmo(WEAP_GRENADELAUNCHER, 2);
-        player.giveAmmo(WEAP_MACHINEGUN, 60);
-
-        player.giveAmmo(primaryWeapon, primarySpawnAmmo);
-        player.giveAmmo(secondaryWeapon, secondarySpawnAmmo);
+        player.giveAmmo(WEAP_GRENADELAUNCHER, 3);
+        player.giveAmmo(WEAP_MACHINEGUN, 90);
     }
 
     void spawn(Player @player) {
@@ -94,7 +76,7 @@ class Class {
             player.setClass(brandom(0, CLASSES - 1));
 
         giveSpawnAmmo(player);
-        player.getClient().selectWeapon(primaryWeapon);
+        player.getClient().selectWeapon(WEAP_MACHINEGUN);
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
