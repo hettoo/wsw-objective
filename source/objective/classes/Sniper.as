@@ -78,8 +78,8 @@ class Sniper : Class {
             else if (!player.takeArmor(ARTILLERY_ARMOR)) {
                 player.centerPrint(ARTILLERY_ARMOR
                         + " armor is required to spawn artillery");
-            } else {
-                artillerySet.add(view.get_endPos(), player);
+            } else if (!artillerySet.add(view.get_endPos(), player)) {
+                player.centerPrint("Your team has too much active artillery");
             }
         } else {
             player.centerPrint("Not solid or too far away to spawn artillery");

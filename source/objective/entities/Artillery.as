@@ -43,6 +43,10 @@ class Artillery {
         wait = brandom(ARTILLERY_MIN_WAIT, ARTILLERY_MAX_WAIT);
     }
 
+    Player @getOwner() {
+        return owner;
+    }
+
     void launch() {
         Vec3 thisOrigin = origin;
         Vec3 angles(2 * brandom(0, ARTILLERY_MAX_DIVERGENCY)
