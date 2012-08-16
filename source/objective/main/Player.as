@@ -234,11 +234,13 @@ class Player {
     }
 
     void classAction1() {
-        playerClass.classAction1(this);
+        if (client.team != TEAM_SPECTATOR)
+            playerClass.classAction1(this);
     }
 
     void classAction2() {
-        playerClass.classAction2(this);
+        if (client.team != TEAM_SPECTATOR)
+            playerClass.classAction2(this);
     }
 
     void itemPickupSound(int sound) {
