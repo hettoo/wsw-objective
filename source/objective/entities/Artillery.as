@@ -27,6 +27,7 @@ const float ARTILLERY_MAX_DIVERGENCY = 28.0f;
 class Artillery {
     Vec3 origin;
     Player @owner;
+    int team;
     int rocketsFired;
     float wait;
 
@@ -35,8 +36,13 @@ class Artillery {
         this.origin.z += ARTILLERY_HEIGHT;
         @this.owner = owner;
 
+        team = owner.getTeam();
         rocketsFired = 0;
         setNextLaunch();
+    }
+
+    int getTeam() {
+        return team;
     }
 
     void setNextLaunch() {

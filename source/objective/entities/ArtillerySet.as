@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const int MAX_ARTILLERY = 2;
+const int MAX_ARTILLERIES = 2;
 
 ArtillerySet artillerySet;
 
@@ -31,11 +31,14 @@ class ArtillerySet {
             counts[i] = 0;
     }
 
+    bool canAdd(Player @owner) {
+        return counts[owner.getTeam()] < MAX_ARTILLERIES;
+    }
+
     bool add(Vec3 origin, Player @owner) {
-        int team = owner.getTeam();
-        if (counts[team] >= MAX_ARTILLERY)
+        if (!canAdd(owner))
             return false;
-        counts[team]++;
+        counts[owner.getTeam()]++;
         artillerySet.insertLast(Artillery(origin, owner));
         return true;
     }
@@ -44,7 +47,7 @@ class ArtillerySet {
         for (uint i = 0; i < artillerySet.size(); i++) {
             if (@artillerySet[i] == @artillery) {
                 artillerySet.removeAt(i);
-                counts[artillery.getOwner().getTeam()]--;
+                counts[artillery.getTeam()]--;
                 return true;
             }
         }

@@ -75,12 +75,13 @@ class Sniper : Class {
                         view.get_endPos() + Vec3(0, 0, ARTILLERY_HEIGHT), 0,
                         MASK_SOLID))
                 player.centerPrint("Can't spawn artillery there");
-            else if (!player.takeArmor(ARTILLERY_ARMOR)) {
+            else if (!artillerySet.canAdd(player))
+                player.centerPrint("Your team has too much active artillery");
+            else if (!player.takeArmor(ARTILLERY_ARMOR))
                 player.centerPrint(ARTILLERY_ARMOR
                         + " armor is required to spawn artillery");
-            } else if (!artillerySet.add(view.get_endPos(), player)) {
-                player.centerPrint("Your team has too much active artillery");
-            }
+            else
+                artillerySet.add(view.get_endPos(), player);
         } else {
             player.centerPrint("Not solid or too far away to spawn artillery");
         }

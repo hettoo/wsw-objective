@@ -54,18 +54,29 @@ class Engineer : Class {
         cEntity @ent = player.getEnt();
         Vec3 origin = utils.throwOrigin(ent);
         Vec3 angles = utils.throwAngles(ent);
-        if (!utils.canSpawn(origin, BOMB_MINS, BOMB_MAXS, ent.entNum)) {
+        if (!utils.canSpawn(origin, BOMB_MINS, BOMB_MAXS, ent.entNum))
             player.centerPrint("Can't spawn a bomb there");
-        } else if (!player.takeArmor(BOMB_ARMOR)) {
+        else if (!player.takeArmor(BOMB_ARMOR))
             player.centerPrint(BOMB_ARMOR
                     + " armor is required to throw a bomb");
-        } else {
+        else
             bombSet.add(origin, angles, player);
-        }
     }
 
-    // classaction2: shoot a grenade far away?
-    // create a turret (perhaps it might only be activated if a teammember is
-    // standing next to it)?
-    // spawn a(n invisible) landmine?
+    /*
+    void classAction2(Player @player) {
+        cEntity @ent = player.getEnt();
+        Vec3 origin = utils.throwOrigin(ent);
+        Vec3 angles = utils.throwAngles(ent);
+        if (!utils.canSpawn(origin, MINE_MINS, MINE_MAXS, ent.entNum))
+            player.centerPrint("Can't spawn a mine there");
+        else if (!mineSet.canAdd(player))
+            player.centerPrint("Your team has too much mines");
+        else if (!player.takeArmor(MINE_ARMOR))
+            player.centerPrint(MINE_ARMOR
+                    + " armor is required to spawn a mine");
+        else
+            mineSet.add(origin, angles, player)
+    }
+    */
 }
