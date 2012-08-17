@@ -102,6 +102,7 @@ class Core {
         objectiveSet.think();
         itemSet.think();
         bombSet.think();
+        mineSet.think();
         clusterbombSet.think();
         artillerySet.think();
         transporterSet.think();

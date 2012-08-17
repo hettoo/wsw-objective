@@ -40,6 +40,8 @@ objective/entities/ItemSet.as;
 objective/entities/Item.as;
 objective/entities/BombSet.as;
 objective/entities/Bomb.as;
+objective/entities/MineSet.as;
+objective/entities/Mine.as;
 objective/entities/ClusterbombSet.as;
 objective/entities/Clusterbomb.as;
 objective/entities/ArtillerySet.as;

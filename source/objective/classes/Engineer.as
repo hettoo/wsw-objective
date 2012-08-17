@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int BOMB_ARMOR = 60;
+const int MINE_ARMOR = 40;
 
 class Engineer : Class {
     Engineer() {
@@ -63,7 +64,6 @@ class Engineer : Class {
             bombSet.add(origin, angles, player);
     }
 
-    /*
     void classAction2(Player @player) {
         cEntity @ent = player.getEnt();
         Vec3 origin = utils.throwOrigin(ent);
@@ -76,7 +76,6 @@ class Engineer : Class {
             player.centerPrint(MINE_ARMOR
                     + " armor is required to spawn a mine");
         else
-            mineSet.add(origin, angles, player)
+            mineSet.add(origin, angles, player);
     }
-    */
 }

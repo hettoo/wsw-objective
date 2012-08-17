@@ -17,19 +17,37 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-BombSet bombSet;
+const int MAX_MINES = 5;
 
-class BombSet {
-    Bomb@[] bombSet;
+MineSet mineSet;
 
-    void add(Vec3 origin, Vec3 angles, Player @owner) {
-        bombSet.insertLast(Bomb(origin, angles, owner));
+class MineSet {
+    Mine@[] mineSet;
+    int[] counts;
+
+    MineSet() {
+        counts.resize(GS_MAX_TEAMS);
+        for (int i = 0; i < GS_MAX_TEAMS; i++)
+            counts[i] = 0;
     }
 
-    bool remove(Bomb @bomb) {
-        for (uint i = 0; i < bombSet.size(); i++) {
-            if (@bombSet[i] == @bomb) {
-                bombSet.removeAt(i);
+    bool canAdd(Player @owner) {
+        return counts[owner.getTeam()] < MAX_MINES;
+    }
+
+    bool add(Vec3 origin, Vec3 angles, Player @owner) {
+        if (!canAdd(owner))
+            return false;
+        counts[owner.getTeam()]++;
+        mineSet.insertLast(Mine(origin, angles, owner));
+        return true;
+    }
+
+    bool remove(Mine @mine) {
+        for (uint i = 0; i < mineSet.size(); i++) {
+            if (@mineSet[i] == @mine) {
+                mineSet.removeAt(i);
+                counts[mine.getTeam()]--;
                 return true;
             }
         }
@@ -37,7 +55,7 @@ class BombSet {
     }
 
     void think() {
-        for (uint i = 0; i < bombSet.size(); i++)
-            bombSet[i].think();
+        for (uint i = 0; i < mineSet.size(); i++)
+            mineSet[i].think();
     }
 }
