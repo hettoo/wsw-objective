@@ -71,17 +71,31 @@ class Class {
         player.giveAmmo(WEAP_MACHINEGUN, 90);
     }
 
+    int getSpawnHealth() {
+        return spawnHealth;
+    }
+
+    int getSpawnArmor() {
+        return spawnArmor;
+    }
+
     void spawn(Player @player) {
         if (player.isBot() && random() < BOT_CLASS_CHANGE_CHANCE)
             player.setClass(brandom(0, CLASSES - 1));
 
         giveSpawnAmmo(player);
-        player.getClient().selectWeapon(WEAP_MACHINEGUN);
+        selectBestWeapon(player);
 
         player.setHealth(spawnHealth);
         player.setArmor(spawnArmor);
         player.setHUDStat(player.getTeam() == TEAM_ALPHA
                 ? STAT_IMAGE_ALPHA : STAT_IMAGE_BETA, classIcon.get());
+    }
+
+    bool selectBestWeapon(Player @player) {
+        return player.selectWeapon(WEAP_MACHINEGUN)
+            || player.selectWeapon(WEAP_GRENADELAUNCHER)
+            || player.selectWeapon(WEAP_GUNBLADE);
     }
 
     void classAction1(Player @player) {

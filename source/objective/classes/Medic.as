@@ -18,6 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int HEALTH_ARMOR = 10;
+const int REVIVE_ARMOR = 15;
+const int REVIVE_SCORE = 2;
 
 class Medic : Class {
     Medic() {
@@ -35,6 +37,12 @@ class Medic : Class {
         player.giveAmmo(WEAP_PLASMAGUN, 60);
     }
 
+    bool selectBestWeapon(Player @player) {
+        return player.selectWeapon(WEAP_LASERGUN)
+            || player.selectWeapon(WEAP_PLASMAGUN)
+            || Class::selectBestWeapon(player);
+    }
+
     bool giveAmmopack(Player @player) {
         bool given = Class::giveAmmopack(player);
 
@@ -42,11 +50,6 @@ class Medic : Class {
         given = player.giveAmmo(WEAP_PLASMAGUN, 30, 90) || given;
 
         return given;
-    }
-
-    void spawn(Player @player) {
-        Class::spawn(player);
-        player.getClient().selectWeapon(WEAP_LASERGUN);
     }
 
     String @getName() {
@@ -67,5 +70,22 @@ class Medic : Class {
             itemSet.addHealthpack(origin, angles, player);
     }
 
-    // classaction2: revive
+    void classAction2(Player @player) {
+        cEntity @ent = player.getEnt();
+        Reviver @reviver = players.getReviver(player.getTeam(), ent.origin);
+        if (@reviver != null) {
+            if (!player.takeArmor(REVIVE_ARMOR)) {
+                player.centerPrint(REVIVE_ARMOR
+                        + " armor is required to revive someone");
+            } else {
+                reviver.revive();
+                player.addScore(REVIVE_SCORE);
+                Player @target = reviver.getTarget();
+                player.centerPrint("You have revived "
+                        + target.getClient().name);
+                target.centerPrint("You have been revived by "
+                        + player.getClient().name);
+            }
+        }
+    }
 }

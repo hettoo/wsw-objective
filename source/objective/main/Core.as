@@ -50,7 +50,14 @@ class Core {
     }
 
     cEntity @selectSpawnPoint(cEntity @self) {
-        cEntity @spawn = objectiveSet.randomSpawnPoint(self);
+        cEntity @spawn;
+        Player @player = players.get(self);
+        if (@player != null) {
+            @spawn = player.getSpawnPoint();
+            if (@spawn != null)
+                return spawn;
+        }
+        @spawn = objectiveSet.randomSpawnPoint(self);
         if (@spawn == null)
             @spawn = GENERIC_SelectBestRandomSpawnPoint(null,
                     "info_player_deathmatch");

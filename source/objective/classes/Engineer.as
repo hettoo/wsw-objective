@@ -33,6 +33,12 @@ class Engineer : Class {
         player.giveAmmo(WEAP_LASERGUN, 80);
     }
 
+    bool selectBestWeapon(Player @player) {
+        return player.selectWeapon(WEAP_RIOTGUN)
+            || player.selectWeapon(WEAP_LASERGUN)
+            || Class::selectBestWeapon(player);
+    }
+
     bool giveAmmopack(Player @player) {
         bool given = Class::giveAmmopack(player);
 
@@ -40,11 +46,6 @@ class Engineer : Class {
         given = player.giveAmmo(WEAP_LASERGUN, 30, 100) || given;
 
         return given;
-    }
-
-    void spawn(Player @player) {
-        Class::spawn(player);
-        player.getClient().selectWeapon(WEAP_RIOTGUN);
     }
 
     String @getName() {

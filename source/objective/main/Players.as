@@ -37,12 +37,30 @@ class Players : Processor {
         return get(client.playerNum);
     }
 
+    Player @get(cEntity @ent) {
+        if (@ent == null)
+            return null;
+        return get(ent.client);
+    }
+
     Classes @getClasses() {
         return classes;
     }
 
     int getSize() {
         return size;
+    }
+
+    Reviver @getReviver(int team, Vec3 origin) {
+        for (int i = 0; i < size; i++) {
+            Player @player = get(i);
+            if (@player != null && player.getTeam() == team) {
+                Reviver @reviver = player.getReviver();
+                if (@reviver != null && reviver.near(origin))
+                    return reviver;
+            }
+        }
+        return null;
     }
 
     void initClient(cClient @client) {
@@ -58,7 +76,10 @@ class Players : Processor {
     }
 
     void remove(int id) {
-        @players[id] = null;
+        if (@players[id] != null) {
+            players[id].destroy();
+            @players[id] = null;
+        }
     }
 
     void reset() {

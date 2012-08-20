@@ -33,6 +33,12 @@ class FieldOps : Class {
         player.giveAmmo(WEAP_ROCKETLAUNCHER, 8);
     }
 
+    bool selectBestWeapon(Player @player) {
+        return player.selectWeapon(WEAP_PLASMAGUN)
+            || player.selectWeapon(WEAP_ROCKETLAUNCHER)
+            || Class::selectBestWeapon(player);
+    }
+
     bool giveAmmopack(Player @player) {
         bool given = Class::giveAmmopack(player);
 
@@ -40,11 +46,6 @@ class FieldOps : Class {
         given = player.giveAmmo(WEAP_ROCKETLAUNCHER, 4, 12) || given;
 
         return given;
-    }
-
-    void spawn(Player @player) {
-        Class::spawn(player);
-        player.getClient().selectWeapon(WEAP_PLASMAGUN);
     }
 
     String @getName() {

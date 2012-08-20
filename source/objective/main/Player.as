@@ -31,7 +31,10 @@ class Player {
     cClient @client;
     cEntity @ent;
 
+    bool resuming;
     float score;
+    WeaponBackup @weaponBackup;
+    Reviver @reviver;
     Stealable @carry;
     CarryIdenticator @carryIdenticator;
 
@@ -40,7 +43,10 @@ class Player {
     int nextClass;
 
     Player() {
+        resuming = false;
         score = 0;
+
+        @weaponBackup = WeaponBackup(this);
 
         currentClass = CLASS_SOLDIER;
         nextClass = CLASSES;
@@ -63,6 +69,16 @@ class Player {
 
     cEntity @getEnt() {
         return ent;
+    }
+
+    Reviver @getReviver() {
+        return reviver;
+    }
+
+    cEntity @getSpawnPoint() {
+        if (resuming && @reviver != null)
+            return reviver.getEntity();
+        return null;
     }
 
     Stealable @getCarry() {
@@ -181,6 +197,11 @@ class Player {
         return true;
     }
 
+    int getAmmo(int weapon) {
+        cItem @item = G_GetItem(weapon);
+        return client.inventoryCount(item.ammoTag);
+    }
+
     bool giveAmmopack() {
         bool done = playerClass.giveAmmopack(this);
         if (done)
@@ -207,10 +228,29 @@ class Player {
         }
     }
 
+    bool selectWeapon(int weapon) {
+        if (!client.canSelectWeapon(weapon))
+            return false;
+        client.selectWeapon(weapon);
+        return true;
+    }
+
+    void resume() {
+        resuming = true;
+        client.respawn(false);
+        resuming = false;
+    }
+
     void spawn() {
-        applyNextClass();
+        removeReviver();
+        if (!resuming) {
+            applyNextClass();
+            playerClass.spawn(this);
+        } else {
+            weaponBackup.restore();
+            playerClass.selectBestWeapon(this);
+        }
         giveItem(POWERUP_SHELL, SPAWN_PROTECTION_TIME);
-        playerClass.spawn(this);
         ent.respawnEffect();
     }
 
@@ -225,12 +265,15 @@ class Player {
         setHUDStat(STAT_IMAGE_OTHER, 0);
         setHUDStat(STAT_MESSAGE_SELF, 0);
 
-        GENERIC_ChargeGunblade(client);
-        if (ent.health > 0)
+        if (ent.health > 0) {
+            GENERIC_ChargeGunblade(client);
             playerClass.addArmor(this, ARMOR_FRAME_BONUS * frameTime);
 
-        if (@carryIdenticator != null)
-            carryIdenticator.update();
+            if (@carryIdenticator != null)
+                carryIdenticator.update();
+        }
+        if (@reviver != null)
+            reviver.think();
     }
 
     void classAction1() {
@@ -277,10 +320,26 @@ class Player {
     }
 
     void killed() {
+        weaponBackup.create();
+        @reviver = Reviver(this);
+        if (!reviver.spawn())
+            removeReviver();
+
         if (@carry != null) {
             carry.dropped(this);
             @carry = null;
         }
+    }
+
+    void removeReviver() {
+        if (@reviver != null) {
+            reviver.destroy();
+            @reviver = null;
+        }
+    }
+
+    void destroy() {
+        removeReviver();
     }
 
     void madeKill(bool suicide, bool teamKill) {

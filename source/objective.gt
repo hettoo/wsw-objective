@@ -23,6 +23,7 @@ objective/main/Settings.as;
 objective/main/Scoreboard.as;
 objective/main/Players.as;
 objective/main/Player.as;
+objective/main/WeaponBackup.as;
 
 objective/data/Model.as;
 objective/data/Sound.as;
@@ -36,6 +37,7 @@ objective/classes/Medic.as;
 objective/classes/FieldOps.as;
 objective/classes/Sniper.as;
 
+objective/entities/Reviver.as;
 objective/entities/ItemSet.as;
 objective/entities/Item.as;
 objective/entities/BombSet.as;
