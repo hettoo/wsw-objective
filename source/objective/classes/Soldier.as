@@ -31,28 +31,9 @@ class Soldier : Class {
     Soldier() {
         spawnArmor = 20;
         maxArmor = 80;
-    }
 
-    void giveSpawnAmmo(Player @player) {
-        Class::giveSpawnAmmo(player);
-
-        player.giveAmmo(WEAP_ROCKETLAUNCHER, 12);
-        player.giveAmmo(WEAP_RIOTGUN, 8);
-    }
-
-    bool selectBestWeapon(Player @player) {
-        return player.selectWeapon(WEAP_ROCKETLAUNCHER)
-            || player.selectWeapon(WEAP_RIOTGUN)
-            || Class::selectBestWeapon(player);
-    }
-
-    bool giveAmmopack(Player @player) {
-        bool given = Class::giveAmmopack(player);
-
-        given = player.giveAmmo(WEAP_ROCKETLAUNCHER, 4, 16) || given;
-        given = player.giveAmmo(WEAP_RIOTGUN, 4, 10) || given;
-
-        return given;
+        weaponSet.insertLast(Weapon(WEAP_RIOTGUN, 8, 4, 10));
+        weaponSet.insertLast(Weapon(WEAP_ROCKETLAUNCHER, 12, 4, 16));
     }
 
     String @getName() {

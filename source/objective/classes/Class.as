@@ -27,11 +27,17 @@ class Class {
     int maxHealth;
     int maxArmor;
 
+    Weapon@[] weaponSet;
+
     Image @classIcon;
 
     Class() {
         spawnHealth = 70;
         maxHealth = 90;
+
+        weaponSet.insertLast(Weapon(WEAP_GUNBLADE, 4));
+        weaponSet.insertLast(Weapon(WEAP_GRENADELAUNCHER, 3, 2, 5));
+        weaponSet.insertLast(Weapon(WEAP_MACHINEGUN, 90, 40, 120));
 
         @classIcon = Image("hud/icons/objective/classes/" + getSimpleName());
     }
@@ -49,9 +55,12 @@ class Class {
     }
 
     bool giveAmmopack(Player @player) {
-        bool given = player.giveAmmo(WEAP_GRENADELAUNCHER, 2, 5);
-        given = player.giveAmmo(WEAP_MACHINEGUN, 40, 120) || given;
-
+        bool given = false;
+        for (uint i = 0; i < weaponSet.size(); i++) {
+            if (player.giveAmmo(weaponSet[i].getWeapon(),
+                        weaponSet[i].getAmmo(), weaponSet[i].getMaxAmmo()))
+                given = true;
+        }
         return given;
     }
 
@@ -66,9 +75,9 @@ class Class {
     }
 
     void giveSpawnAmmo(Player @player) {
-        player.giveAmmo(WEAP_GUNBLADE, 4);
-        player.giveAmmo(WEAP_GRENADELAUNCHER, 3);
-        player.giveAmmo(WEAP_MACHINEGUN, 90);
+        for (uint i = 0; i < weaponSet.size(); i++)
+            player.giveAmmo(weaponSet[i].getWeapon(),
+                    weaponSet[i].getSpawnAmmo());
     }
 
     int getSpawnHealth() {
@@ -93,9 +102,11 @@ class Class {
     }
 
     bool selectBestWeapon(Player @player) {
-        return player.selectWeapon(WEAP_MACHINEGUN)
-            || player.selectWeapon(WEAP_GRENADELAUNCHER)
-            || player.selectWeapon(WEAP_GUNBLADE);
+        for (uint i = weaponSet.size(); i >= 1; i--) { // fucking uints
+            if (player.selectWeapon(weaponSet[i - 1].getWeapon()))
+                return true;
+        }
+        return false;
     }
 
     void classAction1(Player @player) {

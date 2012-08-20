@@ -24,6 +24,7 @@ objective/main/Scoreboard.as;
 objective/main/Players.as;
 objective/main/Player.as;
 objective/main/WeaponBackup.as;
+objective/main/Weapon.as;
 
 objective/data/Model.as;
 objective/data/Sound.as;

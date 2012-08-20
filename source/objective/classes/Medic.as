@@ -28,28 +28,9 @@ class Medic : Class {
 
         spawnArmor = 30;
         maxArmor = 80;
-    }
 
-    void giveSpawnAmmo(Player @player) {
-        Class::giveSpawnAmmo(player);
-
-        player.giveAmmo(WEAP_LASERGUN, 110);
-        player.giveAmmo(WEAP_PLASMAGUN, 60);
-    }
-
-    bool selectBestWeapon(Player @player) {
-        return player.selectWeapon(WEAP_LASERGUN)
-            || player.selectWeapon(WEAP_PLASMAGUN)
-            || Class::selectBestWeapon(player);
-    }
-
-    bool giveAmmopack(Player @player) {
-        bool given = Class::giveAmmopack(player);
-
-        given = player.giveAmmo(WEAP_LASERGUN, 40, 150) || given;
-        given = player.giveAmmo(WEAP_PLASMAGUN, 30, 90) || given;
-
-        return given;
+        weaponSet.insertLast(Weapon(WEAP_PLASMAGUN, 60, 30, 90));
+        weaponSet.insertLast(Weapon(WEAP_LASERGUN, 110, 40, 150));
     }
 
     String @getName() {

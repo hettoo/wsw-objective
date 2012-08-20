@@ -28,28 +28,9 @@ class Sniper : Class {
     Sniper() {
         spawnArmor = 0;
         maxArmor = 100;
-    }
 
-    void giveSpawnAmmo(Player @player) {
-        Class::giveSpawnAmmo(player);
-
-        player.giveAmmo(WEAP_ELECTROBOLT, 10);
-        player.giveAmmo(WEAP_RIOTGUN, 5);
-    }
-
-    bool selectBestWeapon(Player @player) {
-        return player.selectWeapon(WEAP_ELECTROBOLT)
-            || player.selectWeapon(WEAP_RIOTGUN)
-            || Class::selectBestWeapon(player);
-    }
-
-    bool giveAmmopack(Player @player) {
-        bool given = Class::giveAmmopack(player);
-
-        given = player.giveAmmo(WEAP_ELECTROBOLT, 4, 12) || given;
-        given = player.giveAmmo(WEAP_RIOTGUN, 2, 7) || given;
-
-        return given;
+        weaponSet.insertLast(Weapon(WEAP_RIOTGUN, 5, 2, 7));
+        weaponSet.insertLast(Weapon(WEAP_ELECTROBOLT, 10, 4, 12));
     }
 
     String @getName() {
