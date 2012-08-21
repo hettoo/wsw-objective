@@ -24,6 +24,7 @@ class Parser {
 
     String byte;
     int brackets;
+    bool special;
     bool parsingSection;
     String @sectionName;
     String@[] targets;
@@ -39,6 +40,7 @@ class Parser {
 
     void reset() {
         brackets = 0;
+        special = false;
         parsingSection = false;
         @method = "";
         parsingArguments = false;
@@ -137,12 +139,36 @@ class Parser {
         }
 
         if (byte == "{") {
-            brackets++;
+            if (special) {
+                if (brackets == 1)
+                    arguments[parsedArguments] += byte;
+                else
+                    arguments[parsedArguments] += "\\" + byte;
+                special = false;
+            } else {
+                brackets++;
+            }
         } else if (brackets > 0) {
-            if (byte == "}")
-                brackets--;
-            if (brackets > 0)
-                arguments[parsedArguments] += byte;
+            if (special) {
+                if (byte == "}") {
+                    if (brackets == 1)
+                        arguments[parsedArguments] += byte;
+                    else
+                        arguments[parsedArguments] += "\\" + byte;
+                } else if (byte == "n") {
+                    arguments[parsedArguments] += "\n";
+                } else {
+                    arguments[parsedArguments] += byte;
+                }
+                special = false;
+            } else {
+                if (byte == "\\")
+                    special = true;
+                else if (byte == "}")
+                    brackets--;
+                if (brackets > 0 && !special)
+                    arguments[parsedArguments] += byte;
+            }
         } else if (utils.isWhitespace(byte)) {
             parsedArguments++;
         } else if (byte == ";") {
