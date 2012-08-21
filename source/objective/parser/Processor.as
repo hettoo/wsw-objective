@@ -46,6 +46,10 @@ class Processor {
         return false;
     }
 
+    String @preProcess(String argument, bool bracketed, bool isMethod) {
+        return null;
+    }
+
     bool process(String method, String@[] arguments) {
         return false;
     }

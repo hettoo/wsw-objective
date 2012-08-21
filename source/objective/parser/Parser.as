@@ -24,6 +24,7 @@ class Parser {
 
     String byte;
     int brackets;
+    bool bracketed;
     bool special;
     bool parsingSection;
     String @sectionName;
@@ -40,6 +41,7 @@ class Parser {
 
     void reset() {
         brackets = 0;
+        bracketed = false;
         special = false;
         parsingSection = false;
         @method = "";
@@ -68,6 +70,19 @@ class Parser {
         return processors[i];
     }
 
+    String @preProcess(String argument, bool bracketed, bool isMethod) {
+        for (uint i = processors.length; i >= 1; i--) {
+            uint index = i - 1;
+            if (@processors[index] != null) {
+                String @newArgument = processors[index].preProcess(argument,
+                        bracketed, isMethod);
+                if (@newArgument != null)
+                    return newArgument;
+            }
+        }
+        return argument;
+    }
+
     void enterSection() {
         Processor @newProcessor = getProcessor().subProcessor(sectionName);
         if (@newProcessor == null)
@@ -91,9 +106,10 @@ class Parser {
     }
 
     void executeMethod() {
-        for (uint i = 0; i < processors.length; i++) {
-            if (@processors[i] != null
-                    && processors[i].process(targets, method, arguments)) {
+        for (uint i = processors.length; i >= 1; i--) {
+            uint index = i - 1;
+            if (@processors[index] != null
+                    && processors[index].process(targets, method, arguments)) {
                 cleanMethod();
                 return;
             }
@@ -129,6 +145,12 @@ class Parser {
         return true;
     }
 
+    void preProcessArgument() {
+        arguments[parsedArguments] = preProcess(arguments[parsedArguments],
+                bracketed, false);
+        bracketed = false;
+    }
+
     bool parseArguments() {
         if (!parsingArguments)
             return false;
@@ -146,6 +168,8 @@ class Parser {
                     arguments[parsedArguments] += "\\" + byte;
                 special = false;
             } else {
+                if (arguments[parsedArguments] == "")
+                    bracketed = true;
                 brackets++;
             }
         } else if (brackets > 0) {
@@ -170,14 +194,21 @@ class Parser {
                     arguments[parsedArguments] += byte;
             }
         } else if (utils.isWhitespace(byte)) {
+            preProcessArgument();
             parsedArguments++;
         } else if (byte == ";") {
+            preProcessArgument();
             executeMethod();
             parsingArguments = false;
         } else {
             arguments[parsedArguments] += byte;
         }
         return true;
+    }
+
+    void stopMethodParsing() {
+        parsingMethod = false;
+        method = preProcess(method, false, true);
     }
 
     bool parseMethod() {
@@ -187,10 +218,10 @@ class Parser {
                 targets.insertLast(method);
                 @method = "";
             } else if (byte == ";") {
-                parsingMethod = false;
+                stopMethodParsing();
                 executeMethod();
             } else if (utils.isWhitespace(byte)) {
-                parsingMethod = false;
+                stopMethodParsing();
                 parsingArguments = true;
                 parsedArguments = 0;
             } else {
