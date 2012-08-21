@@ -37,7 +37,7 @@ class Stealable : Component {
     Objective@[] targets;
 
     int state;
-    int oldMoveType;
+    int[] oldMoveTypes;
     float returnTime;
 
     Stealable(Objective @objective) {
@@ -77,8 +77,12 @@ class Stealable : Component {
                     + " has dropped the " + objective.getName() + "!");
         players.sound(DROP_SOUND.get());
 
-        if (state == SS_RETURNED)
-            oldMoveType = objective.getMoveType();
+        if (state == SS_RETURNED) {
+            uint count = objective.getEntityCount();
+            oldMoveTypes.resize(count);
+            for (uint i = 0; i < count; i++)
+                oldMoveTypes[i] = objective.getEntity(i).getMoveType();
+        }
         state = SS_DROPPED;
         dropper.setCarry(null);
         objective.setMoveType(MOVETYPE_TOSS);
@@ -115,7 +119,8 @@ class Stealable : Component {
             returner.addScore(RETURN_SCORE);
 
         state = SS_RETURNED;
-        objective.setMoveType(oldMoveType);
+        for (uint i = 0; i < objective.getEntityCount(); i++)
+            objective.getEntity(i).setMoveType(oldMoveTypes[i]);
         objective.respawn();
     }
 

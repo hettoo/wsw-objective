@@ -20,22 +20,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Objective : Processor {
     String id;
 
+    ObjectiveEntity@[] entities;
+
     String name;
-    cEntity @ent;
+    Vec3 origin;
+    Vec3 angles;
     cEntity @minimap;
     bool spawned;
     int owningTeam;
     int activeTeam;
 
-    bool startSpawned;
-    bool solid;
-    int model;
     int icon;
-    Vec3 origin;
-    Vec3 angles;
-    Vec3 mins;
-    Vec3 maxs;
-    int moveType;
     int team;
     float radius;
 
@@ -47,19 +42,17 @@ class Objective : Processor {
 
     Objective(cEntity @target) {
         id = target.get_targetname();
-        id = id.substr(1, id.len());
+        id = id.substr(1);
         spawned = false;
 
-        solid = true;
-        model = 0;
-        origin = target.origin;
-        angles = target.angles;
-        moveType = MOVETYPE_NONE;
-        startSpawned = true;
         team = GS_MAX_TEAMS;
+        radius = 125;
+
         owningTeam = team;
         unsetActiveTeam();
-        radius = 125;
+
+        origin = target.origin;
+        angles = target.angles;
 
         target.unlinkEntity();
         target.freeEntity();
@@ -83,18 +76,6 @@ class Objective : Processor {
         return origin;
     }
 
-    int getModel() {
-        return model;
-    }
-
-    void setModel(int model) {
-        this.model = model;
-    }
-
-    void setEnt(cEntity @ent) {
-        @this.ent = ent;
-    }
-
     int getIcon() {
         return icon;
     }
@@ -111,33 +92,13 @@ class Objective : Processor {
         @this.minimap = minimap;
     }
 
-    int getMoveType() {
-        return moveType;
-    }
-
-    void setMoveType(int moveType) {
-        this.moveType = moveType;
-    }
-
     bool process(String method, String@[] arguments) {
         if (method == "name") {
             this.name = utils.join(arguments);
-        } else if (method == "startSpawned") {
-            startSpawned = arguments[0].toInt() == 1;
-        } else if (method == "solid") {
-            solid = arguments[0].toInt() == 1;
-        } else if (method == "model") {
-            model = Model(utils.join(arguments)).get();
+        } else if (method == "radius") {
+            radius = arguments[0].toInt();
         } else if (method == "icon") {
             icon = Image(utils.join(arguments)).get();
-        } else if (method == "moveType") {
-            moveType = arguments[0].toInt();
-        } else if (method == "mins") {
-            mins = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
-        } else if (method == "maxs") {
-            maxs = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
         } else if (method == "team") {
             String name = arguments[0].tolower();
             if (name == "alpha")
@@ -145,8 +106,8 @@ class Objective : Processor {
             else if (name == "beta")
                 team = TEAM_BETA;
             owningTeam = team;
-        } else if (method == "radius") {
-            radius = arguments[0].toInt();
+        } else if (method == "spawn") {
+            spawn();
         } else if (method == "spawnObjective") {
             objectiveSet.find(arguments[0]).spawn(activeTeam);
         } else if (method == "spawnObjectiveOther") {
@@ -171,7 +132,47 @@ class Objective : Processor {
             return stealable;
         if (target == "secureLocation")
             return secureLocation;
+        if (target == "entity") {
+            ObjectiveEntity @entity = ObjectiveEntity(this);
+            entities.insertLast(entity);
+            return entity;
+        }
+        for (uint i = 0; i < entities.size(); i++) {
+            if (entities[i].getId() == target)
+                return entities[i];
+        }
         return null;
+    }
+
+    ObjectiveEntity @getEntity(uint index) {
+        return entities[index];
+    }
+
+    ObjectiveEntity @getMainEntity() {
+        if (entities.size() == 0)
+            return null;
+        return entities[0];
+    }
+
+    Vec3 getAngles() {
+        return angles;
+    }
+
+    float getRadius() {
+        return radius;
+    }
+
+    int getOwningTeam() {
+        return owningTeam;
+    }
+
+    void setMoveType(int moveType) {
+        for (uint i = 0; i < entities.size(); i++)
+            entities[i].setMoveType(moveType);
+    }
+
+    uint getEntityCount() {
+        return entities.size();
     }
 
     void spawn(Vec3 origin) {
@@ -181,24 +182,11 @@ class Objective : Processor {
         if (spawnLocation.isActive() && spawnLocation.isCapturable()) {
             spawnLocation.spawn();
         } else {
-            if (model != 0) {
-                @ent = G_SpawnEntity("objective");
-                ent.type = ET_GENERIC;
-                ent.modelindex = model;
-                ent.team = owningTeam;
-                ent.origin = origin;
-                ent.angles = angles;
-                ent.setSize(mins, maxs);
-                ent.solid = solid ? SOLID_YES : SOLID_NOT;
-                ent.clipMask = MASK_PLAYERSOLID;
-                ent.moveType = moveType;
-                ent.svflags &= ~SVF_NOCLIENT;
-                ent.linkEntity();
-            }
+            for (uint i = 0; i < entities.size(); i++)
+                entities[i].spawn(origin);
 
             if (icon != 0)
                 @minimap = utils.spawnIcon(icon, owningTeam, origin);
-
         }
 
         spawned = true;
@@ -228,20 +216,13 @@ class Objective : Processor {
         return destroyable.isActive();
     }
 
-    void initialSpawn() {
-        if (startSpawned)
-            spawn();
-    }
-
     void destroy(bool goalTest) {
         if (!spawned)
             return;
 
-        if (@ent != null) {
-            ent.unlinkEntity();
-            ent.freeEntity();
-            @ent = null;
-        }
+        for (uint i = 0; i < entities.size(); i++)
+            entities[i].destroy();
+
         if (@minimap != null) {
             minimap.unlinkEntity();
             minimap.freeEntity();
@@ -250,7 +231,8 @@ class Objective : Processor {
         spawned = false;
         owningTeam = team;
 
-        objectiveSet.goalTest();
+        if (goalTest)
+            objectiveSet.goalTest();
     }
 
     void destroy() {
@@ -295,8 +277,13 @@ class Objective : Processor {
     }
 
     bool near(cEntity @other) {
-        return utils.near(@ent == null ? origin : ent.origin,
-                other.origin, radius);
+        if (entities.size() == 0)
+            return utils.near(origin, other.origin, radius);
+        for (uint i = 0; i < entities.size(); i++) {
+            if (entities[i].near(other))
+                return true;
+        }
+        return false;
     }
 
     bool near(Player @player) {

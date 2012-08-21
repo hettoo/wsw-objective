@@ -82,11 +82,19 @@ class Parser {
         popProcessor();
     }
 
+    void cleanMethod() {
+        @method = "";
+        targets.resize(0);
+        arguments.resize(0);
+    }
+
     void executeMethod() {
         for (uint i = 0; i < processors.length; i++) {
             if (@processors[i] != null
-                    && processors[i].process(targets, method, arguments))
+                    && processors[i].process(targets, method, arguments)) {
+                cleanMethod();
                 return;
+            }
         }
         String message = "Could not execute method: ";
         for (uint i = 0; i < targets.length; i++)
@@ -97,6 +105,7 @@ class Parser {
         for (uint i = 0; i < arguments.length; i++)
             message += " " + arguments[i];
         utils.debug(message);
+        cleanMethod();
     }
 
     bool parseSection() {
@@ -138,8 +147,6 @@ class Parser {
             parsedArguments++;
         } else if (byte == ";") {
             executeMethod();
-            @method = "";
-            targets.resize(0);
             parsingArguments = false;
         } else {
             arguments[parsedArguments] += byte;
@@ -153,10 +160,12 @@ class Parser {
             if (byte == ".") {
                 targets.insertLast(method);
                 @method = "";
+            } else if (byte == ";") {
+                parsingMethod = false;
+                executeMethod();
             } else if (utils.isWhitespace(byte)) {
                 parsingMethod = false;
                 parsingArguments = true;
-                arguments.resize(0);
                 parsedArguments = 0;
             } else {
                 method += byte;

@@ -98,7 +98,6 @@ class Mine {
         ent.explosionEffect(MINE_EFFECT_RADIUS);
         ent.splashDamage(@ent.owner, MINE_EFFECT_RADIUS, 90, 50, 1,
                 MOD_EXPLOSIVE);
-        objectiveSet.exploded(ent, owner);
         remove();
     }
 
@@ -127,7 +126,6 @@ class Mine {
         state = MS_PLANTED;
         G_Sound(ent, CHAN_ITEM, MINE_ARM_SOUND.get(), ATTN_MINE);
         explodeTime = MINE_TIME;
-        objectiveSet.planted(ent);
     }
 
     void defuseProgress() {
@@ -135,7 +133,6 @@ class Mine {
     }
 
     void defused(Player @defuser) {
-        objectiveSet.defused(ent, defuser);
         remove();
     }
 

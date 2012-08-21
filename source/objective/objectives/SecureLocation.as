@@ -33,9 +33,10 @@ class SecureLocation : Component {
         if (@carry == null)
             return;
 
-        int newModel = carry.getObjective().getModel();
+        // TODO: what about the other entities? strange shit here
+        int newModel = carry.getObjective().getMainEntity().getModel();
         if (player.secureCarry(objective)) {
-            objective.setModel(newModel);
+            objective.getMainEntity().setModel(newModel);
             objective.respawn();
             occupied = true;
         }

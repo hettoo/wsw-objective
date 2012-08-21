@@ -75,6 +75,10 @@ class SpawnLocation : Component {
     }
 
     void spawn() {
+        ObjectiveEntity @mainEntity = objective.getMainEntity();
+        if (@mainEntity == null)
+            return;
+
         cEntity @ent = G_SpawnEntity("objective");
         ent.type = ET_GENERIC;
         ent.team = objective.getTeam();
@@ -98,7 +102,7 @@ class SpawnLocation : Component {
         ent.moveType = MOVETYPE_NONE;
         ent.svflags &= ~SVF_NOCLIENT;
         ent.linkEntity();
-        objective.setEnt(ent);
+        mainEntity.setEnt(ent);
         objective.setIcon(utils.spawnIcon(FLAG_ICON.get(), ent.team, origin));
     }
 

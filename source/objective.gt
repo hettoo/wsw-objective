@@ -55,6 +55,7 @@ objective/entities/CarryIdenticator.as;
 
 objective/objectives/ObjectiveSet.as;
 objective/objectives/Objective.as;
+objective/objectives/ObjectiveEntity.as;
 objective/objectives/Component.as;
 objective/objectives/Constructable.as;
 objective/objectives/Destroyable.as;

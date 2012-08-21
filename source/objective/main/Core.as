@@ -22,7 +22,6 @@ class Core {
         objectiveSet.analyze();
         objectiveSet.parse("mapscripts/" + Cvar("mapname", "", 0).get_string()
                 + ".cfg");
-        objectiveSet.initialSpawn();
     }
 
     void initGametype() {

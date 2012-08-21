@@ -89,14 +89,6 @@ class ObjectiveSet {
         Parser(StandardProcessor()).parse(file);
     }
 
-    void initialSpawn() {
-        suppressGoalTest = true;
-        for (uint i = 0; i < objectiveSet.size(); i++)
-            objectiveSet[i].initialSpawn();
-        suppressGoalTest = false;
-        goalTest();
-    }
-
     void think() {
         for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].think();
