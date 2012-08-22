@@ -49,7 +49,7 @@ class StandardProcessor : Processor {
                 parser.parse(arguments[0]);
             conditionSucceeded = !conditionSucceeded;
         } else if (method == "execute") {
-            parser.parse(arguments[0]);
+            parser.parse(utils.join(arguments));
         } else if (method == "author") {
             gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
