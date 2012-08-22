@@ -18,15 +18,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class StandardProcessor : Processor {
+    bool conditionSucceeded;
+
+    StandardProcessor() {
+        conditionSucceeded = false;
+    }
+
+    bool checkCondition(String@[] arguments) {
+        if (arguments[0] == "eq")
+            conditionSucceeded = arguments[1] == arguments[2];
+        else if (arguments[0] == "ne")
+            conditionSucceeded = arguments[1] != arguments[2];
+        else
+            conditionSucceeded = false;
+        return conditionSucceeded;
+    }
+
     bool process(String method, String@[] arguments) {
-        if (method == "author")
+        if (method == "if") {
+            if (checkCondition(arguments))
+                parser.parse(arguments[arguments.size() - 1]);
+        } else if (method == "elsif") {
+            if (!conditionSucceeded && checkCondition(arguments))
+                parser.parse(arguments[arguments.size() - 1]);
+        } else if (method == "else") {
+            if (!conditionSucceeded)
+                parser.parse(arguments[0]);
+            conditionSucceeded = !conditionSucceeded;
+        } else if (method == "author") {
             gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
                     + utils.join(arguments) + S_COLOR_ORANGE + ")";
-        else if (method == "goal")
+        } else if (method == "goal") {
             objectiveSet.setGoal(ResultSet(arguments));
-        else
+        } else {
             return Processor::process(method, arguments);
+        }
         return true;
     }
 
