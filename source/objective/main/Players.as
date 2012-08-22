@@ -153,7 +153,7 @@ class Players : Processor {
         if (method == "say")
             say(utils.join(arguments));
         else
-            return false;
+            return Processor::process(method, arguments);
         return true;
     }
 }

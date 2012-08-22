@@ -36,7 +36,7 @@ class Component : Processor {
             active = arguments[0].toInt() == 1;
             return true;
         }
-        return false;
+        return Processor::process(method, arguments);
     }
 
     bool isActive() {

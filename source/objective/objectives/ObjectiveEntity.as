@@ -71,7 +71,7 @@ class ObjectiveEntity : Processor {
         } else if (method == "spawn") {
             spawn();
         } else {
-            return false;
+            return Processor::process(method, arguments);
         }
         return true;
     }

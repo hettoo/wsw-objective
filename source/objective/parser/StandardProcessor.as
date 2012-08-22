@@ -26,7 +26,7 @@ class StandardProcessor : Processor {
         else if (method == "goal")
             objectiveSet.setGoal(ResultSet(arguments));
         else
-            return false;
+            return Processor::process(method, arguments);
         return true;
     }
 
@@ -36,6 +36,6 @@ class StandardProcessor : Processor {
             return objective;
         if (target == "players")
             return players;
-        return null;
+        return Processor::subProcessor(target);
     }
 }

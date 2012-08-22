@@ -116,7 +116,7 @@ class Objective : Processor {
         } else if (method == "capture") {
             objectiveSet.find(arguments[0]).lock(activeTeam);
         } else {
-            return false;
+            return Processor::process(method, arguments);
         }
         return true;
     }
@@ -141,7 +141,7 @@ class Objective : Processor {
             if (entities[i].getId() == target)
                 return entities[i];
         }
-        return null;
+        return Processor::subProcessor(target);
     }
 
     ObjectiveEntity @getEntity(uint index) {

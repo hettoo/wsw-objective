@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Processor {
     Parser @parser;
 
+    Dictionary variables;
+
     void startProcessor() {
     }
 
@@ -46,12 +48,50 @@ class Processor {
         return false;
     }
 
+    Variable @getVariable(String name) {
+        Variable @variable;
+        variables.get(name, @variable);
+        return variable;
+    }
+
     String @preProcess(String argument, bool bracketed, bool isMethod) {
-        return null;
+        if (bracketed || argument.length() == 0 || argument.substr(0, 1) != "#")
+            return null;
+        Variable @variable = getVariable(argument.substr(1));
+        if (@variable == null)
+            return null;
+        return variable.getString();
     }
 
     bool process(String method, String@[] arguments) {
-        return false;
+        if (method == "define") {
+            Variable @variable;
+            if (arguments[1] == "int")
+                @variable = IntVariable();
+            else if (arguments[1] == "float")
+                @variable = FloatVariable();
+            else if (arguments[1] == "string")
+                @variable = StringVariable();
+            variables.set(arguments[0], @variable);
+        } else if (method == "set") {
+            Variable @variable = getVariable(arguments[0]);
+            if (@variable == null)
+                return false;
+            variable.set(arguments[1]);
+        } else if (method == "add") {
+            Variable @variable = getVariable(arguments[0]);
+            if (@variable == null)
+                return false;
+            variable.add(arguments[1]);
+        } else if (method == "multiply") {
+            Variable @variable = getVariable(arguments[0]);
+            if (@variable == null)
+                return false;
+            variable.multiply(arguments[1]);
+        } else {
+            return false;
+        }
+        return true;
     }
 
     Processor @subProcessor(String target) {
