@@ -170,6 +170,8 @@ class Parser {
             } else {
                 if (arguments[parsedArguments] == "")
                     bracketed = true;
+                if (brackets > 0)
+                    arguments[parsedArguments] += byte;
                 brackets++;
             }
         } else if (brackets > 0) {

@@ -112,18 +112,26 @@ class Utils {
         return minimap;
     }
 
-    String @join(String@[] list, String glue) {
+    String @join(uint offset, String@[] list, String glue) {
         String result = "";
-        for (uint i = 0; i < list.size(); i++) {
-            if (i > 0)
+        for (uint i = offset; i < list.size(); i++) {
+            if (i > offset)
                 result += glue;
             result += list[i];
         }
         return result;
     }
 
+    String @join(String@[] list, String glue) {
+        return join(0, list, glue);
+    }
+
+    String @join(int offset, String@[] list) {
+        return join(offset, list, " ");
+    }
+
     String @join(String@[] list) {
-        return join(list, " ");
+        return join(0, list);
     }
 
     void debug(String message) {

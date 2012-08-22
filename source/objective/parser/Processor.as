@@ -78,17 +78,17 @@ class Processor {
             Variable @variable = getVariable(arguments[0]);
             if (@variable == null)
                 return false;
-            variable.set(arguments[1]);
+            variable.set(utils.join(1, arguments));
         } else if (method == "add") {
             Variable @variable = getVariable(arguments[0]);
             if (@variable == null)
                 return false;
-            variable.add(arguments[1]);
+            variable.add(utils.join(1, arguments));
         } else if (method == "multiply") {
             Variable @variable = getVariable(arguments[0]);
             if (@variable == null)
                 return false;
-            variable.multiply(arguments[1]);
+            variable.multiply(utils.join(1, arguments));
         } else {
             for (uint i = 0; i < functions.size(); i++) {
                 if (functions[i].getId() == method) {

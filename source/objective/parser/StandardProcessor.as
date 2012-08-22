@@ -41,10 +41,15 @@ class StandardProcessor : Processor {
         } else if (method == "elsif") {
             if (!conditionSucceeded && checkCondition(arguments))
                 parser.parse(arguments[arguments.size() - 1]);
+        } else if (method == "also") {
+            if (conditionSucceeded)
+                parser.parse(arguments[0]);
         } else if (method == "else") {
             if (!conditionSucceeded)
                 parser.parse(arguments[0]);
             conditionSucceeded = !conditionSucceeded;
+        } else if (method == "execute") {
+            parser.parse(arguments[0]);
         } else if (method == "author") {
             gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
