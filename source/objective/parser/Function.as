@@ -17,41 +17,35 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class StringVariable : Variable {
-    String value;
+class Function : Processor {
+    String id;
 
-    StringVariable() {
-        this.value = "";
+    Callback @code;
+    String@[] arguments;
+
+    String @getId() {
+        return id;
     }
 
-    StringVariable(String value) {
-        this.value = value;
+    Variable @getVariable(String name) {
+        if (name.isNumeric())
+            return StringVariable(arguments[name.toInt() - 1]);
+        return Processor::getVariable(name);
     }
 
-    void set(String value) {
-        this.value = value;
+    bool process(String method, String@[] arguments) {
+        if (method == "id") {
+            id = arguments[0];
+        } else if (method == "code") {
+            @code = parser.createCallback(arguments[0]);
+        } else {
+            return Processor::process(method, arguments);
+        }
+        return true;
     }
 
-    void add(String value) {
-        this.value += value;
-    }
-
-    void multiply(String value) {
-        int count = value.toInt();
-        String original = value;
-        for (int i = 1; i < count; i++)
-            this.value += original;
-    }
-
-    int getInt() {
-        return value.toInt();
-    }
-
-    float getFloat() {
-        return value.toFloat();
-    }
-
-    String @getString() {
-        return value;
+    void execute(String@[] arguments) {
+        this.arguments = arguments;
+        parser.executeCallback(code);
     }
 }

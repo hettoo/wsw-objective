@@ -44,9 +44,9 @@ class Parser {
         bracketed = false;
         special = false;
         parsingSection = false;
-        @method = "";
         parsingArguments = false;
         parsedArguments = 0;
+        cleanMethod();
     }
 
     void pushProcessor(Processor @processor) {

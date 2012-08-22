@@ -21,6 +21,7 @@ class Processor {
     Parser @parser;
 
     Dictionary variables;
+    Function@[] functions;
 
     void startProcessor() {
     }
@@ -33,9 +34,9 @@ class Processor {
     }
 
     bool process(String@[] targets, String method, String@[] arguments) {
-        if (targets.size() == 0)
+        if (targets.size() == 0) {
             return process(method, arguments);
-        else {
+        } else {
             Processor @subProcessor = subProcessor(targets[0]);
             if (@subProcessor != null) {
                 subProcessor.startProcessor();
@@ -89,12 +90,23 @@ class Processor {
                 return false;
             variable.multiply(arguments[1]);
         } else {
+            for (uint i = 0; i < functions.size(); i++) {
+                if (functions[i].getId() == method) {
+                    functions[i].execute(arguments);
+                    return true;
+                }
+            }
             return false;
         }
         return true;
     }
 
     Processor @subProcessor(String target) {
+        if (target == "function") {
+            Function @function = Function();
+            functions.insertLast(function);
+            return function;
+        }
         return null;
     }
 }

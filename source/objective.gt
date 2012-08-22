@@ -70,6 +70,7 @@ objective/parser/Parser.as;
 objective/parser/Callback.as;
 objective/parser/Processor.as;
 objective/parser/StandardProcessor.as;
+objective/parser/Function.as;
 objective/parser/Variable.as;
 objective/parser/IntVariable.as;
 objective/parser/FloatVariable.as;
