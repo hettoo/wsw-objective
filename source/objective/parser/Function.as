@@ -20,8 +20,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Function : Processor {
     String id;
 
-    Callback @code;
+    bool macro;
+    String @code;
+    Callback @callback;
     String@[] arguments;
+
+    Function() {
+        macro = false;
+    }
 
     String @getId() {
         return id;
@@ -42,17 +48,24 @@ class Function : Processor {
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "id")
+        if (method == "id") {
             id = arguments[0];
-        else if (method == "code")
-            @code = parser.createCallback(arguments[0]);
-        else
+        } else if (method == "macro") {
+            macro = arguments[0].toInt() == 1;
+        } else if (method == "code") {
+            @code = arguments[0];
+            @callback = parser.createCallback(code);
+        } else {
             return Processor::process(method, arguments);
+        }
         return true;
     }
 
     void execute(String@[] arguments) {
         this.arguments = arguments;
-        parser.executeCallback(code);
+        if (macro)
+            parser.parse(code);
+        else
+            parser.executeCallback(callback);
     }
 }
