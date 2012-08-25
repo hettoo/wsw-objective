@@ -49,6 +49,10 @@ class Processor {
         return false;
     }
 
+    String @getConstant(String name) {
+        return null;
+    }
+
     Variable @getVariable(String name) {
         Variable @variable;
         variables.get(name, @variable);
@@ -58,7 +62,11 @@ class Processor {
     String @preProcess(String argument, bool bracketed, bool isMethod) {
         if (bracketed || argument.length() == 0 || argument.substr(0, 1) != "#")
             return null;
-        Variable @variable = getVariable(argument.substr(1));
+        String name = argument.substr(1);
+        String @constant = getConstant(name);
+        if (@constant != null)
+            return constant;
+        Variable @variable = getVariable(name);
         if (@variable == null)
             return null;
         return variable.getString();
