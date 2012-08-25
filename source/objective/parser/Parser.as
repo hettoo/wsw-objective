@@ -31,6 +31,7 @@ class Parser {
     String@[] targets;
     bool parsingMethod;
     bool parsingArguments;
+    bool betweenArguments;
     uint parsedArguments;
     String@[] arguments;
     String @method;
@@ -45,6 +46,7 @@ class Parser {
         special = false;
         parsingSection = false;
         parsingArguments = false;
+        betweenArguments = false;
         parsedArguments = 0;
         cleanMethod();
     }
@@ -93,6 +95,7 @@ class Parser {
     }
 
     void leaveSection() {
+        flushMethod();
         Processor @last = processors[processors.length - 1];
         if (@last != null)
             last.stopProcessor();
@@ -124,6 +127,15 @@ class Parser {
             message += " " + arguments[i];
         utils.debug(message);
         cleanMethod();
+    }
+
+    void flushMethod() {
+        if (parsingMethod || parsingArguments) {
+            executeMethod();
+            parsingMethod = false;
+            parsingArguments = false;
+            betweenArguments = false;
+        }
     }
 
     bool parseSection() {
@@ -168,6 +180,7 @@ class Parser {
                     arguments[parsedArguments] += "\\" + byte;
                 special = false;
             } else {
+                betweenArguments = false;
                 if (arguments[parsedArguments] == "")
                     bracketed = true;
                 if (brackets > 0)
@@ -196,13 +209,18 @@ class Parser {
                     arguments[parsedArguments] += byte;
             }
         } else if (utils.isWhitespace(byte)) {
-            preProcessArgument();
-            parsedArguments++;
+            if (!betweenArguments) {
+                preProcessArgument();
+                parsedArguments++;
+                betweenArguments = true;
+            }
         } else if (byte == ";") {
             preProcessArgument();
             executeMethod();
+            betweenArguments = false;
             parsingArguments = false;
         } else {
+            betweenArguments = false;
             arguments[parsedArguments] += byte;
         }
         return true;
@@ -225,6 +243,7 @@ class Parser {
             } else if (utils.isWhitespace(byte)) {
                 stopMethodParsing();
                 parsingArguments = true;
+                betweenArguments = true;
                 parsedArguments = 0;
             } else {
                 method += byte;
@@ -244,6 +263,7 @@ class Parser {
                 // whatever
             }
         }
+        flushMethod();
         processors[0].stopProcessor();
     }
 

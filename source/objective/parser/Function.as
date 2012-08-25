@@ -30,17 +30,24 @@ class Function : Processor {
     Variable @getVariable(String name) {
         if (name.isNumeric())
             return StringVariable(arguments[name.toInt() - 1]);
+        if (name == "@")
+            return StringVariable(utils.join(arguments));
+        if (name.substr(0, 1) == "-") {
+            String index = name.substr(1);
+            if (index.isNumeric())
+                return StringVariable(arguments[arguments.size()
+                        - index.toInt()]);
+        }
         return Processor::getVariable(name);
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "id") {
+        if (method == "id")
             id = arguments[0];
-        } else if (method == "code") {
+        else if (method == "code")
             @code = parser.createCallback(arguments[0]);
-        } else {
+        else
             return Processor::process(method, arguments);
-        }
         return true;
     }
 

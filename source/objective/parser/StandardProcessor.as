@@ -70,4 +70,70 @@ class StandardProcessor : Processor {
             return players;
         return Processor::subProcessor(target);
     }
+
+    Variable @getVariable(String name) {
+        if (name == "TEAM_SPECTATOR")
+            return IntVariable(TEAM_SPECTATOR);
+        if (name == "TEAM_PLAYERS")
+            return IntVariable(TEAM_PLAYERS);
+        if (name == "TEAM_ALPHA")
+            return IntVariable(TEAM_ALPHA);
+        if (name == "TEAM_BETA")
+            return IntVariable(TEAM_BETA);
+        if (name == "GS_MAX_TEAMS")
+            return IntVariable(GS_MAX_TEAMS);
+
+        if (name == "MOVETYPE_NONE")
+            return IntVariable(MOVETYPE_NONE);
+        if (name == "MOVETYPE_PLAYER")
+            return IntVariable(MOVETYPE_PLAYER);
+        if (name == "MOVETYPE_NOCLIP")
+            return IntVariable(MOVETYPE_NOCLIP);
+        if (name == "MOVETYPE_PUSH")
+            return IntVariable(MOVETYPE_PUSH);
+        if (name == "MOVETYPE_STOP")
+            return IntVariable(MOVETYPE_STOP);
+        if (name == "MOVETYPE_FLY")
+            return IntVariable(MOVETYPE_FLY);
+        if (name == "MOVETYPE_TOSS")
+            return IntVariable(MOVETYPE_TOSS);
+        if (name == "MOVETYPE_LINEARPROJECTILE")
+            return IntVariable(MOVETYPE_LINEARPROJECTILE);
+        if (name == "MOVETYPE_BOUNCE")
+            return IntVariable(MOVETYPE_BOUNCE);
+        if (name == "MOVETYPE_BOUNCEGRENADE")
+            return IntVariable(MOVETYPE_BOUNCEGRENADE);
+        if (name == "MOVETYPE_TOSSSLIDE")
+            return IntVariable(MOVETYPE_TOSSSLIDE);
+
+        if (name == "SVF_NOCLIENT")
+            return IntVariable(SVF_NOCLIENT);
+        if (name == "SVF_PORTAL")
+            return IntVariable(SVF_PORTAL);
+        if (name == "SVF_TRANSMITORIGIN2")
+            return IntVariable(SVF_TRANSMITORIGIN2);
+        if (name == "SVF_SOUNDCULL")
+            return IntVariable(SVF_SOUNDCULL);
+        if (name == "SVF_FAKECLIENT")
+            return IntVariable(SVF_FAKECLIENT);
+        if (name == "SVF_BROADCAST")
+            return IntVariable(SVF_BROADCAST);
+        if (name == "SVF_CORPSE")
+            return IntVariable(SVF_CORPSE);
+        if (name == "SVF_PROJECTILE")
+            return IntVariable(SVF_PROJECTILE);
+        if (name == "SVF_ONLYTEAM")
+            return IntVariable(SVF_ONLYTEAM);
+        if (name == "SVF_FORCEOWNER")
+            return IntVariable(SVF_FORCEOWNER);
+
+        if (name == "SOLID_NOT")
+            return IntVariable(SOLID_NOT);
+        if (name == "SOLID_TRIGGER")
+            return IntVariable(SOLID_TRIGGER);
+        if (name == "SOLID_YES")
+            return IntVariable(SOLID_YES);
+
+        return Processor::getVariable(name);
+    }
 }

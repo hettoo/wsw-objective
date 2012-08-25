@@ -20,6 +20,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class FloatVariable : Variable {
     float value;
 
+    FloatVariable() {
+        this.value = 0;
+    }
+
+    FloatVariable(int value) {
+        this.value = value;
+    }
+
     void set(String value) {
         this.value = value.toFloat();
     }
