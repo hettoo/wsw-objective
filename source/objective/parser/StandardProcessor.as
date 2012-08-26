@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class StandardProcessor : Processor {
     bool conditionSucceeded;
+    String@[] stack;
 
     StandardProcessor() {
         conditionSucceeded = false;
@@ -48,6 +49,8 @@ class StandardProcessor : Processor {
             if (!conditionSucceeded)
                 parser.parse(arguments[0]);
             conditionSucceeded = !conditionSucceeded;
+        } else if (method == "push") {
+            stack.insertLast(utils.join(arguments));
         } else if (method == "execute") {
             parser.parse(utils.join(arguments));
         } else if (method == "author") {
@@ -73,6 +76,12 @@ class StandardProcessor : Processor {
 
     String @getConstant(String name) {
         String result;
+
+        if (name == "pop") {
+            result = stack[stack.size() - 1];
+            stack.removeLast();
+            return result;
+        }
 
         bool found = true;
         if (name == "TEAM_SPECTATOR")
