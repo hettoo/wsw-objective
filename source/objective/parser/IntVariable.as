@@ -17,38 +17,62 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class IntVariable : Variable {
+class IntVariable : NumericVariable {
     int value;
 
-    IntVariable() {
-        this.value = 0;
+    IntVariable(String value) {
+        super(value);
     }
 
-    IntVariable(int value) {
-        this.value = value;
+    IntVariable() {
+        super();
+    }
+
+    int read(String value) {
+        return value.toInt();
     }
 
     void set(String value) {
-        this.value = value.toInt();
+        this.value = read(value);
     }
 
     void add(String value) {
-        this.value += value.toInt();
+        this.value += read(value);
     }
 
     void multiply(String value) {
-        this.value *= value.toInt();
+        this.value *= read(value);
     }
 
-    int getInt() {
-        return value;
+    void modulo(String value) {
+        this.value %= read(value);
     }
 
-    float getFloat() {
-        return value;
+    void _not() {
+        value = ~value;
+    }
+
+    void _or(String value) {
+        this.value |= read(value);
+    }
+
+    void _and(String value) {
+        this.value &= read(value);
+    }
+
+    void _xor(String value) {
+        this.value ^= read(value);
     }
 
     String @getString() {
         return value + "";
+    }
+
+    bool process(String method, String@[] arguments) {
+        if (method == "not")
+            _not();
+        else
+            return NumericVariable::process(method, arguments);
+        return true;
     }
 }

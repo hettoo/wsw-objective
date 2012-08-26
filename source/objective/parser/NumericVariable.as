@@ -17,50 +17,43 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class FloatVariable : NumericVariable {
-    float value;
-
-    FloatVariable(String value) {
+class NumericVariable : Variable {
+    NumericVariable(String value) {
         super(value);
     }
 
-    FloatVariable() {
+    NumericVariable() {
         super();
     }
 
-    float read(String value) {
-        return value.toFloat();
-    }
-
-    void set(String value) {
-        this.value = read(value);
-    }
-
-    void add(String value) {
-        this.value += read(value);
-    }
-
     void multiply(String value) {
-        this.value *= read(value);
     }
 
     void modulo(String value) {
-        this.value %= read(value);
     }
 
     void _or(String value) {
-        this.value |= read(value);
     }
 
     void _and(String value) {
-        this.value &= read(value);
     }
 
     void _xor(String value) {
-        this.value ^= read(value);
     }
 
-    String @getString() {
-        return value + "";
+    bool process(String method, String argument) {
+        if (method == "multiply")
+            multiply(argument);
+        else if (method == "modulo")
+            modulo(argument);
+        else if (method == "or")
+            _or(argument);
+        else if (method == "and")
+            _and(argument);
+        else if (method == "xor")
+            _xor(argument);
+        else
+            return Variable::process(method, argument);
+        return true;
     }
 }

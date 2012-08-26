@@ -17,25 +17,38 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Variable {
+class Variable : Processor {
+    Variable(String value) {
+        set(value);
+    }
+
+    Variable() {
+        set("");
+    }
+
     void set(String value) {
     }
 
     void add(String value) {
     }
 
-    void multiply(String value) {
-    }
-
-    int getInt() {
-        return 0;
-    }
-
-    float getFloat() {
-        return 0;
-    }
-
     String @getString() {
         return "";
+    }
+
+    bool process(String method, String argument) {
+        if (method == "set")
+            set(argument);
+        else if (method == "add")
+            add(argument);
+        else
+            return false;
+        return true;
+    }
+
+    bool process(String method, String@[] arguments) {
+        if (process(method, utils.join(arguments)))
+            return true;
+        return Processor::process(method, arguments);
     }
 }

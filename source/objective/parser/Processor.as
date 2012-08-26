@@ -75,28 +75,14 @@ class Processor {
     bool process(String method, String@[] arguments) {
         if (method == "define") {
             Variable @variable;
+            String initial = utils.join(2, arguments);
             if (arguments[1] == "int")
-                @variable = IntVariable();
+                @variable = IntVariable(initial);
             else if (arguments[1] == "float")
-                @variable = FloatVariable();
+                @variable = FloatVariable(initial);
             else if (arguments[1] == "string")
-                @variable = StringVariable();
+                @variable = StringVariable(initial);
             variables.set(arguments[0], @variable);
-        } else if (method == "set") {
-            Variable @variable = getVariable(arguments[0]);
-            if (@variable == null)
-                return false;
-            variable.set(utils.join(1, arguments));
-        } else if (method == "add") {
-            Variable @variable = getVariable(arguments[0]);
-            if (@variable == null)
-                return false;
-            variable.add(utils.join(1, arguments));
-        } else if (method == "multiply") {
-            Variable @variable = getVariable(arguments[0]);
-            if (@variable == null)
-                return false;
-            variable.multiply(utils.join(1, arguments));
         } else {
             for (uint i = 0; i < functions.size(); i++) {
                 if (functions[i].getId() == method) {
@@ -115,6 +101,13 @@ class Processor {
             functions.insertLast(function);
             return function;
         }
+        for (uint i = 0; i < functions.size(); i++) {
+            if (functions[i].getId() == target)
+                return functions[i];
+        }
+        Variable @variable = getVariable(target);
+        if (@variable != null)
+            return variable;
         return null;
     }
 }

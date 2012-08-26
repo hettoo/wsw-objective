@@ -72,6 +72,7 @@ objective/parser/Processor.as;
 objective/parser/StandardProcessor.as;
 objective/parser/Function.as;
 objective/parser/Variable.as;
+objective/parser/NumericVariable.as;
 objective/parser/IntVariable.as;
 objective/parser/FloatVariable.as;
 objective/parser/StringVariable.as;

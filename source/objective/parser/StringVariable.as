@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class StringVariable : Variable {
     String value;
 
-    StringVariable() {
-        this.value = "";
+    StringVariable(String value) {
+        super(value);
     }
 
-    StringVariable(String value) {
-        this.value = value;
+    StringVariable() {
+        super();
     }
 
     void set(String value) {
@@ -41,14 +41,6 @@ class StringVariable : Variable {
         String original = value;
         for (int i = 1; i < count; i++)
             this.value += original;
-    }
-
-    int getInt() {
-        return value.toInt();
-    }
-
-    float getFloat() {
-        return value.toFloat();
     }
 
     String @getString() {
