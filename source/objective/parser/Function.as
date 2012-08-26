@@ -25,33 +25,32 @@ class Function : Processor {
     Callback @callback;
     String@[] arguments;
 
-    Function() {
-        macro = false;
+    Function(bool macro) {
+        this.macro = macro;
     }
 
     String @getId() {
         return id;
     }
 
-    Variable @getVariable(String name) {
+    String @getConstant(String name) {
         if (name.isNumeric())
-            return StringVariable(arguments[name.toInt() - 1]);
+            return arguments[name.toInt() - 1];
         if (name == "@")
-            return StringVariable(utils.join(arguments));
+            return utils.join(arguments);
+        if (name == "$")
+            return arguments.size() + "";
         if (name.substr(0, 1) == "-") {
             String index = name.substr(1);
             if (index.isNumeric())
-                return StringVariable(arguments[arguments.size()
-                        - index.toInt()]);
+                return arguments[arguments.size() - index.toInt()];
         }
-        return Processor::getVariable(name);
+        return Processor::getConstant(name);
     }
 
     bool process(String method, String@[] arguments) {
         if (method == "id") {
             id = arguments[0];
-        } else if (method == "macro") {
-            macro = arguments[0].toInt() == 1;
         } else if (method == "code") {
             @code = arguments[0];
             @callback = parser.createCallback(code);
@@ -63,9 +62,12 @@ class Function : Processor {
 
     void execute(String@[] arguments) {
         this.arguments = arguments;
-        if (macro)
+        if (macro) {
+            parser.pushProcessor(this);
             parser.parse(code);
-        else
+            parser.popProcessor();
+        } else {
             parser.executeCallback(callback);
+        }
     }
 }

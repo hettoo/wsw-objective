@@ -18,8 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class StandardProcessor : Processor {
-    bool conditionSucceeded;
+    Function@[] functions;
     String@[] stack;
+
+    bool conditionSucceeded;
 
     StandardProcessor() {
         conditionSucceeded = false;
@@ -60,6 +62,12 @@ class StandardProcessor : Processor {
         } else if (method == "goal") {
             objectiveSet.setGoal(ResultSet(arguments));
         } else {
+            for (uint i = 0; i < functions.size(); i++) {
+                if (functions[i].getId() == method) {
+                    functions[i].execute(arguments);
+                    return true;
+                }
+            }
             return Processor::process(method, arguments);
         }
         return true;
@@ -71,6 +79,20 @@ class StandardProcessor : Processor {
             return objective;
         if (target == "players")
             return players;
+        if (target == "function") {
+            Function @function = Function(false);
+            functions.insertLast(function);
+            return function;
+        }
+        if (target == "macro") {
+            Function @macro = Function(true);
+            functions.insertLast(macro);
+            return macro;
+        }
+        for (uint i = 0; i < functions.size(); i++) {
+            if (functions[i].getId() == target)
+                return functions[i];
+        }
         return Processor::subProcessor(target);
     }
 
