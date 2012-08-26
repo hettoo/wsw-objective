@@ -140,6 +140,7 @@ class Parser {
 
     bool parseSection() {
         if (byte == "[") {
+            sectionName = preProcess(sectionName, false, true);
             enterSection();
         } else if (byte == "]" && processors.length > 1) {
             leaveSection();
@@ -235,7 +236,7 @@ class Parser {
         if (parsingMethod || byte.isAlphaNumerical()) {
             parsingMethod = true;
             if (byte == ".") {
-                targets.insertLast(method);
+                targets.insertLast(preProcess(method, false, true));
                 @method = "";
             } else if (byte == ";") {
                 stopMethodParsing();
