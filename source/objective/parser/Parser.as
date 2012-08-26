@@ -65,13 +65,6 @@ class Parser {
         return utils.isNewline(byte);
     }
 
-    Processor @getProcessor() {
-        uint i = processors.length - 1;
-        while (@processors[i] == null)
-            i--;
-        return processors[i];
-    }
-
     String @preProcess(String argument, bool bracketed, bool isMethod) {
         for (uint i = processors.length; i >= 1; i--) {
             uint index = i - 1;
@@ -86,12 +79,17 @@ class Parser {
     }
 
     void enterSection() {
-        Processor @newProcessor = getProcessor().subProcessor(sectionName);
-        if (@newProcessor == null)
-            utils.debug("Unknown section: " + sectionName);
-        else
-            newProcessor.startProcessor();
-        pushProcessor(newProcessor);
+        for (uint i = processors.length; i >= 1; i--) {
+            Processor @newProcessor = processors[i - 1].subProcessor(
+                    sectionName);
+            if (@newProcessor != null) {
+                newProcessor.startProcessor();
+                pushProcessor(newProcessor);
+                return;
+            }
+        }
+
+        utils.debug("Unknown section: " + sectionName);
     }
 
     void leaveSection() {
