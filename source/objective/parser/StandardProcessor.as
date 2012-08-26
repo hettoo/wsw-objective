@@ -17,9 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+String@[] stack;
+
 class StandardProcessor : Processor {
     Function@[] functions;
-    String@[] stack;
 
     bool conditionSucceeded;
 
@@ -27,29 +28,34 @@ class StandardProcessor : Processor {
         conditionSucceeded = false;
     }
 
-    bool checkCondition(String@[] arguments) {
-        if (arguments[0] == "eq")
-            conditionSucceeded = arguments[1] == arguments[2];
-        else if (arguments[0] == "ne")
-            conditionSucceeded = arguments[1] != arguments[2];
-        else
-            conditionSucceeded = false;
+    String popStack() {
+        String result = stack[stack.size() - 1];
+        stack.removeLast();
+        return result;
+    }
+
+    bool checkCondition(String equation) {
+        parser.parse(equation);
+        conditionSucceeded = popStack().toInt() == 1;
         return conditionSucceeded;
     }
 
     bool process(String method, String@[] arguments) {
         if (method == "if") {
-            if (checkCondition(arguments))
-                parser.parse(arguments[arguments.size() - 1]);
+            if (checkCondition(arguments[0]))
+                parser.parse(utils.join(1, arguments));
         } else if (method == "elsif") {
-            if (!conditionSucceeded && checkCondition(arguments))
-                parser.parse(arguments[arguments.size() - 1]);
+            if (!conditionSucceeded && checkCondition(arguments[0]))
+                parser.parse(utils.join(1, arguments));
+        } else if (method == "alsif") {
+            if (conditionSucceeded && checkCondition(arguments[0]))
+                parser.parse(utils.join(1, arguments));
         } else if (method == "also") {
             if (conditionSucceeded)
-                parser.parse(arguments[0]);
+                parser.parse(utils.join(arguments));
         } else if (method == "else") {
             if (!conditionSucceeded)
-                parser.parse(arguments[0]);
+                parser.parse(utils.join(arguments));
             conditionSucceeded = !conditionSucceeded;
         } else if (method == "push") {
             stack.insertLast(utils.join(arguments));
@@ -97,14 +103,10 @@ class StandardProcessor : Processor {
     }
 
     String @getConstant(String name) {
+        if (name == "pop")
+            return popStack();
+
         String result;
-
-        if (name == "pop") {
-            result = stack[stack.size() - 1];
-            stack.removeLast();
-            return result;
-        }
-
         bool found = true;
         if (name == "TEAM_SPECTATOR")
             result = TEAM_SPECTATOR;

@@ -32,6 +32,12 @@ class Variable : Processor {
     void add(String value) {
     }
 
+    void equals(String value) {
+    }
+
+    void nequals(String value) {
+    }
+
     String @getString() {
         return "";
     }
@@ -41,6 +47,10 @@ class Variable : Processor {
             set(argument);
         else if (method == "add")
             add(argument);
+        else if (method == "equals")
+            equals(argument);
+        else if (method == "nequals")
+            nequals(argument);
         else
             return false;
         return true;

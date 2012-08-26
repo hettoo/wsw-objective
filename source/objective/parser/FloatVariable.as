@@ -40,6 +40,14 @@ class FloatVariable : NumericVariable {
         this.value += read(value);
     }
 
+    void equals(String value) {
+        stack.insertLast(this.value == read(value) ? "1" : "0");
+    }
+
+    void nequals(String value) {
+        stack.insertLast(this.value == read(value) ? "0" : "1");
+    }
+
     void multiply(String value) {
         this.value *= read(value);
     }

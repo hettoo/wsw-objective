@@ -36,6 +36,14 @@ class StringVariable : Variable {
         this.value += value;
     }
 
+    void equals(String value) {
+        stack.insertLast(this.value == value ? "1" : "0");
+    }
+
+    void nequals(String value) {
+        stack.insertLast(this.value == value ? "0" : "1");
+    }
+
     void multiply(String value) {
         int count = value.toInt();
         String original = value;
@@ -45,5 +53,13 @@ class StringVariable : Variable {
 
     String @getString() {
         return value;
+    }
+
+    bool process(String method, String argument) {
+        if (method == "multiply")
+            multiply(argument);
+        else
+            return Variable::process(method, argument);
+        return true;
     }
 }
