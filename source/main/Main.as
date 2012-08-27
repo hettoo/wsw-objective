@@ -35,6 +35,7 @@ class Main {
 
     void initGametype() {
         settings.set();
+        classes.init();
     }
 
     bool command(cClient @client, String &cmd, String &args, int argc) {

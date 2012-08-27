@@ -36,7 +36,7 @@ $(PK3): $(FILES) $(THIS)
 	mv $(TMP_DIR)$(SOURCE_DESTINATION_DIR)imports \
 		$(TMP_DIR)$(GAMETYPES_DIR)$(NAME).gt
 	cd $(TMP_DIR)$(GAMETYPES_DIR) && find . -name '*.as' \
-		| sed 's|^./||' | sed 's/$$/;/' >> $(NAME).gt
+		| sed 's|^./||' | sed 's/$$/;/' | sort >> $(NAME).gt
 	cp -r $(DATA_DIR)/* $(TMP_DIR)/
 	cd $(TMP_DIR) && zip ../$(PK3) -r -xi *
 	rm -r $(TMP_DIR)

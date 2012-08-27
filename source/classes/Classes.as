@@ -31,7 +31,7 @@ Classes classes;
 class Classes {
     Class@[] classes;
 
-    Classes() {
+    void init() {
         classes.resize(CLASSES);
         @classes[CLASS_SOLDIER] = Soldier();
         @classes[CLASS_ENGINEER] = Engineer();

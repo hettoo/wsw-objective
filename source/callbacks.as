@@ -41,7 +41,7 @@ bool GT_UpdateBotStatus(cEntity @self) {
     return main.updateBotStatus(self);
 }
 
-void GT_score(cClient @client, String &scoreEvent, String &args) {
+void GT_scoreEvent(cClient @client, String &scoreEvent, String &args) {
     main.scoreEvent(client, scoreEvent, args);
 }
 
