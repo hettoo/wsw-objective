@@ -84,11 +84,6 @@ class ObjectiveSet {
         return objectiveSet[spawnLocation].getRandomSpawnPoint();
     }
 
-    void parse(String &filename) {
-        String file = G_LoadFile(filename);
-        Parser(StandardProcessor()).parse(file);
-    }
-
     void think() {
         for (uint i = 0; i < objectiveSet.size(); i++)
             objectiveSet[i].think();

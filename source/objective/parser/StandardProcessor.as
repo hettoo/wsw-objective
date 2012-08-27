@@ -61,6 +61,8 @@ class StandardProcessor : Processor {
             stack.insertLast(utils.join(arguments));
         } else if (method == "execute") {
             parser.parse(utils.join(arguments));
+        } else if (method == "include") {
+            objective.parse("includes/" + utils.join(arguments));
         } else if (method == "author") {
             gametype.author = AUTHOR
                     + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE

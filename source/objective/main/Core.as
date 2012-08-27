@@ -18,10 +18,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Core {
+    Parser @parser;
+
     void spawnGametype() {
         objectiveSet.analyze();
-        objectiveSet.parse("mapscripts/" + Cvar("mapname", "", 0).get_string()
-                + ".cfg");
+        @parser = Parser(StandardProcessor());
+        parse(Cvar("mapname", "", 0).get_string());
+    }
+
+    void parse(String &filename) {
+        String file = G_LoadFile("mapscripts/" + filename + ".cfg");
+        parser.parse(file);
     }
 
     void initGametype() {
