@@ -27,7 +27,7 @@ class Core {
     }
 
     void parse(String &filename) {
-        String file = G_LoadFile("mapscripts/" + filename + ".cfg");
+        String file = G_LoadFile("mapscripts/" + filename + ".oms");
         parser.parse(file);
     }
 
