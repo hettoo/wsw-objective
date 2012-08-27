@@ -20,13 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Function : Processor {
     String id;
 
-    bool macro;
+    bool method;
     String @code;
     Callback @callback;
     String@[] arguments;
 
-    Function(bool macro) {
-        this.macro = macro;
+    Function(bool method) {
+        this.method = method;
     }
 
     String @getId() {
@@ -62,12 +62,12 @@ class Function : Processor {
 
     void execute(String@[] arguments) {
         this.arguments = arguments;
-        if (macro) {
+        if (method) {
+            parser.executeCallback(callback);
+        } else {
             parser.pushProcessor(this);
             parser.parse(code);
             parser.popProcessor();
-        } else {
-            parser.executeCallback(callback);
         }
     }
 }

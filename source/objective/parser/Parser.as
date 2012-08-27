@@ -52,12 +52,15 @@ class Parser {
     }
 
     void pushProcessor(Processor @processor) {
-        if (@processor != null)
-            processor.setParser(this);
         processors.insertLast(processor);
+        if (@processor != null) {
+            processor.setParser(this);
+            processor.startProcessor();
+        }
     }
 
     void popProcessor() {
+        processors[processors.length - 1].stopProcessor();
         processors.removeLast();
     }
 
@@ -83,7 +86,6 @@ class Parser {
             Processor @newProcessor = processors[i - 1].subProcessor(
                     sectionName);
             if (@newProcessor != null) {
-                newProcessor.startProcessor();
                 pushProcessor(newProcessor);
                 return;
             }
@@ -95,8 +97,6 @@ class Parser {
     void leaveSection() {
         flushMethod();
         Processor @last = processors[processors.length - 1];
-        if (@last != null)
-            last.stopProcessor();
         popProcessor();
     }
 
@@ -254,7 +254,6 @@ class Parser {
 
     void parse(String code) {
         reset();
-        processors[0].startProcessor();
         for (uint i = 0; i < code.length(); i++) {
             byte = code.subString(i, 1);
             if (!parseIgnored() && !parseArguments() && !parseSection()
@@ -263,7 +262,6 @@ class Parser {
             }
         }
         flushMethod();
-        processors[0].stopProcessor();
     }
 
     Callback @createCallback(String code) {

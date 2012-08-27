@@ -21,7 +21,7 @@ class Processor {
     Parser @parser;
 
     Dictionary variables;
-    Function@[] functions;
+    Function@[] methods;
 
     void startProcessor() {
     }
@@ -39,11 +39,9 @@ class Processor {
         } else {
             Processor @subProcessor = subProcessor(targets[0]);
             if (@subProcessor != null) {
-                subProcessor.startProcessor();
                 parser.pushProcessor(subProcessor);
                 targets.removeAt(0);
                 bool result = subProcessor.process(targets, method, arguments);
-                subProcessor.stopProcessor();
                 parser.popProcessor();
                 return result;
             }
@@ -86,9 +84,9 @@ class Processor {
                 @variable = StringVariable(initial);
             variables.set(arguments[0], @variable);
         } else {
-            for (uint i = 0; i < functions.size(); i++) {
-                if (functions[i].getId() == method) {
-                    functions[i].execute(arguments);
+            for (uint i = 0; i < methods.size(); i++) {
+                if (methods[i].getId() == method) {
+                    methods[i].execute(arguments);
                     return true;
                 }
             }
@@ -101,14 +99,14 @@ class Processor {
         Variable @variable = getVariable(target);
         if (@variable != null)
             return variable;
-        if (target == "function") {
-            Function @function = Function(false);
-            functions.insertLast(function);
-            return function;
+        if (target == "method") {
+            Function @method = Function(true);
+            methods.insertLast(method);
+            return method;
         }
-        for (uint i = 0; i < functions.size(); i++) {
-            if (functions[i].getId() == target)
-                return functions[i];
+        for (uint i = 0; i < methods.size(); i++) {
+            if (methods[i].getId() == target)
+                return methods[i];
         }
         return null;
     }
