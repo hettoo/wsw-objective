@@ -54,6 +54,9 @@ class Main {
         } else if (cmd == "classaction2") {
             players.get(client).classAction2();
             return true;
+        } else if (cmd == "bonusAction") {
+            players.get(client).bonusAction();
+            return true;
         }
         return false;
     }

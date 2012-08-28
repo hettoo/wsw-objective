@@ -17,9 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-const float DAMAGE_BONUS = 0.02f;
-const float KILL_BONUS = 1;
-const float SUICIDE_BONUS = -3;
+const float DAMAGE_SCORE = 0.02f;
+const float KILL_SCORE = 1;
+const float SUICIDE_SCORE = -3;
+
 const float ARMOR_FRAME_BONUS = 0.002f;
 
 const int SPAWN_PROTECTION_TIME = 3;
@@ -33,6 +34,8 @@ class Player {
 
     bool resuming;
     float score;
+    int row;
+    int bonus;
     WeaponBackup @weaponBackup;
     Reviver @reviver;
     Stealable @carry;
@@ -45,6 +48,8 @@ class Player {
     Player() {
         resuming = false;
         score = 0;
+        row = 0;
+        bonus = 0;
 
         @weaponBackup = WeaponBackup(this);
 
@@ -242,6 +247,7 @@ class Player {
     }
 
     void spawn() {
+        row = 0;
         removeReviver();
         if (!resuming) {
             applyNextClass();
@@ -286,6 +292,17 @@ class Player {
             playerClass.classAction2(this);
     }
 
+    void bonusAction() {
+        if (client.team != TEAM_SPECTATOR) {
+            if (bonus == 1) {
+                // TODO: airstrike or something? :)
+                bonus--;
+            } else {
+                centerPrint("You have not unlocked a bonus action");
+            }
+        }
+    }
+
     void itemPickupSound(int sound) {
         G_Sound(ent, CHAN_ITEM, sound, ATTN_ITEM_PICKUP);
     }
@@ -294,8 +311,8 @@ class Player {
         client.stats.setScore(score);
     }
 
-    void addScore(float bonus) {
-        score += bonus;
+    void addScore(float score) {
+        this.score += score;
         syncScore();
     }
 
@@ -310,11 +327,11 @@ class Player {
     void didDamage(String &args) {
         cEntity @target = G_GetEntity(args.getToken(0).toInt());
         if (@target != null && @target.client != null) {
-            float bonus = args.getToken(1).toFloat() * DAMAGE_BONUS;
+            float score = args.getToken(1).toFloat() * DAMAGE_SCORE;
             if (@target != @ent) {
                 if (target.client.team == client.team)
-                    bonus *= -1;
-                addScore(bonus);
+                    score *= -1;
+                addScore(score);
             }
         }
     }
@@ -343,11 +360,19 @@ class Player {
     }
 
     void madeKill(bool suicide, bool teamKill) {
-        float bonus = KILL_BONUS;
-        if (suicide)
-            bonus = SUICIDE_BONUS;
-        else if (teamKill)
-            bonus *= -1;
-        addScore(bonus);
+        float score = KILL_SCORE;
+        if (suicide) {
+            score = SUICIDE_SCORE;
+        } else if (teamKill) {
+            score *= -1;
+        } else {
+            row++;
+            int newBonus = 0;
+            if (row == 5)
+                newBonus = 1;
+            if (bonus < newBonus)
+                bonus = newBonus;
+        }
+        addScore(score);
     }
 }
