@@ -18,15 +18,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 const int MINE_THROW_SPEED = 300;
-const float MINE_TIME = 20.0f;
-const float MINE_SPEED = 0.015f;
+const float MINE_SPEED = 0.020f;
 const int MINE_RADIUS = 60;
-const int MINE_EFFECT_RADIUS = 260;
-const float MINE_WAIT_LIMIT = 20.0f;
-const int MINE_DEFUSE_ARMOR = 70;
+const int MINE_EFFECT_RADIUS = 240;
+const float MINE_WAIT_LIMIT = 10.0f;
+const int MINE_DEFUSE_ARMOR = 40;
+const int MINE_DEFUSE_SCORE = 1;
 
 const Sound MINE_SPAWN_SOUND("items/item_spawn");
 const Sound MINE_ARM_SOUND("misc/timer_bip_bip");
+const Sound MINE_ACTIVATE_SOUND("objective/mine_activated");
 const float ATTN_MINE = 1.8f;
 
 const Model MINE_MODEL("objects/misc/bomb_centered");
@@ -35,7 +36,8 @@ Vec3 MINE_MAXS(16, 16, 40);
 
 enum MineState {
     MS_PLACED,
-    MS_PLANTED
+    MS_PLANTED,
+    MS_ACTIVATED
 }
 
 class Mine {
@@ -44,11 +46,11 @@ class Mine {
     Vec3 origin;
     Vec3 angles;
     Player @owner;
+    Player @victim;
 
     int team;
     int state;
     float progress;
-    float explodeTime;
     float notArmed;
 
     Mine(Vec3 origin, Vec3 angles, Player @owner) {
@@ -125,15 +127,6 @@ class Mine {
         progress = PROGRESS_FINISHED;
         state = MS_PLANTED;
         G_Sound(ent, CHAN_ITEM, MINE_ARM_SOUND.get(), ATTN_MINE);
-        explodeTime = MINE_TIME;
-    }
-
-    void defuseProgress() {
-        progress -= MINE_SPEED * frameTime;
-    }
-
-    void defused(Player @defuser) {
-        remove();
     }
 
     void thinkPlaced() {
@@ -162,8 +155,40 @@ class Mine {
     void thinkPlanted() {
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
-            if (@player != null && nearOtherTeam(player))
-                explode();
+            if (@player != null && nearOtherTeam(player)) {
+                state = MS_ACTIVATED;
+                @victim = player;
+                G_Sound(ent, CHAN_ITEM, MINE_ACTIVATE_SOUND.get(), ATTN_MINE);
+            }
+        }
+    }
+
+    void defuseProgress() {
+        progress -= MINE_SPEED * frameTime;
+    }
+
+    void defused(Player @defuser) {
+        remove();
+        defuser.addScore(MINE_DEFUSE_SCORE);
+    }
+
+    void thinkActivated() {
+        if (!near(@victim)) {
+            explode();
+            return;
+        }
+        for (int i = 0; i < players.getSize(); i++) {
+            Player @player = players.get(i);
+            if (@player != null && nearOtherTeam(player)
+                    && player.getClassId() == CLASS_ENGINEER) {
+                if (progress <= 0)
+                    defused(player);
+                else if (player.takeArmor(MINE_SPEED * frameTime
+                            / PROGRESS_FINISHED * MINE_DEFUSE_ARMOR))
+                    defuseProgress();
+                player.setHUDStat(STAT_PROGRESS_OTHER, progress);
+                victim.setHUDStat(STAT_PROGRESS_OTHER, progress);
+            }
         }
     }
 
@@ -174,6 +199,9 @@ class Mine {
                 break;
             case MS_PLANTED:
                 thinkPlanted();
+                break;
+            case MS_ACTIVATED:
+                thinkActivated();
                 break;
         }
     }
