@@ -139,6 +139,19 @@ class Utils {
                 values[2].toFloat());
     }
 
+    bool isVowel(String byte) {
+        return byte == "a" || byte == "e" || byte == "i" || byte == "o"
+            || byte == "u";
+    }
+
+    String @indefiniteArticle(String word) {
+        String result = "a";
+        String first = word.substr(0, 1).tolower();
+        if (isVowel(first))
+            result += "n";
+        return result;
+    }
+
     void debug(String message) {
         G_Print(message + "\n");
     }

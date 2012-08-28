@@ -142,8 +142,9 @@ class Player {
     void setClass(int newClass) {
         if (newClass >= 0 && newClass < CLASSES) {
             nextClass = newClass;
-            centerPrint("You will respawn as a "
-                    + classes.get(nextClass).getName());
+            String name = classes.get(nextClass).getName();
+            centerPrint("You will respawn as " + utils.indefiniteArticle(name)
+                    + " " + name);
         }
     }
 
