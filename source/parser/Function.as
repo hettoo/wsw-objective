@@ -46,10 +46,10 @@ class Function : Processor {
         if (name.substr(0, 1) == "@") {
             String index = name.substr(1);
             if (index.isNumeric())
-                return utils.join(index.toInt() - 1, arguments);
+                return utils.join(arguments, index.toInt() - 1);
             if (index.substr(0, 1) == "-")
-                return utils.join(arguments.size() - index.substr(1).toInt(),
-                        arguments);
+                return utils.join(arguments,
+                        arguments.size() - index.substr(1).toInt());
             return utils.join(arguments);
         }
         return Processor::getConstant(name);

@@ -75,7 +75,7 @@ class Processor {
     bool process(String method, String@[] arguments) {
         if (method == "define") {
             Variable @variable;
-            String initial = utils.join(2, arguments);
+            String initial = utils.join(arguments, 2);
             if (arguments[1] == "int")
                 @variable = IntVariable(initial);
             else if (arguments[1] == "float")

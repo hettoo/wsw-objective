@@ -43,13 +43,13 @@ class StandardProcessor : Processor {
     bool process(String method, String@[] arguments) {
         if (method == "if") {
             if (checkCondition(arguments[0]))
-                parser.parse(utils.join(1, arguments));
+                parser.parse(utils.join(arguments, 1));
         } else if (method == "elsif") {
             if (!conditionSucceeded && checkCondition(arguments[0]))
-                parser.parse(utils.join(1, arguments));
+                parser.parse(utils.join(arguments, 1));
         } else if (method == "alsif") {
             if (conditionSucceeded && checkCondition(arguments[0]))
-                parser.parse(utils.join(1, arguments));
+                parser.parse(utils.join(arguments, 1));
         } else if (method == "also") {
             if (conditionSucceeded)
                 parser.parse(utils.join(arguments));

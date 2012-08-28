@@ -112,7 +112,7 @@ class Utils {
         return minimap;
     }
 
-    String @join(uint offset, String@[] list, String glue) {
+    String @join(String@[] list, String glue, uint offset) {
         String result = "";
         for (uint i = offset; i < list.size(); i++) {
             if (i > offset)
@@ -123,15 +123,15 @@ class Utils {
     }
 
     String @join(String@[] list, String glue) {
-        return join(0, list, glue);
+        return join(list, glue, 0);
     }
 
-    String @join(int offset, String@[] list) {
-        return join(offset, list, " ");
+    String @join(String@[] list, uint offset) {
+        return join(list, " ", offset);
     }
 
     String @join(String@[] list) {
-        return join(0, list);
+        return join(list, 0);
     }
 
     Vec3 readVec3(String@[] values) {
