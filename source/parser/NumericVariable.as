@@ -18,12 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class NumericVariable : Variable {
-    NumericVariable(String value) {
-        super(value);
+    NumericVariable(String id, String value) {
+        super(id, value);
     }
 
-    NumericVariable() {
-        super();
+    NumericVariable(String id) {
+        super(id);
     }
 
     void multiply(String value) {

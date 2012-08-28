@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class StringVariable : Variable {
     String value;
 
-    StringVariable(String value) {
-        super(value);
+    StringVariable(String id, String value) {
+        super(id, value);
     }
 
-    StringVariable() {
-        super();
+    StringVariable(String id) {
+        super(id);
     }
 
     void set(String value) {

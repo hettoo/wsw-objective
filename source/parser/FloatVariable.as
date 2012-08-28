@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class FloatVariable : NumericVariable {
     float value;
 
-    FloatVariable(String value) {
-        super(value);
+    FloatVariable(String id, String value) {
+        super(id, value);
     }
 
-    FloatVariable() {
-        super();
+    FloatVariable(String id) {
+        super(id);
     }
 
     float read(String value) {

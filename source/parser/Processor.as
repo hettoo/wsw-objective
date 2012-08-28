@@ -21,6 +21,7 @@ class Processor {
     Parser @parser;
 
     Dictionary variables;
+    Variable@[] variableArray;
     Function@[] methods;
 
     void startProcessor() {
@@ -72,21 +73,33 @@ class Processor {
         return variable.getString();
     }
 
+    void addVariable(String name, Variable @variable) {
+        variables.set(name, @variable);
+        variableArray.insertLast(variable);
+    }
+
     bool process(String method, String@[] arguments) {
         if (method == "define") {
             Variable @variable;
+            String id = arguments[0];
             String initial = utils.join(arguments, 2);
             if (arguments[1] == "int")
-                @variable = IntVariable(initial);
+                @variable = IntVariable(id, initial);
             else if (arguments[1] == "float")
-                @variable = FloatVariable(initial);
+                @variable = FloatVariable(id, initial);
             else if (arguments[1] == "string")
-                @variable = StringVariable(initial);
-            variables.set(arguments[0], @variable);
+                @variable = StringVariable(id, initial);
+            addVariable(id, variable);
         } else {
             for (uint i = 0; i < methods.size(); i++) {
                 if (methods[i].getId() == method) {
                     methods[i].execute(arguments);
+                    return true;
+                }
+            }
+            for (uint i = 0; i < variableArray.size(); i++) {
+                if (variableArray[i].getId() == method) {
+                    variableArray[i].set(utils.join(arguments));
                     return true;
                 }
             }

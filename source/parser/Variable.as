@@ -18,12 +18,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 class Variable : Processor {
-    Variable(String value) {
+    String id;
+
+    Variable(String id, String value) {
+        this.id = id;
         set(value);
     }
 
-    Variable() {
+    Variable(String id) {
+        this.id = id;
         set("");
+    }
+
+    String getId() {
+        return id;
     }
 
     void set(String value) {

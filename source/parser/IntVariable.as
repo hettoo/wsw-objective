@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class IntVariable : NumericVariable {
     int value;
 
-    IntVariable(String value) {
-        super(value);
+    IntVariable(String id, String value) {
+        super(id, value);
     }
 
-    IntVariable() {
-        super();
+    IntVariable(String id) {
+        super(id);
     }
 
     int read(String value) {
