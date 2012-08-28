@@ -59,7 +59,7 @@ class Constructable : Component {
         else if (method == "target")
             @target = objectiveSet.find(utils.join(arguments));
         else if (method == "onConstructed")
-            @onConstructed = parser.createCallback(arguments[0]);
+            @onConstructed = parser.createCallback(utils.join(arguments));
         else
             return Component::process(method, arguments);
         return true;
@@ -86,7 +86,7 @@ class Constructable : Component {
         destroyGhost();
         constructProgress = 0;
         players.sound(CONSTRUCTED_SOUND.get());
-        int team = player.getClient().team;
+        int team = player.getTeam();
         if (@target != null) {
             String name = target.getName();
             if (name != "")

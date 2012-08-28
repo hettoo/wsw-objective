@@ -96,10 +96,9 @@ class Player {
     }
 
     bool secureCarry(Objective @target) {
-        if (@carry == null)
+        if (@carry == null || !carry.secured(this, target))
             return false;
 
-        carry.secured(this, target);
         setCarry(null);
         return true;
     }

@@ -20,9 +20,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class SecureLocation : Component {
     bool occupied;
 
+    Callback @onSecured;
+
     SecureLocation(Objective @objective) {
         super(objective);
         occupied = false;
+    }
+
+    bool process(String method, String@[] arguments) {
+        if (method == "onSecured")
+            @onSecured = parser.createCallback(utils.join(arguments));
+        else
+            return Component::process(method, arguments);
+        return true;
     }
 
     void thinkActive(Player @player) {
@@ -33,12 +43,20 @@ class SecureLocation : Component {
         if (@carry == null)
             return;
 
-        // TODO: what about the other entities? strange shit here
-        int newModel = carry.getObjective().getMainEntity().getModel();
         if (player.secureCarry(objective)) {
-            objective.getMainEntity().setModel(newModel);
-            objective.respawn();
+            Objective @source = carry.getObjective();
+            for (uint i = 0; i < source.getEntityCount(); i++) {
+                ObjectiveEntity @entity = source.getEntity(i);
+                objective.addEntity(entity);
+                entity.setObjective(objective);
+                entity.spawn();
+            }
             occupied = true;
+            if (@onSecured != null) {
+                objective.setActiveTeam(player.getTeam());
+                parser.executeCallback(onSecured);
+                objective.unsetActiveTeam();
+            }
         }
     }
 }

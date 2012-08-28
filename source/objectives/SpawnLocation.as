@@ -20,7 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int CAPTURE_SCORE = 2;
 
 const Model FLAG("objects/flag/flag");
-const Model FLAG_UNCAPTURED("misc/ammobox");
 Vec3 FLAG_MINS(-16, -16, -16);
 Vec3 FLAG_MAXS(16, 16, 40);
 
@@ -31,6 +30,8 @@ class SpawnLocation : Component {
     bool capturable;
     Objective @alphaFallback;
     Objective @betaFallback;
+
+    ObjectiveEntity@[] entities;
 
     SpawnPointSet @spawnPointSet;
 
@@ -59,7 +60,9 @@ class SpawnLocation : Component {
     void lock() {
         applyFallbacks();
         capturable = false;
-        objective.respawn();
+        for (uint i = 0; i < entities.size(); i++)
+            entities[i].destroy();
+        objective.destroyIcon();
     }
 
     bool process(String method, String@[] arguments) {
@@ -69,41 +72,22 @@ class SpawnLocation : Component {
             @alphaFallback = objectiveSet.find(arguments[0]);
         else if (method == "betaFallback")
             @betaFallback = objectiveSet.find(arguments[0]);
+        else if (method == "addFlag")
+            addFlag();
         else
             return Component::process(method, arguments);
         return true;
     }
 
-    void spawn() {
-        ObjectiveEntity @mainEntity = objective.getMainEntity();
-        if (@mainEntity == null)
-            return;
-
-        cEntity @ent = G_SpawnEntity("objective");
-        ent.type = ET_GENERIC;
-        ent.team = objective.getTeam();
-        switch (ent.team) {
-            case TEAM_ALPHA:
-                ent.modelindex = FLAG.get();
-                break;
-            case TEAM_BETA:
-                ent.modelindex = FLAG.get();
-                break;
-            default:
-                ent.modelindex = FLAG_UNCAPTURED.get();
-                break;
-        }
-        Vec3 origin = objective.origin;
-        ent.origin = origin;
-        ent.angles = Vec3(-90, 0, 0);
-        ent.setSize(FLAG_MINS, FLAG_MAXS);
-        ent.solid = SOLID_YES;
-        ent.clipMask = MASK_PLAYERSOLID;
-        ent.moveType = MOVETYPE_NONE;
-        ent.svflags &= ~SVF_NOCLIENT;
-        ent.linkEntity();
-        mainEntity.setEnt(ent);
-        objective.setIcon(utils.spawnIcon(FLAG_ICON.get(), ent.team, origin));
+    void addFlag() {
+        ObjectiveEntity @entity = objective.addEntity();
+        entity.setId("flag");
+        entity.setModel(FLAG);
+        entity.setAngles(Vec3(-90, 0, 0));
+        entity.setMins(FLAG_MINS);
+        entity.setMaxs(FLAG_MAXS);
+        entities.insertLast(entity);
+        objective.setIcon(FLAG_ICON.get());
     }
 
     cEntity @getRandomSpawnPoint() {

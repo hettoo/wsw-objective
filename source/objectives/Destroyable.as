@@ -35,7 +35,7 @@ class Destroyable : Component {
 
     bool process(String method, String@[] arguments) {
         if (method == "onDestroyed")
-            @onDestroyed = parser.createCallback(arguments[0]);
+            @onDestroyed = parser.createCallback(utils.join(arguments));
         else
             return Component::process(method, arguments);
         return true;

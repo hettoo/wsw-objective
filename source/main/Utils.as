@@ -134,6 +134,11 @@ class Utils {
         return join(0, list);
     }
 
+    Vec3 readVec3(String@[] values) {
+        return Vec3(values[0].toFloat(), values[1].toFloat(),
+                values[2].toFloat());
+    }
+
     void debug(String message) {
         G_Print(message + "\n");
     }

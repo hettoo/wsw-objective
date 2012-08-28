@@ -66,6 +66,13 @@ class Stealable : Component {
                     + " has stolen the " + objective.getName() + "!");
         players.sound(STEAL_SOUND.get());
 
+        if (state == SS_RETURNED) {
+            uint count = objective.getEntityCount();
+            oldMoveTypes.resize(count);
+            for (uint i = 0; i < count; i++)
+                oldMoveTypes[i] = objective.getEntity(i).getMoveType();
+        }
+
         state = SS_STOLEN;
         objective.destroy();
         thief.setCarry(this);
@@ -77,17 +84,19 @@ class Stealable : Component {
                     + " has dropped the " + objective.getName() + "!");
         players.sound(DROP_SOUND.get());
 
-        if (state == SS_RETURNED) {
-            uint count = objective.getEntityCount();
-            oldMoveTypes.resize(count);
-            for (uint i = 0; i < count; i++)
-                oldMoveTypes[i] = objective.getEntity(i).getMoveType();
-        }
         state = SS_DROPPED;
         dropper.setCarry(null);
         objective.setMoveType(MOVETYPE_TOSS);
         objective.spawn(dropper.getEnt().origin);
         returnTime = STEALABLE_WAIT_LIMIT;
+    }
+
+    void resetMoveTypes() {
+        uint count = objective.getEntityCount();
+        if (count < oldMoveTypes.size())
+            count = oldMoveTypes.size();
+        for (uint i = 0; i < count; i++)
+            objective.getEntity(i).setMoveType(oldMoveTypes[i]);
     }
 
     bool secured(Player @securer, Objective @target) {
@@ -101,6 +110,8 @@ class Stealable : Component {
                         ? "" : " at the " + target.getName()) + "!");
         players.sound(SECURE_SOUND.get());
         securer.addScore(SECURE_SCORE);
+
+        resetMoveTypes();
 
         state = SS_SECURED;
         objective.destroy();
@@ -119,8 +130,7 @@ class Stealable : Component {
             returner.addScore(RETURN_SCORE);
 
         state = SS_RETURNED;
-        for (uint i = 0; i < objective.getEntityCount(); i++)
-            objective.getEntity(i).setMoveType(oldMoveTypes[i]);
+        resetMoveTypes();
         objective.respawn();
     }
 

@@ -88,8 +88,8 @@ class Objective : Processor {
         this.activeTeam = GS_MAX_TEAMS;
     }
 
-    void setIcon(cEntity @minimap) {
-        @this.minimap = minimap;
+    void setIcon(int icon) {
+        this.icon = icon;
     }
 
     bool process(String method, String@[] arguments) {
@@ -100,11 +100,7 @@ class Objective : Processor {
         } else if (method == "icon") {
             icon = Image(utils.join(arguments)).get();
         } else if (method == "team") {
-            String name = arguments[0].tolower();
-            if (name == "alpha")
-                team = TEAM_ALPHA;
-            else if (name == "beta")
-                team = TEAM_BETA;
+            team = arguments[0].toInt();
             owningTeam = team;
         } else if (method == "spawn") {
             spawn();
@@ -132,16 +128,23 @@ class Objective : Processor {
             return stealable;
         if (target == "secureLocation")
             return secureLocation;
-        if (target == "entity") {
-            ObjectiveEntity @entity = ObjectiveEntity(this);
-            entities.insertLast(entity);
-            return entity;
-        }
+        if (target == "entity")
+            return addEntity();
         for (uint i = 0; i < entities.size(); i++) {
             if (entities[i].getId() == target)
                 return entities[i];
         }
         return Processor::subProcessor(target);
+    }
+
+    void addEntity(ObjectiveEntity @entity) {
+        entities.insertLast(entity);
+    }
+
+    ObjectiveEntity @addEntity() {
+        ObjectiveEntity @entity = ObjectiveEntity(this);
+        addEntity(entity);
+        return entity;
     }
 
     ObjectiveEntity @getEntity(uint index) {
@@ -179,15 +182,11 @@ class Objective : Processor {
         if (spawned)
             return;
 
-        if (spawnLocation.isActive() && spawnLocation.isCapturable()) {
-            spawnLocation.spawn();
-        } else {
-            for (uint i = 0; i < entities.size(); i++)
-                entities[i].spawn(origin);
+        for (uint i = 0; i < entities.size(); i++)
+            entities[i].spawn(origin);
 
-            if (icon != 0)
-                @minimap = utils.spawnIcon(icon, owningTeam, origin);
-        }
+        if (icon != 0)
+            @minimap = utils.spawnIcon(icon, owningTeam, origin);
 
         spawned = true;
 
@@ -216,6 +215,14 @@ class Objective : Processor {
         return destroyable.isActive();
     }
 
+    void destroyIcon() {
+        if (@minimap != null) {
+            minimap.unlinkEntity();
+            minimap.freeEntity();
+            @minimap = null;
+        }
+    }
+
     void destroy(bool goalTest) {
         if (!spawned)
             return;
@@ -223,11 +230,7 @@ class Objective : Processor {
         for (uint i = 0; i < entities.size(); i++)
             entities[i].destroy();
 
-        if (@minimap != null) {
-            minimap.unlinkEntity();
-            minimap.freeEntity();
-            @minimap = null;
-        }
+        destroyIcon();
         spawned = false;
         owningTeam = team;
 

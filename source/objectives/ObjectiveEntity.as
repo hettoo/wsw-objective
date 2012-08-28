@@ -22,7 +22,7 @@ class ObjectiveEntity : Processor {
 
     Objective @objective;
     cEntity @ent;
-    bool solid;
+    int solid;
     int model;
     Vec3 offset;
     Vec3 angles;
@@ -32,47 +32,85 @@ class ObjectiveEntity : Processor {
     float radius;
 
     ObjectiveEntity(Objective @objective) {
+        setObjective(objective);
+        solid = SOLID_YES;
+        model = 0;
+        moveType = MOVETYPE_NONE;
+    }
+
+    void setObjective(Objective @objective) {
         @this.objective = objective;
         this.angles = objective.getAngles();
         radius = objective.getRadius();
-
-        solid = true;
-        model = 0;
-        moveType = MOVETYPE_NONE;
     }
 
     String @getId() {
         return id;
     }
 
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setSolid(int solid) {
+        this.solid = solid;
+    }
+
+    void setModel(const Model @model) {
+        this.model = model.get();
+    }
+
+    int getMoveType() {
+        return moveType;
+    }
+
+    void setMoveType(int moveType) {
+        this.moveType = moveType;
+    }
+
+    void setOffset(Vec3 offset) {
+        this.offset = offset;
+    }
+
+    void setAngles(Vec3 angles) {
+        this.angles = angles;
+    }
+
+    void setMins(Vec3 mins) {
+        this.mins = mins;
+    }
+
+    void setMaxs(Vec3 maxs) {
+        this.maxs = maxs;
+    }
+
+    void setRadius(float radius) {
+        this.radius = radius;
+    }
+
     bool process(String method, String@[] arguments) {
-        if (method == "id") {
-            id = utils.join(arguments);
-        } else if (method == "solid") {
-            solid = arguments[0].toInt() == 1;
-        } else if (method == "model") {
-            model = Model(utils.join(arguments)).get();
-        } else if (method == "moveType") {
-            moveType = arguments[0].toInt();
-        } else if (method == "offset") {
-            offset = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
-        } else if (method == "angles") {
-            angles = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
-        } else if (method == "mins") {
-            mins = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
-        } else if (method == "maxs") {
-            maxs = Vec3(arguments[0].toFloat(), arguments[1].toFloat(),
-                    arguments[2].toFloat());
-        } else if (method == "radius") {
-            radius = arguments[0].toInt();
-        } else if (method == "spawn") {
-            spawn();
-        } else {
+        if (method == "id")
+            setId(utils.join(arguments));
+        else if (method == "solid")
+            setSolid(arguments[0].toInt());
+        else if (method == "model")
+            setModel(Model(utils.join(arguments)));
+        else if (method == "moveType")
+            setMoveType(arguments[0].toInt());
+        else if (method == "offset")
+            setOffset(utils.readVec3(arguments));
+        else if (method == "angles")
+            setAngles(utils.readVec3(arguments));
+        else if (method == "mins")
+            setMins(utils.readVec3(arguments));
+        else if (method == "maxs")
+            setMaxs(utils.readVec3(arguments));
+        else if (method == "radius")
+            setRadius(arguments[0].toFloat());
+        else if (method == "destroy")
+            destroy();
+        else
             return Processor::process(method, arguments);
-        }
         return true;
     }
 
@@ -85,7 +123,7 @@ class ObjectiveEntity : Processor {
             ent.origin = baseOrigin + offset;
             ent.angles = angles;
             ent.setSize(mins, maxs);
-            ent.solid = solid ? SOLID_YES : SOLID_NOT;
+            ent.solid = solid;
             ent.clipMask = MASK_PLAYERSOLID;
             ent.moveType = moveType;
             ent.svflags &= ~SVF_NOCLIENT;
@@ -108,25 +146,5 @@ class ObjectiveEntity : Processor {
     bool near(cEntity @other) {
         return utils.near(@ent == null ? objective.getOrigin() + offset
                 : ent.origin, other.origin, radius);
-    }
-
-    int getModel() {
-        return model;
-    }
-
-    void setModel(int model) {
-        this.model = model;
-    }
-
-    int getMoveType() {
-        return moveType;
-    }
-
-    void setMoveType(int moveType) {
-        this.moveType = moveType;
-    }
-
-    void setEnt(cEntity @ent) {
-        @this.ent = ent;
     }
 }
