@@ -33,7 +33,7 @@ class Component : Processor {
 
     bool process(String method, String@[] arguments) {
         if (method == "active") {
-            active = arguments[0].toInt() == 1;
+            active = utils.readBool(arguments[0]);
             return true;
         }
         return Processor::process(method, arguments);

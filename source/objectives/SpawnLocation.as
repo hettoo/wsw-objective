@@ -67,7 +67,7 @@ class SpawnLocation : Component {
 
     bool process(String method, String@[] arguments) {
         if (method == "capturable")
-            capturable = arguments[0].toInt() == 1;
+            capturable = utils.readBool(arguments[0]);
         else if (method == "alphaFallback")
             @alphaFallback = objectiveSet.find(arguments[0]);
         else if (method == "betaFallback")

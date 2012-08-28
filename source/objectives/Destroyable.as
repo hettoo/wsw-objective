@@ -38,7 +38,7 @@ class Destroyable : Component {
 
     bool process(String method, String@[] arguments) {
         if (method == "light")
-            light = arguments[0].toInt() == 1;
+            light = utils.readBool(arguments[0]);
         else if (method == "onDestroyed")
             @onDestroyed = parser.createCallback(utils.join(arguments));
         else

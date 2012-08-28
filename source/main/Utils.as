@@ -139,6 +139,10 @@ class Utils {
                 values[2].toFloat());
     }
 
+    bool readBool(String value) {
+        return value == "true";
+    }
+
     bool isVowel(String byte) {
         return byte == "a" || byte == "e" || byte == "i" || byte == "o"
             || byte == "u";
