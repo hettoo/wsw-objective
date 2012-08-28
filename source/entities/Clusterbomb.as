@@ -95,6 +95,7 @@ class Clusterbomb {
                 CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT, CLUSTERBOMB_EFFECT,
                 MOD_EXPLOSIVE);
         releaseAmmo();
+        objectiveSet.destroyed(ent, owner, true);
         remove();
     }
 

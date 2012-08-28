@@ -107,7 +107,7 @@ class Bomb {
         ent.explosionEffect(BOMB_EFFECT_RADIUS);
         ent.splashDamage(@ent.owner, BOMB_EFFECT_RADIUS, 180, 100, 1,
                 MOD_EXPLOSIVE);
-        objectiveSet.exploded(ent, owner);
+        objectiveSet.destroyed(ent, owner, false);
         remove();
     }
 

@@ -24,24 +24,32 @@ const Sound DEFUSE_SOUND("announcer/objective/defused");
 const Sound DESTROY_SOUND("announcer/objective/destroyed");
 
 const int DESTROY_SCORE = 4;
+const int DESTROY_SCORE_LIGHT = 2;
 const int DEFUSE_SCORE = 4;
 
 class Destroyable : Component {
+    bool light;
     Callback @onDestroyed;
 
     Destroyable(Objective @objective) {
         super(objective);
+        light = false;
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "onDestroyed")
+        if (method == "light")
+            light = arguments[0].toInt() == 1;
+        else if (method == "onDestroyed")
             @onDestroyed = parser.createCallback(utils.join(arguments));
         else
             return Component::process(method, arguments);
         return true;
     }
 
-    void destruct(Player @planter) {
+    void destruct(Player @destroyer, bool light) {
+        if (light && !this.light)
+            return;
+
         players.sound(DESTROY_SOUND.get());
         int team = objective.getOtherTeam();
         objective.destroy();
@@ -54,7 +62,7 @@ class Destroyable : Component {
             parser.executeCallback(onDestroyed);
             objective.unsetActiveTeam();
         }
-        planter.addScore(DESTROY_SCORE);
+        destroyer.addScore(light ? DESTROY_SCORE_LIGHT : DESTROY_SCORE);
     }
 
     void planted() {
@@ -76,6 +84,7 @@ class Destroyable : Component {
 
     void thinkActive(Player @player) {
         if (objective.nearOtherTeam(player))
-            player.setHUDStat(STAT_IMAGE_OTHER, DESTROY_ICON.get());
+            player.setHUDStat(STAT_IMAGE_OTHER, light
+                    ? classes.getIcon(CLASS_FIELD_OPS) : DESTROY_ICON.get());
     }
 }
