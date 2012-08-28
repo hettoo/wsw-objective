@@ -61,9 +61,10 @@ class Stealable : Component {
     }
 
     void stolen(Player @thief) {
-        if (objective.getName() != "")
+        String name = objective.getName();
+        if (name != "")
             players.say(utils.getTeamName(thief.getClient().team)
-                    + " has stolen the " + objective.getName() + "!");
+                    + " has stolen " + name + "!");
         players.sound(STEAL_SOUND.get());
 
         if (state == SS_RETURNED) {
@@ -79,9 +80,10 @@ class Stealable : Component {
     }
 
     void dropped(Player @dropper) {
-        if (objective.getName() != "")
+        String name = objective.getName();
+        if (name != "")
             players.say(utils.getTeamName(dropper.getClient().team)
-                    + " has dropped the " + objective.getName() + "!");
+                    + " has dropped " + name + "!");
         players.sound(DROP_SOUND.get());
 
         state = SS_DROPPED;
@@ -103,11 +105,16 @@ class Stealable : Component {
         if (targets.find(target) < 0)
             return false;
 
-        if (objective.getName() != "")
-            players.say(utils.getTeamName(securer.getClient().team)
-                    + " has secured the " + objective.getName()
-                    + (target.getName() == ""
-                        ? "" : " at the " + target.getName()) + "!");
+        String name = objective.getName();
+        if (name != "") {
+            String message = utils.getTeamName(securer.getClient().team)
+                    + " has secured " + name;
+            String targetName = target.getName();
+            if (targetName != "")
+                message += " at " + targetName;
+            message += "!";
+            players.say(message);
+        }
         players.sound(SECURE_SOUND.get());
         securer.addScore(SECURE_SCORE);
 
@@ -122,9 +129,10 @@ class Stealable : Component {
     }
 
     void returned(Player @returner) {
-        if (objective.getName() != "")
+        String name = objective.getName();
+        if (name != "")
             players.say(utils.getTeamName(objective.getTeam())
-                    + " has returned the " + objective.getName() + "!");
+                    + " has returned the " + name + "!");
         players.sound(RETURN_SOUND.get());
         if (@returner != null)
             returner.addScore(RETURN_SCORE);

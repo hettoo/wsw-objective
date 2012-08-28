@@ -115,9 +115,10 @@ class SpawnLocation : Component {
 
     void captured(Player @capturer) {
         int team = capturer.getClient().team;
-        if (objective.getName() != "")
-            players.say(utils.getTeamName(team)
-                    + " has captured the " + objective.getName() + "!");
+        String name = objective.getName();
+        if (name != "")
+            players.say(utils.getTeamName(team) + " has captured " + name
+                    + "!");
         players.sound(CAPTURE_SOUND.get());
         capturer.addScore(CAPTURE_SCORE);
         applyFallbacks(team);

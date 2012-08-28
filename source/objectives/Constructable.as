@@ -90,8 +90,8 @@ class Constructable : Component {
         if (@target != null) {
             String name = target.getName();
             if (name != "")
-                players.say(utils.getTeamName(team) + " has constructed the "
-                        + name + "!");
+                players.say(utils.getTeamName(team) + " has constructed " + name
+                        + "!");
             target.spawn(team);
         }
         if (@onConstructed != null) {

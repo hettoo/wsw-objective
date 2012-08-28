@@ -316,7 +316,7 @@ class Objective : Processor {
                 if (name != "") {
                     int configStringId = CS_GENERAL
                         + player.getClient().playerNum;
-                    G_ConfigString(configStringId, "You are near the " + name);
+                    G_ConfigString(configStringId, "You are near " + getName());
                     player.setHUDStat(STAT_MESSAGE_SELF, configStringId);
                 }
                 constructable.think(player);
