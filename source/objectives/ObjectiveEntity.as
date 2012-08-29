@@ -29,6 +29,7 @@ class ObjectiveEntity : Processor {
     Vec3 mins;
     Vec3 maxs;
     int moveType;
+    int svFlags;
     float radius;
 
     ObjectiveEntity(Objective @objective) {
@@ -36,6 +37,7 @@ class ObjectiveEntity : Processor {
         solid = SOLID_YES;
         model = 0;
         moveType = MOVETYPE_NONE;
+        svFlags = 0;
     }
 
     void setObjective(Objective @objective) {
@@ -68,6 +70,10 @@ class ObjectiveEntity : Processor {
         this.moveType = moveType;
     }
 
+    void setSVFlags(int svFlags) {
+        this.svFlags = svFlags;
+    }
+
     void setOffset(Vec3 offset) {
         this.offset = offset;
     }
@@ -97,6 +103,8 @@ class ObjectiveEntity : Processor {
             setModel(Model(utils.join(arguments)));
         else if (method == "moveType")
             setMoveType(arguments[0].toInt());
+        else if (method == "svFlags")
+            setSVFlags(arguments[0].toInt());
         else if (method == "offset")
             setOffset(utils.readVec3(arguments));
         else if (method == "angles")
@@ -126,7 +134,7 @@ class ObjectiveEntity : Processor {
             ent.solid = solid;
             ent.clipMask = MASK_PLAYERSOLID;
             ent.moveType = moveType;
-            ent.svflags &= ~SVF_NOCLIENT;
+            ent.svflags = svFlags;
             ent.linkEntity();
         }
     }

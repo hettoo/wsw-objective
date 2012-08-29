@@ -73,8 +73,8 @@ class Processor {
         return variable.getString();
     }
 
-    void addVariable(String name, Variable @variable) {
-        variables.set(name, @variable);
+    void addVariable(Variable @variable) {
+        variables.set(variable.getId(), @variable);
         variableArray.insertLast(variable);
     }
 
@@ -89,7 +89,7 @@ class Processor {
                 @variable = FloatVariable(id, initial);
             else if (arguments[1] == "string")
                 @variable = StringVariable(id, initial);
-            addVariable(id, variable);
+            addVariable(variable);
         } else {
             for (uint i = 0; i < methods.size(); i++) {
                 if (methods[i].getId() == method) {

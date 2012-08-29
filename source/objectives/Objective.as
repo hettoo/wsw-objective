@@ -151,12 +151,6 @@ class Objective : Processor {
         return entities[index];
     }
 
-    ObjectiveEntity @getMainEntity() {
-        if (entities.size() == 0)
-            return null;
-        return entities[0];
-    }
-
     Vec3 getAngles() {
         return angles;
     }
