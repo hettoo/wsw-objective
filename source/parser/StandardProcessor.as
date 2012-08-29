@@ -157,6 +157,8 @@ class StandardProcessor : Processor {
             result = SVF_ONLYTEAM;
         else if (name == "SVF_FORCEOWNER")
             result = SVF_FORCEOWNER;
+        else if (name == "SVF_ONLYOWNER")
+            result = SVF_ONLYOWNER;
         else if (name == "SOLID_NOT")
             result = SOLID_NOT;
         else if (name == "SOLID_TRIGGER")
