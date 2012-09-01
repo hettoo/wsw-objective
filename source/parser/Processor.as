@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Processor {
+class Processor : VariablesListener {
     Parser @parser;
 
     Dictionary variables;
@@ -82,13 +82,18 @@ class Processor {
         if (method == "define") {
             Variable @variable;
             String id = arguments[0];
-            String initial = utils.join(arguments, 2);
+            String@[] initial;
+            initial.resize(arguments.size() - 2);
+            for (uint i = 2; i < arguments.size(); i++)
+                @initial[i - 2] = arguments[i];
             if (arguments[1] == "int")
                 @variable = IntVariable(id, initial);
             else if (arguments[1] == "float")
                 @variable = FloatVariable(id, initial);
             else if (arguments[1] == "string")
                 @variable = StringVariable(id, initial);
+            else if (arguments[1] == "array")
+                @variable = ArrayVariable(id, initial);
             addVariable(variable);
         } else {
             for (uint i = 0; i < methods.size(); i++) {
@@ -99,7 +104,7 @@ class Processor {
             }
             for (uint i = 0; i < variableArray.size(); i++) {
                 if (variableArray[i].getId() == method) {
-                    variableArray[i].set(utils.join(arguments));
+                    variableArray[i].set(arguments);
                     return true;
                 }
             }

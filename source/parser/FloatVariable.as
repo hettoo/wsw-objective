@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class FloatVariable : NumericVariable {
     float value;
 
-    FloatVariable(String id, String value) {
-        super(id, value);
+    FloatVariable(String id, String@[] values) {
+        super(id, values);
     }
 
     FloatVariable(String id) {
@@ -34,10 +34,16 @@ class FloatVariable : NumericVariable {
 
     void set(String value) {
         this.value = read(value);
+        NumericVariable::updated();
+    }
+
+    void set(float value) {
+        this.value = value;
+        NumericVariable::updated();
     }
 
     void add(String value) {
-        this.value += read(value);
+        set(this.value + read(value));
     }
 
     void equals(String value) {
@@ -49,26 +55,30 @@ class FloatVariable : NumericVariable {
     }
 
     void multiply(String value) {
-        this.value *= read(value);
+        set(this.value * read(value));
     }
 
     void modulo(String value) {
-        this.value %= read(value);
+        set(this.value % read(value));
     }
 
     void _or(String value) {
-        this.value |= read(value);
+        set(this.value | read(value));
     }
 
     void _and(String value) {
-        this.value &= read(value);
+        set(this.value & read(value));
     }
 
     void _xor(String value) {
-        this.value ^= read(value);
+        set(this.value ^ read(value));
     }
 
     String @getString() {
         return value + "";
+    }
+
+    float get() {
+        return value;
     }
 }

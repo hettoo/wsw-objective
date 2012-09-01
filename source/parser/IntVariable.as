@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class IntVariable : NumericVariable {
     int value;
 
-    IntVariable(String id, String value) {
-        super(id, value);
+    IntVariable(String id, String@[] values) {
+        super(id, values);
     }
 
     IntVariable(String id) {
@@ -34,10 +34,16 @@ class IntVariable : NumericVariable {
 
     void set(String value) {
         this.value = read(value);
+        NumericVariable::updated();
+    }
+
+    void set(int value) {
+        this.value = value;
+        NumericVariable::updated();
     }
 
     void add(String value) {
-        this.value += read(value);
+        set(this.value + read(value));
     }
 
     void equals(String value) {
@@ -49,31 +55,35 @@ class IntVariable : NumericVariable {
     }
 
     void multiply(String value) {
-        this.value *= read(value);
+        set(this.value * read(value));
     }
 
     void modulo(String value) {
-        this.value %= read(value);
+        set(this.value % read(value));
     }
 
     void _not() {
-        value = ~value;
+        set(~value);
     }
 
     void _or(String value) {
-        this.value |= read(value);
+        set(this.value | read(value));
     }
 
     void _and(String value) {
-        this.value &= read(value);
+        set(this.value & read(value));
     }
 
     void _xor(String value) {
-        this.value ^= read(value);
+        set(this.value ^ read(value));
     }
 
     String @getString() {
         return value + "";
+    }
+
+    int get() {
+        return value;
     }
 
     bool process(String method, String@[] arguments) {

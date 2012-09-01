@@ -24,8 +24,29 @@ class StandardProcessor : Processor {
 
     bool conditionSucceeded;
 
+    StringVariable @author;
+    ArrayVariable @goal;
+
     StandardProcessor() {
         conditionSucceeded = false;
+
+        @author = StringVariable("author");
+        author.addListener(this);
+        addVariable(author);
+        @goal = ArrayVariable("goal");
+        goal.addListener(this);
+        addVariable(goal);
+    }
+
+    void variableChanged(Variable @variable) {
+        if (@variable == @author)
+            gametype.author = AUTHOR
+                    + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
+                    + author.get() + S_COLOR_ORANGE + ")";
+        else if (@variable == @goal)
+            objectiveSet.setGoal(ResultSet(goal.get()));
+        else
+            Processor::variableChanged(variable);
     }
 
     String popStack() {
@@ -63,12 +84,6 @@ class StandardProcessor : Processor {
             parser.parse(utils.join(arguments));
         } else if (method == "include") {
             main.parse("includes/" + utils.join(arguments));
-        } else if (method == "author") {
-            gametype.author = AUTHOR
-                    + S_COLOR_ORANGE + " (map by " + S_COLOR_WHITE
-                    + utils.join(arguments) + S_COLOR_ORANGE + ")";
-        } else if (method == "goal") {
-            objectiveSet.setGoal(ResultSet(arguments));
         } else {
             for (uint i = 0; i < functions.size(); i++) {
                 if (functions[i].getId() == method) {

@@ -17,13 +17,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class NumericVariable : Variable {
-    NumericVariable(String id, String value) {
-        super(id, value);
+class NumericVariable : SingularVariable {
+    NumericVariable(String id, String@[] values) {
+        super(id, values);
     }
 
     NumericVariable(String id) {
         super(id);
+    }
+
+    void add(String value) {
     }
 
     void multiply(String value) {
@@ -42,7 +45,9 @@ class NumericVariable : Variable {
     }
 
     bool process(String method, String argument) {
-        if (method == "multiply")
+        if (method == "add")
+            add(argument);
+        else if (method == "multiply")
             multiply(argument);
         else if (method == "modulo")
             modulo(argument);
@@ -53,7 +58,7 @@ class NumericVariable : Variable {
         else if (method == "xor")
             _xor(argument);
         else
-            return Variable::process(method, argument);
+            return SingularVariable::process(method, argument);
         return true;
     }
 }

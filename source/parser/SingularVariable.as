@@ -17,57 +17,43 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class StringVariable : SingularVariable {
-    String value;
-
-    StringVariable(String id, String@[] values) {
+class SingularVariable : Variable {
+    SingularVariable(String id, String@[] values) {
         super(id, values);
     }
 
-    StringVariable(String id) {
+    SingularVariable(String id) {
         super(id);
     }
 
     void set(String value) {
-        this.value = value;
-        SingularVariable::updated();
-    }
-
-    void add(String value) {
-        set(this.value + value);
     }
 
     void equals(String value) {
-        stack.insertLast(this.value == value ? "1" : "0");
     }
 
     void nequals(String value) {
-        stack.insertLast(this.value == value ? "0" : "1");
     }
 
-    void multiply(String value) {
-        int count = value.toInt();
-        String new = "";
-        for (int i = 0; i < count; i++)
-            new += this.value;
-        set(new);
+    void set(String@[] values) {
+        set(utils.join(values));
     }
 
-    String @getString() {
-        return value;
+    void equals(String@[] values) {
+        equals(utils.join(values));
     }
 
-    String @get() {
-        return value;
+    void nequals(String@[] values) {
+        nequals(utils.join(values));
     }
 
     bool process(String method, String argument) {
-        if (method == "add")
-            add(argument);
-        else if (method == "multiply")
-            multiply(argument);
-        else
-            return SingularVariable::process(method, argument);
-        return true;
+        return false;
+    }
+
+    bool process(String method, String@[] arguments) {
+        if (process(method, utils.join(arguments)))
+            return true;
+        return Variable::process(method, arguments);
     }
 }

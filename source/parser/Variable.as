@@ -20,53 +20,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class Variable : Processor {
     String id;
 
-    Variable(String id, String value) {
+    VariablesListener@[] listeners;
+
+    Variable(String id, String@[] values) {
         this.id = id;
-        set(value);
+        set(values);
     }
 
     Variable(String id) {
         this.id = id;
-        set("");
+        String@[] nothing;
+        set(nothing);
     }
 
     String getId() {
         return id;
     }
 
-    void set(String value) {
+    void addListener(VariablesListener @listener) {
+        listeners.insertLast(listener);
     }
 
-    void add(String value) {
+    void updated() {
+        for (uint i = 0; i < listeners.size(); i++)
+            listeners[i].variableChanged(this);
     }
 
-    void equals(String value) {
+    void set(String@[] values) {
     }
 
-    void nequals(String value) {
+    void equals(String@[] values) {
+    }
+
+    void nequals(String@[] values) {
     }
 
     String @getString() {
         return "";
     }
 
-    bool process(String method, String argument) {
-        if (method == "set")
-            set(argument);
-        else if (method == "add")
-            add(argument);
-        else if (method == "equals")
-            equals(argument);
-        else if (method == "nequals")
-            nequals(argument);
-        else
-            return false;
-        return true;
-    }
-
     bool process(String method, String@[] arguments) {
-        if (process(method, utils.join(arguments)))
-            return true;
-        return Processor::process(method, arguments);
+        if (method == "set")
+            set(arguments);
+        else if (method == "equals")
+            equals(arguments);
+        else if (method == "nequals")
+            nequals(arguments);
+        else
+            return Processor::process(method, arguments);
+        return true;
     }
 }
