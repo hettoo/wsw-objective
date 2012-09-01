@@ -51,3 +51,17 @@ models/objective/constructor_holo {
         tcMod scroll 0.4 0.4
     }
 }
+
+textures/hettoo/objective/tv
+{
+	qer_editorimage textures/hettoo/objective/tv.tga
+	surfaceparm playerclip
+	surfaceparm nolightmap
+	portal
+	{
+        map textures/hettoo/objective/tv.tga
+		blendFunc GL_ONE GL_ONE_MINUS_SRC_ALPHA
+		depthWrite
+		alphaGen portal 2048
+	}
+}
