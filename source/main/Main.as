@@ -140,29 +140,25 @@ class Main {
         artillerySet.think();
         transporterSet.think();
 
-        if (@camera != null) {
+        if (@camera != null && @surface != null) {
             Vec3 origin = camera.origin;
             Vec3 dir1, dir2, dir3;
             angles.angleVectors(dir1, dir2, dir3);
-            //players.say("angles:" + angles.x + "," + angles.y + "," + angles.z);
-            //players.say("1:" + dir1.x + "," + dir1.y + "," + dir1.z);
-            //players.say("2:" + dir2.x + "," + dir2.y + "," + dir2.z);
-            //players.say("3:" + dir3.x + "," + dir3.y + "," + dir3.z);
-            //players.say("oldorigin:" + origin.x + "," + origin.y + "," + origin.z);
             origin += (dir1) * 8;
-            //players.say("neworigin:" + origin.x + "," + origin.y + "," + origin.z);
             cTrace trace;
             Vec3 zero;
-            if (trace.doTrace(camera.origin, Vec3(-132, 0, -88), Vec3(132, 0.1, 88), origin, 0, MASK_SOLID)) {
+            if (trace.doTrace(camera.origin, Vec3(-132, 0, -88),
+                        Vec3(132, 0.1, 88), origin, 0, MASK_SOLID)) {
                 origin = trace.get_endPos();
-                angles.angleVectors(dir1, dir2, dir3);
                 Vec3 normal = trace.get_planeNormal();
-                float dot = dir1.x * normal.x + dir1.y * normal.y + dir1.z * normal.z;
-                dir1 = Vec3(dir1.x - 2 * normal.x * dot, dir1.y - 2 * normal.y * dot, dir1.z - 2 * normal.z * dot);
+                float dot = dir1.x * normal.x + dir1.y * normal.y
+                    + dir1.z * normal.z;
+                dir1 = Vec3(dir1.x - 2 * normal.x * dot,
+                        dir1.y - 2 * normal.y * dot,
+                        dir1.z - 2 * normal.z * dot);
                 angles = dir1.toAngles();
             }
             camera.origin = origin;
-            camera.angles = angles;
             angles.angleVectors(dir1, dir2, dir3);
             surface.skinNum = G_DirToByte(dir1);
         }
