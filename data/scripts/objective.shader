@@ -54,14 +54,14 @@ models/objective/constructor_holo {
 
 textures/hettoo/objective/tv
 {
-	qer_editorimage textures/hettoo/objective/tv.tga
-	surfaceparm playerclip
-	surfaceparm nolightmap
-	portal
-	{
+    qer_editorimage textures/hettoo/objective/tv.tga
+    surfaceparm playerclip
+    surfaceparm nolightmap
+    portal
+    {
         map textures/hettoo/objective/tv.tga
-		blendFunc GL_ONE GL_ONE_MINUS_SRC_ALPHA
-		depthWrite
-		alphaGen portal 2048
-	}
+        blendFunc GL_ONE GL_ONE_MINUS_SRC_ALPHA
+        depthWrite
+        alphaGen portal 2048
+    }
 }
