@@ -22,17 +22,18 @@ class Objective : Processor {
 
     ObjectiveEntity@[] entities;
 
-    String name;
     Vec3 origin;
     Vec3 angles;
+
+    StringVariable @name;
+    FloatVariable @radius;
+    IntVariable @icon;
+    IntVariable @team;
+
     cEntity @minimap;
     bool spawned;
     int owningTeam;
     int activeTeam;
-
-    int icon;
-    int team;
-    float radius;
 
     Constructable @constructable;
     Destroyable @destroyable;
@@ -43,16 +44,23 @@ class Objective : Processor {
     Objective(cEntity @target) {
         id = target.get_targetname();
         id = id.substr(1);
-        spawned = false;
-
-        team = GS_MAX_TEAMS;
-        radius = 125;
-
-        owningTeam = team;
-        unsetActiveTeam();
 
         origin = target.origin;
         angles = target.angles;
+
+        @name = StringVariable("name");
+        addVariable(name);
+        @radius = FloatVariable("radius");
+        radius.set(125);
+        addVariable(radius);
+        @icon = IntVariable("icon");
+        addVariable(icon);
+        @team = IntVariable("team");
+        trackVariable(team);
+        team.set(GS_MAX_TEAMS);
+
+        spawned = false;
+        unsetActiveTeam();
 
         target.unlinkEntity();
         target.freeEntity();
@@ -69,7 +77,7 @@ class Objective : Processor {
     }
 
     String @getName() {
-        return name;
+        return name.get();
     }
 
     Vec3 getOrigin() {
@@ -77,7 +85,7 @@ class Objective : Processor {
     }
 
     int getIcon() {
-        return icon;
+        return icon.get();
     }
 
     void setActiveTeam(int team) {
@@ -89,20 +97,18 @@ class Objective : Processor {
     }
 
     void setIcon(int icon) {
-        this.icon = icon;
+        this.icon.set(icon);
+    }
+
+    void variableChanged(Variable @variable) {
+        if (@variable == @team)
+            owningTeam = team.get();
+        else
+            Processor::variableChanged(variable);
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "name") {
-            this.name = utils.join(arguments);
-        } else if (method == "radius") {
-            radius = arguments[0].toInt();
-        } else if (method == "icon") {
-            icon = Image(utils.join(arguments)).get();
-        } else if (method == "team") {
-            team = arguments[0].toInt();
-            owningTeam = team;
-        } else if (method == "spawn") {
+        if (method == "spawn") {
             spawn();
         } else if (method == "spawnObjective") {
             objectiveSet.find(arguments[0]).spawn(activeTeam);
@@ -156,7 +162,7 @@ class Objective : Processor {
     }
 
     float getRadius() {
-        return radius;
+        return radius.get();
     }
 
     int getOwningTeam() {
@@ -179,6 +185,7 @@ class Objective : Processor {
         for (uint i = 0; i < entities.size(); i++)
             entities[i].spawn(origin);
 
+        int icon = this.icon.get();
         if (icon != 0)
             @minimap = utils.spawnIcon(icon, owningTeam, origin);
 
@@ -226,7 +233,7 @@ class Objective : Processor {
 
         destroyIcon();
         spawned = false;
-        owningTeam = team;
+        owningTeam = team.get();
 
         if (goalTest)
             objectiveSet.goalTest();
@@ -275,7 +282,7 @@ class Objective : Processor {
 
     bool near(cEntity @other) {
         if (entities.size() == 0)
-            return utils.near(origin, other.origin, radius);
+            return utils.near(origin, other.origin, radius.get());
         for (uint i = 0; i < entities.size(); i++) {
             if (entities[i].near(other))
                 return true;
@@ -307,10 +314,11 @@ class Objective : Processor {
         for (int i = 0; i < players.getSize(); i++) {
             Player @player = players.get(i);
             if (@player != null && near(player)) {
+                String name = getName();
                 if (name != "") {
                     int configStringId = CS_GENERAL
                         + player.getClient().playerNum;
-                    G_ConfigString(configStringId, "You are near " + getName());
+                    G_ConfigString(configStringId, "You are near " + name);
                     player.setHUDStat(STAT_MESSAGE_SELF, configStringId);
                 }
                 constructable.think(player);
