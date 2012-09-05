@@ -261,15 +261,15 @@ class Player {
     }
 
     void think() {
-        if (client.team == TEAM_SPECTATOR)
-            return;
-
         setHUDStat(STAT_PROGRESS_SELF, 0);
         setHUDStat(STAT_PROGRESS_OTHER, 0);
         setHUDStat(STAT_IMAGE_SELF, @carry == null
                 ? 0 : carry.getObjective().getIcon());
         setHUDStat(STAT_IMAGE_OTHER, 0);
         setHUDStat(STAT_MESSAGE_SELF, 0);
+
+        if (client.team == TEAM_SPECTATOR)
+            return;
 
         if (ent.health > 0) {
             GENERIC_ChargeGunblade(client);
@@ -296,7 +296,7 @@ class Player {
         if (client.team != TEAM_SPECTATOR) {
             if (bonus == 1) {
                 // TODO: airstrike or something? :)
-                bonus--;
+                bonus = 0;
             } else {
                 centerPrint("You have not unlocked a bonus action");
             }
