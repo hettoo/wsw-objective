@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class NumericVariable : SingularVariable {
+class NumericVariable : SimpleNumericVariable {
     NumericVariable(String id, String@[] values) {
         super(id, values);
     }
@@ -35,15 +35,6 @@ class NumericVariable : SingularVariable {
     void modulo(String value) {
     }
 
-    void _or(String value) {
-    }
-
-    void _and(String value) {
-    }
-
-    void _xor(String value) {
-    }
-
     bool process(String method, String argument) {
         if (method == "add")
             add(argument);
@@ -51,14 +42,8 @@ class NumericVariable : SingularVariable {
             multiply(argument);
         else if (method == "modulo")
             modulo(argument);
-        else if (method == "or")
-            _or(argument);
-        else if (method == "and")
-            _and(argument);
-        else if (method == "xor")
-            _xor(argument);
         else
-            return SingularVariable::process(method, argument);
+            return SimpleNumericVariable::process(method, argument);
         return true;
     }
 }

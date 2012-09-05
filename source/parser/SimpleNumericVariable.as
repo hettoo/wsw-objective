@@ -17,44 +17,33 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-class Component : Processor {
-    Objective @objective;
-
-    BoolVariable @active;
-
-    Component(Objective @objective) {
-        @this.objective = objective;
-
-        @active = BoolVariable("active");
-        addVariable(active);
+class SimpleNumericVariable : SingularVariable {
+    SimpleNumericVariable(String id, String@[] values) {
+        super(id, values);
     }
 
-    void startProcessor() {
-        active.set(true);
+    SimpleNumericVariable(String id) {
+        super(id);
     }
 
-    bool isActive() {
-        return active.get();
+    void _or(String value) {
     }
 
-    Objective @getObjective() {
-        return objective;
+    void _and(String value) {
     }
 
-    void thinkActive() {
+    void _xor(String value) {
     }
 
-    void think() {
-        if (active.get())
-            thinkActive();
-    }
-
-    void thinkActive(Player @player) {
-    }
-
-    void think(Player @player) {
-        if (active.get() && player.isAlive()
-                && player.getTeam() != TEAM_SPECTATOR)
-            thinkActive(player);
+    bool process(String method, String argument) {
+        if (method == "or")
+            _or(argument);
+        else if (method == "and")
+            _and(argument);
+        else if (method == "xor")
+            _xor(argument);
+        else
+            return SingularVariable::process(method, argument);
+        return true;
     }
 }

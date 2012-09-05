@@ -95,6 +95,8 @@ class Processor : VariablesListener {
                 @variable = IntVariable(id, initial);
             else if (arguments[1] == "float")
                 @variable = FloatVariable(id, initial);
+            else if (arguments[1] == "bool")
+                @variable = BoolVariable(id, initial);
             else if (arguments[1] == "string")
                 @variable = StringVariable(id, initial);
             else if (arguments[1] == "array")

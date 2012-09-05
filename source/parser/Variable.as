@@ -56,7 +56,7 @@ class Variable : Processor {
     }
 
     String @getString() {
-        return "";
+        return null;
     }
 
     bool process(String method, String@[] arguments) {
