@@ -336,9 +336,9 @@ class Objective : Processor {
         secureLocation.think();
     }
 
-    void destroyed(cEntity @bomb, Player @destroyer, bool light) {
+    void destroyed(cEntity @bomb, Player @destroyer, bool simple) {
         if (spawned && destroyable.isActive() && nearOtherTeam(bomb))
-            destroyable.destruct(destroyer, light);
+            destroyable.destruct(destroyer, simple);
     }
 
     bool planted(cEntity @bomb) {

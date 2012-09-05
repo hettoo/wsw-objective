@@ -28,10 +28,10 @@ const Sound CONSTRUCTING_SOUND("objective/constructing");
 const Sound CONSTRUCTED_SOUND("announcer/objective/constructed");
 
 class Constructable : Component {
-    float constructArmor;
     Objective @ghost;
     Objective @target;
     Callback @onConstructed;
+    FloatVariable @constructArmor;
 
     float constructProgress;
     float constructingSoundWait;
@@ -42,7 +42,9 @@ class Constructable : Component {
     Constructable(Objective @objective) {
         super(objective);
 
-        constructArmor = DEFAULT_CONSTRUCT_ARMOR;
+        @constructArmor = FloatVariable("constructArmor");
+        constructArmor.set(DEFAULT_CONSTRUCT_ARMOR);
+        addVariable(constructArmor);
 
         constructProgress = 0;
         constructingSoundWait = 0;
@@ -52,11 +54,9 @@ class Constructable : Component {
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "constructArmor")
-            constructArmor = arguments[0].toInt();
-        else if (method == "ghost")
+        if (method == "setGhost")
             @ghost = objectiveSet.find(utils.join(arguments));
-        else if (method == "target")
+        else if (method == "setTarget")
             @target = objectiveSet.find(utils.join(arguments));
         else if (method == "onConstructed")
             @onConstructed = parser.createCallback(utils.join(arguments));
@@ -105,8 +105,8 @@ class Constructable : Component {
         float additional = CONSTRUCT_SPEED * frameTime;
         constructProgress += additional;
         spawnGhost();
-        player.addScore(additional / PROGRESS_FINISHED
-                * constructArmor / DEFAULT_CONSTRUCT_ARMOR * CONSTRUCT_SCORE);
+        player.addScore(additional / PROGRESS_FINISHED * constructArmor.get()
+                / DEFAULT_CONSTRUCT_ARMOR * CONSTRUCT_SCORE);
         if (constructingSoundWait <= 0) {
             G_Sound(player.getEnt(), CHAN_AUTO,
                     CONSTRUCTING_SOUND.get(), ATTN_CONSTRUCTING);
@@ -122,7 +122,7 @@ class Constructable : Component {
                 if (constructProgress >= PROGRESS_FINISHED)
                     constructed(player);
                 else if (player.takeArmor(CONSTRUCT_SPEED * frameTime
-                            / PROGRESS_FINISHED * constructArmor))
+                            / PROGRESS_FINISHED * constructArmor.get()))
                     getConstructProgress(player);
 
                 player.setHUDStat(STAT_PROGRESS_SELF, constructProgress);

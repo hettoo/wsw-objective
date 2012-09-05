@@ -27,7 +27,7 @@ const Image FLAG_ICON("hud/icons/flags/iconflag");
 const Sound CAPTURE_SOUND("announcer/objective/captured");
 
 class SpawnLocation : Component {
-    bool capturable;
+    BoolVariable @capturable;
     Objective @alphaFallback;
     Objective @betaFallback;
 
@@ -37,7 +37,8 @@ class SpawnLocation : Component {
 
     SpawnLocation(Objective @objective) {
         super(objective);
-        capturable = false;
+        @capturable = BoolVariable("capturable");
+        addVariable(capturable);
         @spawnPointSet = null;
     }
 
@@ -54,23 +55,21 @@ class SpawnLocation : Component {
     }
 
     bool isCapturable() {
-        return capturable;
+        return capturable.get();
     }
 
     void lock() {
         applyFallbacks();
-        capturable = false;
+        capturable.set(false);
         for (uint i = 0; i < entities.size(); i++)
             entities[i].destroy();
         objective.destroyIcon();
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "capturable")
-            capturable = utils.readBool(arguments[0]);
-        else if (method == "alphaFallback")
+        if (method == "setAlphaFallback")
             @alphaFallback = objectiveSet.find(arguments[0]);
-        else if (method == "betaFallback")
+        else if (method == "setBetaFallback")
             @betaFallback = objectiveSet.find(arguments[0]);
         else if (method == "addFlag")
             addFlag();
@@ -126,7 +125,7 @@ class SpawnLocation : Component {
     }
 
     void thinkActive(Player @player) {
-        if (capturable && objective.getTeam() != player.getClient().team)
+        if (capturable.get() && objective.getTeam() != player.getClient().team)
             captured(player);
     }
 }

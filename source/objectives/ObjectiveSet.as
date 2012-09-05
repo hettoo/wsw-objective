@@ -89,10 +89,10 @@ class ObjectiveSet {
             objectiveSet[i].think();
     }
 
-    void destroyed(cEntity @ent, Player @destroyer, bool light) {
+    void destroyed(cEntity @ent, Player @destroyer, bool simple) {
         suppressGoalTest = true;
         for (uint i = 0; i < objectiveSet.size(); i++)
-            objectiveSet[i].destroyed(ent, destroyer, light);
+            objectiveSet[i].destroyed(ent, destroyer, simple);
         suppressGoalTest = false;
         goalTest();
     }

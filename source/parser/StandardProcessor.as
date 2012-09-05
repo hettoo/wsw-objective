@@ -55,7 +55,7 @@ class StandardProcessor : Processor {
 
     bool checkCondition(String equation) {
         parser.parse(equation);
-        conditionSucceeded = popStack().toInt() == 1;
+        conditionSucceeded = popStack().toInt() != 0;
         return conditionSucceeded;
     }
 

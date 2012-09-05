@@ -46,7 +46,7 @@ class Stealable : Component {
     }
 
     bool process(String method, String@[] arguments) {
-        if (method == "targets") {
+        if (method == "setTargets") {
             targets.resize(arguments.size());
             for (uint i = 0; i < arguments.size(); i++)
                 @targets[i] = objectiveSet.find(arguments[i]);
