@@ -78,6 +78,11 @@ class Processor : VariablesListener {
         variableArray.insertLast(variable);
     }
 
+    void trackVariable(Variable @variable) {
+        variable.addListener(this);
+        addVariable(variable);
+    }
+
     bool process(String method, String@[] arguments) {
         if (method == "define") {
             Variable @variable;
@@ -94,6 +99,22 @@ class Processor : VariablesListener {
                 @variable = StringVariable(id, initial);
             else if (arguments[1] == "array")
                 @variable = ArrayVariable(id, initial);
+            addVariable(variable);
+        } else if (method == "cache") {
+            String id = arguments[0];
+            IntVariable @variable = IntVariable(id);
+            String location = utils.join(arguments, 2);
+            switch (arguments[1].toInt()) {
+                case CACHE_IMAGE:
+                    variable.set(Image(location).get());
+                    break;
+                case CACHE_MODEL:
+                    variable.set(Model(location).get());
+                    break;
+                case CACHE_SOUND:
+                    variable.set(Sound(location).get());
+                    break;
+            }
             addVariable(variable);
         } else {
             for (uint i = 0; i < methods.size(); i++) {

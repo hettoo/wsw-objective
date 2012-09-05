@@ -139,6 +139,14 @@ class Utils {
                 values[2].toFloat());
     }
 
+    String@[] writeVec3(Vec3 values) {
+        String@[] result;
+        result.insertLast(values.x + "");
+        result.insertLast(values.y + "");
+        result.insertLast(values.z + "");
+        return result;
+    }
+
     bool readBool(String value) {
         return value == "true";
     }

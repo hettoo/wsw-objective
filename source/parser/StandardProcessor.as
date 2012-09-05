@@ -19,6 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 String@[] stack;
 
+enum CacheType {
+    CACHE_IMAGE,
+    CACHE_MODEL,
+    CACHE_SOUND
+}
+
 class StandardProcessor : Processor {
     Function@[] functions;
 
@@ -31,11 +37,9 @@ class StandardProcessor : Processor {
         conditionSucceeded = false;
 
         @author = StringVariable("author");
-        author.addListener(this);
-        addVariable(author);
+        trackVariable(author);
         @goal = ArrayVariable("goal");
-        goal.addListener(this);
-        addVariable(goal);
+        trackVariable(goal);
     }
 
     void variableChanged(Variable @variable) {
@@ -120,7 +124,13 @@ class StandardProcessor : Processor {
 
         String result;
         bool found = true;
-        if (name == "TEAM_SPECTATOR")
+        if (name == "CACHE_IMAGE")
+            result = CACHE_IMAGE;
+        else if (name == "CACHE_MODEL")
+            result = CACHE_MODEL;
+        else if (name == "CACHE_SOUND")
+            result = CACHE_SOUND;
+        else if (name == "TEAM_SPECTATOR")
             result = TEAM_SPECTATOR;
         else if (name == "TEAM_PLAYERS")
             result = TEAM_PLAYERS;
