@@ -17,11 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+Cache imageCache;
+
 class Image {
     int image;
 
     Image(String &image) {
-        this.image = G_ImageIndex("gfx/" + image);
+        if (imageCache.exists(image)) {
+            this.image = imageCache.get(image);
+        } else {
+            this.image = G_ImageIndex("gfx/" + image);
+            imageCache.put(image, this.image);
+        }
     }
 
     int get() const {

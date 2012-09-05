@@ -24,11 +24,13 @@ const int SHIELD_ARMOR = 45;
 const int SHIELD_TIME = 10;
 const int SHIELD_RADIUS = 200;
 
-const Sound RAGE_SOUND("items/quad_pickup");
-const Sound SHIELD_SOUND("items/shell_pickup");
-
 class Soldier : Class {
+    Sound @RAGE_SOUND;
+    Sound @SHIELD_SOUND;
+
     Soldier() {
+        @RAGE_SOUND = Sound("items/quad_pickup");
+        @SHIELD_SOUND = Sound("items/shell_pickup");
         spawnArmor = 20;
         maxArmor = 80;
 

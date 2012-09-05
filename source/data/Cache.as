@@ -17,21 +17,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-Cache soundCache;
+class Cache {
+    Dictionary cache;
 
-class Sound {
-    int sound;
-
-    Sound(String &sound) {
-        if (soundCache.exists(sound)) {
-            this.sound = soundCache.get(sound);
-        } else {
-            this.sound = G_SoundIndex("sounds/" + sound, true);
-            soundCache.put(sound, this.sound);
-        }
+    bool exists(String &key) {
+        return cache.exists(key);
     }
 
-    int get() const {
-        return sound;
+    int get(String &key) const {
+        int result;
+        cache.get(key, result);
+        return result;
+    }
+
+    void put(String &key, int value) {
+        cache.set(key, value);
     }
 }

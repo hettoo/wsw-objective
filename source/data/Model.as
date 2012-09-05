@@ -17,11 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+Cache modelCache;
+
 class Model {
     int model;
 
     Model(String &model) {
-        this.model = G_ModelIndex("models/" + model + ".md3", true);
+        if (modelCache.exists(model)) {
+            this.model = modelCache.get(model);
+        } else {
+            this.model = G_ModelIndex("models/" + model + ".md3", true);
+            modelCache.put(model, this.model);
+        }
     }
 
     int get() const {
