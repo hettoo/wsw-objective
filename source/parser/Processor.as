@@ -104,17 +104,12 @@ class Processor : VariablesListener {
             String id = arguments[0];
             IntVariable @variable = IntVariable(id);
             String location = utils.join(arguments, 2);
-            switch (arguments[1].toInt()) {
-                case CACHE_IMAGE:
-                    variable.set(Image(location).get());
-                    break;
-                case CACHE_MODEL:
-                    variable.set(Model(location).get());
-                    break;
-                case CACHE_SOUND:
-                    variable.set(Sound(location).get());
-                    break;
-            }
+            if (arguments[1] == "image")
+                variable.set(Image(location).get());
+            else if (arguments[1] == "model")
+                variable.set(Model(location).get());
+            else if (arguments[1] == "sound")
+                variable.set(Sound(location).get());
             addVariable(variable);
         } else {
             for (uint i = 0; i < methods.size(); i++) {
